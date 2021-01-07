@@ -48,7 +48,7 @@ public class CollegeDao {
         }
     }
 
-    public College selectById(Integer id) {
+    public College getById(Integer id) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement("" +
                     "SELECT name FROM college WHERE id = ?")) {

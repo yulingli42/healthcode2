@@ -35,10 +35,10 @@ public class LoginServlet extends HttpServlet {
         }
         switch (type) {
             case "student":
-                //TODO 学生登陆
+                //TODO 学生登录
                 break;
             case "teacher":
-                // TODO  教师登陆处理
+                // TODO  教师登录处理
             case "admin":
                 Admin user = adminService.login(username, password);
                 if (Objects.isNull(user)) {

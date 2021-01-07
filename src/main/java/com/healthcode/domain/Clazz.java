@@ -8,7 +8,7 @@ package com.healthcode.domain;
 public class Clazz {
     private Integer id;
     private String name;
-    private Profession profession;
+    private Major major;
 
     public Integer getId() {
         return id;
@@ -26,11 +26,11 @@ public class Clazz {
         this.name = name;
     }
 
-    public Profession getProfession() {
-        return profession;
+    public Major getMajor() {
+        return major;
     }
 
-    public void setProfession(Profession profession) {
-        this.profession = profession;
+    public void setMajor(Major major) {
+        this.major = major;
     }
 }

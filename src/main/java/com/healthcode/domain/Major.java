@@ -3,7 +3,7 @@ package com.healthcode.domain;
 /**
  * @author qianlei
  */
-public class Profession {
+public class Major {
     private Integer id;
     private College college;
     private String name;

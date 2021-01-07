@@ -9,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AdminDao {
-    private CollegeDao collegeDao = new CollegeDao();
+    private final CollegeDao collegeDao = new CollegeDao();
 
     public Admin getByUsername(String username) {
         try (Connection connection = DatasourceConfig.getConnection()) {
@@ -31,7 +31,7 @@ public class AdminDao {
                     admin.setUsername(username);
                     admin.setPassword(password);
                     admin.setRole(Admin.AdminRole.of(role));
-                    admin.setCollege(collegeDao.selectById(collegeId));
+                    admin.setCollege(collegeDao.getById(collegeId));
                     return admin;
                 }
             }
