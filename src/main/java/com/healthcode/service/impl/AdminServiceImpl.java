@@ -1,5 +1,6 @@
 package com.healthcode.service.impl;
 
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.AdminDao;
 import com.healthcode.domain.Admin;
 import com.healthcode.service.IAdminService;
@@ -16,7 +17,7 @@ public class AdminServiceImpl implements IAdminService {
     public Admin login(String username, String password) {
         Admin admin = adminDao.getByUsername(username);
         if (Objects.isNull(admin) || !admin.getPassword().equals(password)) {
-            return null;
+            throw new HealthCodeException("用户名或密码错误");
         }
         return admin;
     }

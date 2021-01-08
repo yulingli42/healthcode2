@@ -14,24 +14,24 @@ import java.sql.SQLException;
 public class StudentDao {
     private final ClazzDao clazzDao = new ClazzDao();
 
-    public Student getByUsername(String username) {
+    public Student getByUsername(String studentId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT id, password, class_id, id_card " +
-                            "FROM student WHERE name = ?")) {
-                statement.setString(1,username);
+                    "SELECT name, password, class_id, id_card " +
+                            "FROM student WHERE id = ?")) {
+                statement.setString(1,studentId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (!resultSet.next()) {
                         return null;
                     }
-                    String id = resultSet.getString("id");
+                    String name = resultSet.getString("name");
                     String password = resultSet.getString("password");
                     int classId = resultSet.getInt("class_id");
                     String idCard = resultSet.getString("id_card");
 
                     Student student = new Student();
-                    student.setId(id);
-                    student.setName(username);
+                    student.setId(studentId);
+                    student.setName(name);
                     student.setPassword(password);
                     student.setClazz(clazzDao.getById(classId));
                     student.setIdCard(idCard);

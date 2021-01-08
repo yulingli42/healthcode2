@@ -1,8 +1,17 @@
 package com.healthcode.servlet;
 
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.domain.Admin;
+import com.healthcode.domain.Student;
+import com.healthcode.domain.Teacher;
 import com.healthcode.service.IAdminService;
+import com.healthcode.service.IStudentService;
+import com.healthcode.service.ITeacherService;
 import com.healthcode.service.impl.AdminServiceImpl;
+import com.healthcode.service.impl.StudentServiceImpl;
+import com.healthcode.service.impl.TeacherServiceImpl;
+import com.healthcode.utils.JsonUtil;
+import com.healthcode.vo.LoginUser;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,9 +28,11 @@ import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
  *
  * @author qianlei
  */
-@WebServlet(name = "LoginServlet", urlPatterns = "/api/login.do")
+@WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
     private final IAdminService adminService = new AdminServiceImpl();
+    private final IStudentService studentService = new StudentServiceImpl();
+    private final ITeacherService teacherService = new TeacherServiceImpl();
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -33,25 +44,38 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
             return;
         }
+        LoginUser user = null;
         switch (type) {
             case "student":
-                //TODO 学生登录
+                Student student = studentService.login(username, password);
+                request.getSession().setAttribute(LOGIN_USER_SESSION, student);
+                user = new LoginUser("student", student.getName());
                 break;
             case "teacher":
-                // TODO  教师登录处理
+                Teacher teacher = teacherService.login(username, password);
+                request.getSession().setAttribute(LOGIN_USER_SESSION, teacher);
+                user = new LoginUser("teacher", teacher.getName());
+                break;
             case "admin":
-                Admin user = adminService.login(username, password);
-                if (Objects.isNull(user)) {
-                    request.setAttribute("message", "用户名或密码错误");
-                    request.getRequestDispatcher("/index.jsp").forward(request, response);
-                } else {
-                    request.getSession().setAttribute(LOGIN_USER_SESSION, user);
-                    response.sendRedirect("/admin/listAllCollege.do");
+                Admin admin = adminService.login(username, password);
+                request.getSession().setAttribute(LOGIN_USER_SESSION, admin);
+                switch (admin.getRole()) {
+                    case COLLEGE_ADMIN:
+                        user = new LoginUser("collegeAdmin", admin.getUsername());
+                        break;
+                    case SYSTEM_ADMIN:
+                        user = new LoginUser("systemAdmin", admin.getUsername());
+                        break;
+                    case SCHOOL_ADMIN:
+                        user = new LoginUser("schoolAdmin", admin.getUsername());
+                        break;
+                    default:
                 }
                 break;
             default:
-                request.setAttribute("message", "不支持的用户类型");
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+                throw new HealthCodeException("不支持的用户类型");
         }
+        response.getOutputStream().write(JsonUtil.writeValue(user));
+
     }
 }

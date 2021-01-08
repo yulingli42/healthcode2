@@ -1,6 +1,8 @@
 package com.healthcode.service;
 
 import com.healthcode.domain.Student;
+import com.healthcode.dto.CurrentDailyCard;
+import com.healthcode.vo.StudentDailyCardStatistic;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,6 +16,44 @@ public interface IStudentService {
      * @param password 密码
      * @return 登录成功返回学生信息，否则返回 null
      */
-    @Nullable
     Student login(String username, String password);
+
+    /**
+     * 学生今日是否已经打卡
+     *
+     * @param student 学生
+     * @return 今日是否已经打卡
+     */
+    Boolean checkStudentDailyCardToday(Student student);
+
+    /**
+     * @param student
+     * @param card
+     */
+    void submitDailyCard(Student student, CurrentDailyCard card);
+
+    /**
+     * 根据学院编号或者专业编号或者班级编号获取到所有学生的打卡状态信息
+     * <p>
+     * 如果为空则表示不限制该项
+     *
+     * @param clazzId   班级编号
+     * @param majorId   专业编号
+     * @param collegeId 学院编号
+     * @return 所有学生的打卡状态信息
+     */
+    StudentDailyCardStatistic getStudentStatistic(
+            @Nullable Integer clazzId,
+            @Nullable Integer majorId,
+            @Nullable Integer collegeId);
+
+    /**
+     * 添加新学生
+     *
+     * @param id      学号
+     * @param name    姓名
+     * @param classId 班级号
+     * @param idCard  身份证号
+     */
+    void insertStudent(String id, String name, Integer classId, String idCard);
 }
