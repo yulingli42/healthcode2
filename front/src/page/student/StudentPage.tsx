@@ -18,7 +18,7 @@ const StudentPage = () => {
             .get<Boolean>("/student/cardStatus")
             .then(response => setSubmitDailyCard(response.data))
             .finally(() => setLoading(false))
-    }, [loginUser])
+    }, [])
 
     if (loginUser == null || !loginUser.login) {
         return <Redirect to={"/"}/>

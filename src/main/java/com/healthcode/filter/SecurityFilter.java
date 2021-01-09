@@ -50,7 +50,7 @@ public class SecurityFilter extends HttpFilter {
             if (user == null) {
                 sendUnauthorized(res);
                 return;
-            } else if (user instanceof Teacher) {
+            } else if (!(user instanceof Teacher)) {
                 sendForbiddenMessage(res);
                 return;
             }
