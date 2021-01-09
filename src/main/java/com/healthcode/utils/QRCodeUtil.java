@@ -56,8 +56,12 @@ public class QRCodeUtil {
                 rgbPint = 0xFFFFFF00;
         }
         HashMap<EncodeHintType, Object> hints = new HashMap<>(16);
-        // 指定要使用的纠错程度，例如在二维码中。
-        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        // 指定要使用的纠错程度，如果加水印则使用H高纠错，否则L低纠错
+        if(imgPath == null || "".equals(imgPath)){
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        }else {
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        }
         // 指定字符编码
         hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
         // 指定生成条形码时要使用的边距（以像素为单位）。

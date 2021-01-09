@@ -51,4 +51,12 @@ public interface ITeacherService {
      * @param collegeId 学院编号
      */
     void insertTeacher(String teacherId, String name, String idCard, Integer collegeId);
+
+    /**
+     * 展示学生健康码
+     *
+     * @param teacher 教师
+     * @return 健康码byte数组
+     */
+    byte[] showHealthCode(Teacher teacher);
 }

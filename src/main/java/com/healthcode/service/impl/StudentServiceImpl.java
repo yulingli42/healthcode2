@@ -1,29 +1,36 @@
 package com.healthcode.service.impl;
 
 import com.healthcode.common.HealthCodeException;
+import com.healthcode.dao.StudentDailyCardDao;
 import com.healthcode.dao.StudentDao;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.Student;
+import com.healthcode.domain.StudentDailyCard;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.IStudentService;
 import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 /**
- * @author qianlei
+ * @author qianlei zhenghong
  */
 public class StudentServiceImpl implements IStudentService {
     private final StudentDao studentDao = new StudentDao();
+    private final StudentDailyCardDao studentDailyCardDao = new StudentDailyCardDao();
+
+    private final QRCodeServiceImpl qrCodeService = new QRCodeServiceImpl();
 
     @Override
     public Student login(String username, String password) {
-        //TODO
+        //学生登录
         Student student = studentDao.getByUsername(username);
         if (Objects.isNull(student) || !student.getPassword().equals(password)) {
             throw new HealthCodeException("用户名密码错误");
@@ -33,9 +40,8 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public Boolean checkStudentDailyCardToday(Student student) {
-        //TODO
-
-        return new Random().nextInt() % 2 == 0;
+        //true:已打卡 false:未打卡
+        return studentDailyCardDao.getToDayCardByStudentID(student.getId()) != null;
     }
 
     @Override
@@ -72,7 +78,23 @@ public class StudentServiceImpl implements IStudentService {
     }
 
     @Override
+    public byte[] showHealthCode(Student student) {
+        //返回学生二维码
+        StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
+        String content = "姓名:" + student.getName() + "\n学号:" + student.getId() + "\n健康码类型:" + studentDailyCard.getResult() + "\n创建时间:" + studentDailyCard.getCreateTime();
+        try {
+            return qrCodeService.getHealthCodeBytes(studentDailyCard.getResult(), content, null, true);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public void submitDailyCard(Student student, CurrentDailyCard card) {
-        //TODO
+        //判断健康码类型
+        HealthCodeType healthCodeType = qrCodeService.judgeQRCodeType(card);
+        //提交至数据库
+        studentDao.submitDailyCard(student, healthCodeType);
     }
 }

@@ -27,8 +27,8 @@ public interface IStudentService {
     Boolean checkStudentDailyCardToday(Student student);
 
     /**
-     * @param student
-     * @param card
+     * @param student 学生
+     * @param card 当前提交的每日一报
      */
     void submitDailyCard(Student student, CurrentDailyCard card);
 
@@ -56,4 +56,12 @@ public interface IStudentService {
      * @param idCard  身份证号
      */
     void insertStudent(String id, String name, Integer classId, String idCard);
+
+    /**
+     * 展示学生健康码
+     *
+     * @param student 学生
+     * @return 健康码byte数组
+     */
+    byte[] showHealthCode(Student student);
 }

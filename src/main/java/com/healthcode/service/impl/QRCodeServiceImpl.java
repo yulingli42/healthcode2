@@ -5,7 +5,9 @@ import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.IQRCodeService;
 import com.healthcode.utils.QRCodeUtil;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 
 /**
  * @author zhenghong
@@ -24,5 +26,11 @@ public class QRCodeServiceImpl implements IQRCodeService {
             return HealthCodeType.YELLOW;
         }
         return HealthCodeType.GREEN;
+    }
+
+    public byte[] getHealthCodeBytes(HealthCodeType healthCodeType, String content, String logoPath, boolean needCompress) throws Exception {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(QRCodeUtil.encode(healthCodeType, content, logoPath, needCompress), "png", byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }
