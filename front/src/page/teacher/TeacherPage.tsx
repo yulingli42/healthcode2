@@ -37,7 +37,7 @@ const TeacherPage = () => {
                             isSuspectedCase: boolean,
                             currentSymptoms: Array<string>) => {
 
-        instance.post("/student/submit", {
+        instance.post("/teacher/submit", {
             haveBeenToKeyEpidemicAreas,
             haveBeenAbroad,
             isTheExposed,
