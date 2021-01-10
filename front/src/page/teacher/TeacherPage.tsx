@@ -49,7 +49,7 @@ const TeacherPage = () => {
     return <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
         <Header/>
         {isLoading && <Skeleton active={true}/>}
-        {!isLoading && isSubmitDailyCard && <img src={"/student/qrcode"} alt={"健康码"}/>}
+        {!isLoading && isSubmitDailyCard && <img src={"/teacher/qrcode"} alt={"健康码"}/>}
         {!isLoading && !isSubmitDailyCard && <SubmitDailyCardForm onFinish={onFinish}/>}
     </div>
 }
