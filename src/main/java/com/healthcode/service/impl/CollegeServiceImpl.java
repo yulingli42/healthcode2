@@ -1,28 +1,25 @@
 package com.healthcode.service.impl;
 
-import com.google.common.collect.Lists;
+import com.healthcode.dao.CollegeDao;
 import com.healthcode.domain.College;
 import com.healthcode.service.ICollegeService;
 
 import java.util.List;
 
+/**
+ * @author zhenghong
+ */
 public class CollegeServiceImpl implements ICollegeService {
+    private final CollegeDao collegeDao = new CollegeDao();
     @Override
     public List<College> getAllCollege() {
-        //TODO
-        College college = new College();
-        college.setId(1);
-        college.setName("test");
-
-        return Lists.newArrayList(college);
+        //获取全部学院信息
+        return collegeDao.listAll();
     }
 
     @Override
     public College getCollegeById(Integer id) {
-        //TODO
-        College college = new College();
-        college.setId(1);
-        college.setName("test");
-        return college;
+        //获取单个学院信息
+        return collegeDao.getById(id);
     }
 }

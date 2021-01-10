@@ -8,6 +8,7 @@ import com.healthcode.utils.QRCodeUtil;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.Objects;
 
 /**
  * @author zhenghong
@@ -20,9 +21,11 @@ public class QRCodeServiceImpl implements IQRCodeService {
 
     @Override
     public HealthCodeType judgeQRCodeType(CurrentDailyCard currentDailyCard) {
-        if(currentDailyCard.isTheExposed() || currentDailyCard.isSuspectedCase() || currentDailyCard.getCurrentSymptoms().length >= 2){
+        if(currentDailyCard.isTheExposed() || currentDailyCard.isSuspectedCase() ||
+                (!Objects.isNull(currentDailyCard.getCurrentSymptoms()) && currentDailyCard.getCurrentSymptoms().length >= 2)){
             return HealthCodeType.RED;
-        }else if(currentDailyCard.isHaveBeenToKeyEpidemicAreas() || currentDailyCard.isHaveBeenAbroad() || !"无异常".equals(currentDailyCard.getCurrentSymptoms()[0])){
+        }else if(currentDailyCard.isHaveBeenToKeyEpidemicAreas() || currentDailyCard.isHaveBeenAbroad() ||
+                (!Objects.isNull(currentDailyCard.getCurrentSymptoms()) && !"无异常".equals(currentDailyCard.getCurrentSymptoms()[0]))){
             return HealthCodeType.YELLOW;
         }
         return HealthCodeType.GREEN;

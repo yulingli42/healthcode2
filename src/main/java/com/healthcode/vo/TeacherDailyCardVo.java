@@ -6,9 +6,9 @@ import com.healthcode.domain.HealthCodeType;
  * @author qianlei
  */
 public class TeacherDailyCardVo {
-    private Integer teacherId;
+    private String teacherId;
     private String name;
-    private String className;
+    private String collegeName;
     private HealthCodeType type;
 
     public String getName() {
@@ -19,12 +19,12 @@ public class TeacherDailyCardVo {
         this.name = name;
     }
 
-    public String getClassName() {
-        return className;
+    public String getCollegeName() {
+        return collegeName;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
     }
 
     public HealthCodeType getType() {
@@ -35,11 +35,11 @@ public class TeacherDailyCardVo {
         this.type = type;
     }
 
-    public Integer getTeacherId() {
+    public String getTeacherId() {
         return teacherId;
     }
 
-    public void setTeacherId(Integer teacherId) {
+    public void setTeacherId(String teacherId) {
         this.teacherId = teacherId;
     }
 

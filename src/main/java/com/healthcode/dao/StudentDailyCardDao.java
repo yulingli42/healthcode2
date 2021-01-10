@@ -1,5 +1,6 @@
 package com.healthcode.dao;
 
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.StudentDailyCard;
@@ -32,7 +33,8 @@ public class StudentDailyCardDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("获取学生每日一报失败");
         }
     }
 }

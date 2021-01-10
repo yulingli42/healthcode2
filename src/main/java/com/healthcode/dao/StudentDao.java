@@ -1,12 +1,15 @@
 package com.healthcode.dao;
 
+import com.google.common.collect.Lists;
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.Student;
-import com.healthcode.domain.StudentDailyCard;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author zhenghong
@@ -39,7 +42,8 @@ public class StudentDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("获取学生失败");
         }
     }
 
@@ -53,7 +57,50 @@ public class StudentDao {
                 statement.execute();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("提交学生打卡失败");
+        }
+    }
+
+    public List<Student> listAll() {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM student ")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    ArrayList<Student> list = Lists.newArrayList();
+                    while (resultSet.next()) {
+                        Student student = new Student();
+                        student.setId(resultSet.getString("id"));
+                        student.setName(resultSet.getString("name"));
+                        student.setPassword(resultSet.getString("password"));
+                        student.setClazz(clazzDao.getById(resultSet.getInt("class_id")));
+                        student.setIdCard(resultSet.getString("id_card"));
+                        list.add(student);
+                    }
+                    return list;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取学生列表失败");
+        }
+    }
+
+    public void insert(String id, String name, String password, int classId, String idCard){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO student(id, name, password, class_id, id_card) VALUES (?, ?, ?, ?, ?)")) {
+                statement.setString(1, id);
+                statement.setString(2, name);
+                statement.setString(3, password);
+                statement.setInt(4, classId);
+                statement.setString(5, idCard);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加学生失败");
         }
     }
 }

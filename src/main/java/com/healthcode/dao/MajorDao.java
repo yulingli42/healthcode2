@@ -1,19 +1,27 @@
 package com.healthcode.dao;
 
+import com.google.common.collect.Lists;
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
+import com.healthcode.domain.Clazz;
 import com.healthcode.domain.Major;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * @author zhenghong
+ */
 public class MajorDao {
     private final CollegeDao collegeDao = new CollegeDao();
 
     public Major getById(Integer id) {
         try (Connection connection = DatasourceConfig.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("" +
+            try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT name, college_id FROM profession WHERE id = ?")) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -29,7 +37,30 @@ public class MajorDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("获取专业失败");
+        }
+    }
+
+    public List<Major> listAll(Integer collegeId){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM profession WHERE college_id = ?")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    ArrayList<Major> list = Lists.newArrayList();
+                    while (resultSet.next()) {
+                        Major major = new Major();
+                        major.setId(resultSet.getInt("id"));
+                        major.setName(resultSet.getString("name"));
+                        major.setCollege(collegeDao.getById(collegeId));
+                        list.add(major);
+                    }
+                    return list;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取全部专业失败");
         }
     }
 }

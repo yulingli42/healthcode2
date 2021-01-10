@@ -1,22 +1,19 @@
 package com.healthcode.service.impl;
 
-import com.google.common.collect.Lists;
+import com.healthcode.dao.MajorDao;
 import com.healthcode.domain.Major;
 import com.healthcode.service.IMajorService;
 
 import java.util.List;
 
 /**
- * @author qianlei
+ * @author zhenghong
  */
 public class MajorServiceImpl implements IMajorService {
+    private final MajorDao majorDao = new MajorDao();
     @Override
     public List<Major> getAllMajorByCollegeId(Integer collegeId) {
-        //TODO
-
-        Major major = new Major();
-        major.setId(1);
-        major.setName("test");
-        return Lists.newArrayList(major);
+        //根据学院号获取所有专业
+        return majorDao.listAll(collegeId);
     }
 }

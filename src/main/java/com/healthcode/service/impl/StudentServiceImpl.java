@@ -3,6 +3,7 @@ package com.healthcode.service.impl;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.StudentDailyCardDao;
 import com.healthcode.dao.StudentDao;
+import com.healthcode.domain.Clazz;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.Student;
 import com.healthcode.domain.StudentDailyCard;
@@ -12,9 +13,6 @@ import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -49,32 +47,51 @@ public class StudentServiceImpl implements IStudentService {
             @Nullable Integer clazzId,
             @Nullable Integer majorId,
             @Nullable Integer collegeId) {
-        //TODO
-
         StudentDailyCardStatistic statistic = new StudentDailyCardStatistic();
-        statistic.setTotalStudentCount(100);
-        statistic.setGreenCodeStudentCount(60);
-        statistic.setYellowCodeStudentCount(30);
-        statistic.setRedCodeStudentCount(5);
-        List<StudentDailyCardVo> list = new ArrayList<>();
-        StudentDailyCardVo vo = new StudentDailyCardVo();
-        vo.setStudentId("0001");
-        vo.setName("test");
-        vo.setClassName("test");
-        vo.setMajorName("test");
-        vo.setCollegeName("test");
-        vo.setType(HealthCodeType.GREEN);
-        for (int i = 0; i < 100; i++) {
-            list.add(vo);
+        List<Student> students = studentDao.listAll();
+        List<StudentDailyCardVo> studentDailyCardVos = new ArrayList<>();
+
+        int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
+        for (Student student:students) {
+            StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
+            StudentDailyCardVo studentDailyCardVo = new StudentDailyCardVo();
+
+            studentDailyCardVo.setStudentId(student.getId());
+            studentDailyCardVo.setName(student.getName());
+            Clazz clazz = student.getClazz();
+            studentDailyCardVo.setClassName(clazz.getName());
+            studentDailyCardVo.setMajorName(clazz.getMajor().getName());
+            studentDailyCardVo.setType(!Objects.isNull(studentDailyCard) ? studentDailyCard.getResult() : null);
+
+            if(!Objects.isNull(studentDailyCard)){
+                switch (studentDailyCard.getResult()){
+                    case RED:
+                        ++redCodeCount;
+                        break;
+                    case GREEN:
+                        ++greenCodeCount;
+                        break;
+                    case YELLOW:
+                        ++yellowCodeCount;
+                }
+            }
+            studentDailyCardVos.add(studentDailyCardVo);
         }
-        statistic.setDailyCardList(list);
+
+        statistic.setTotalStudentCount(students.size());
+        statistic.setGreenCodeStudentCount(greenCodeCount);
+        statistic.setYellowCodeStudentCount(yellowCodeCount);
+        statistic.setRedCodeStudentCount(redCodeCount);
+        statistic.setDailyCardList(studentDailyCardVos);
+
         return statistic;
     }
 
     @Override
     public void insertStudent(String id, String name, Integer classId, String idCard) {
-        //TODO
-        System.out.println(id + name + classId + idCard);
+        //添加学生
+        //密码默认为身份证后六位
+        studentDao.insert(id, name, idCard.substring(idCard.length() - 6), classId, idCard);
     }
 
     @Override

@@ -29,6 +29,10 @@ public class Admin {
             this.desc = desc;
         }
 
+        public String getDesc() {
+            return desc;
+        }
+
         public static AdminRole of(String value) {
             for (AdminRole role : values()) {
                 if (role.desc.equals(value)) {

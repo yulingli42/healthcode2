@@ -3,7 +3,6 @@ package com.healthcode.servlet.teacher;
 import com.healthcode.domain.Teacher;
 import com.healthcode.service.impl.TeacherServiceImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

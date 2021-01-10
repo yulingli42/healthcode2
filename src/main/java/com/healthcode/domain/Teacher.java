@@ -4,17 +4,17 @@ package com.healthcode.domain;
  * @author qianlei
  */
 public class Teacher {
-    private Integer id;
+    private String id;
     private String name;
     private String password;
     private String idCard;
     private College college;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

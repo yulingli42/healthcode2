@@ -1,6 +1,7 @@
 package com.healthcode.dao;
 
 import com.google.common.collect.Lists;
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.College;
 
@@ -31,7 +32,8 @@ public class CollegeDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("获取全部学院失败");
         }
     }
 
@@ -44,13 +46,14 @@ public class CollegeDao {
                 return statement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("添加学院失败");
         }
     }
 
     public College getById(Integer id) {
         try (Connection connection = DatasourceConfig.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("" +
+            try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT name FROM college WHERE id = ?")) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -65,7 +68,8 @@ public class CollegeDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("获取学院失败");
         }
     }
 }

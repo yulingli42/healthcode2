@@ -1,13 +1,21 @@
 package com.healthcode.dao;
 
+import com.google.common.collect.Lists;
+import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.Clazz;
+import com.healthcode.domain.College;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * @author zhenghong
+ */
 public class ClazzDao {
     private final MajorDao majorDao = new MajorDao();
 
@@ -29,7 +37,30 @@ public class ClazzDao {
                 }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new HealthCodeException("获取班级失败");
+        }
+    }
+
+    public List<Clazz> listAll(Integer majorId){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM class WHERE profession_id = ?")) {
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    ArrayList<Clazz> list = Lists.newArrayList();
+                    while (resultSet.next()) {
+                        Clazz clazz = new Clazz();
+                        clazz.setId(resultSet.getInt("id"));
+                        clazz.setName(resultSet.getString("name"));
+                        clazz.setMajor(majorDao.getById(majorId));
+                        list.add(clazz);
+                    }
+                    return list;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取全部班级失败");
         }
     }
 }

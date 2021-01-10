@@ -1,25 +1,22 @@
 package com.healthcode.service.impl;
 
-import com.google.common.collect.Lists;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.TeacherDailyCardDao;
 import com.healthcode.dao.TeacherDao;
-import com.healthcode.domain.HealthCodeType;
-import com.healthcode.domain.StudentDailyCard;
-import com.healthcode.domain.Teacher;
-import com.healthcode.domain.TeacherDailyCard;
+import com.healthcode.domain.*;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.ITeacherService;
 import com.healthcode.vo.TeacherDailyCardStatistic;
 import com.healthcode.vo.TeacherDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author zhenghong
+ */
 public class TeacherServiceImpl implements ITeacherService {
     private final TeacherDao teacherDao = new TeacherDao();
     private final TeacherDailyCardDao teacherDailyCardDao = new TeacherDailyCardDao();
@@ -52,33 +49,50 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public TeacherDailyCardStatistic getTeacherStatistic(@Nullable Integer collegeId) {
-        // TODO
         TeacherDailyCardStatistic statistic = new TeacherDailyCardStatistic();
-        statistic.setTotalTeacherCount(100);
-        statistic.setGreenCodeTeacherCount(80);
-        statistic.setYellowCodeTeacherCount(10);
-        statistic.setRedCodeTeacherCount(5);
-        ArrayList<TeacherDailyCardVo> list = Lists.newArrayList();
-        TeacherDailyCardVo cardVo = new TeacherDailyCardVo();
-        cardVo.setName("test");
-        cardVo.setClassName("test");
-        cardVo.setType(HealthCodeType.GREEN);
-        cardVo.setTeacherId(1);
-        for (int i = 0; i < 100; i++) {
-            list.add(cardVo);
+        List<Teacher> teachers = teacherDao.listAll();
+        List<TeacherDailyCardVo> teacherDailyCardVos = new ArrayList<>();
+
+        int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
+        for (Teacher teacher:teachers) {
+            TeacherDailyCard teacherDailyCard = teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId());
+            TeacherDailyCardVo teacherDailyCardVo = new TeacherDailyCardVo();
+
+            teacherDailyCardVo.setTeacherId(teacher.getId());
+            teacherDailyCardVo.setName(teacher.getName());
+            College college = teacher.getCollege();
+            teacherDailyCardVo.setCollegeName(college.getName());
+            teacherDailyCardVo.setType(!Objects.isNull(teacherDailyCard) ? teacherDailyCard.getResult() : null);
+
+            if(!Objects.isNull(teacherDailyCard)){
+                switch (teacherDailyCard.getResult()){
+                    case RED:
+                        ++redCodeCount;
+                        break;
+                    case GREEN:
+                        ++greenCodeCount;
+                        break;
+                    case YELLOW:
+                        ++yellowCodeCount;
+                }
+            }
+            teacherDailyCardVos.add(teacherDailyCardVo);
         }
-        statistic.setDailyCardList(list);
+
+        statistic.setTotalTeacherCount(teachers.size());
+        statistic.setGreenCodeTeacherCount(greenCodeCount);
+        statistic.setYellowCodeTeacherCount(yellowCodeCount);
+        statistic.setRedCodeTeacherCount(redCodeCount);
+        statistic.setDailyCardList(teacherDailyCardVos);
 
         return statistic;
     }
 
     @Override
     public void insertTeacher(String teacherId, String name, String idCard, Integer collegeId) {
-        //TODO
-        System.out.println(teacherId);
-        System.out.println(name);
-        System.out.println(idCard);
-        System.out.println(collegeId);
+        //添加教师
+        //密码默认为身份证后六位
+        teacherDao.insert(teacherId, name, idCard.substring(idCard.length() - 6), collegeId, idCard);
     }
 
     @Override

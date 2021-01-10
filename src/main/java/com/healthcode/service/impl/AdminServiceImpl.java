@@ -8,7 +8,7 @@ import com.healthcode.service.IAdminService;
 import java.util.Objects;
 
 /**
- * @author qianlei
+ * @author qianlei zhenghong
  */
 public class AdminServiceImpl implements IAdminService {
     private final AdminDao adminDao = new AdminDao();
@@ -20,5 +20,15 @@ public class AdminServiceImpl implements IAdminService {
             throw new HealthCodeException("用户名或密码错误");
         }
         return admin;
+    }
+
+    @Override
+    public void insertAdmin(String username, String password, Admin.AdminRole adminRole, int collegeId) {
+        adminDao.insert(username, password, adminRole, collegeId);
+    }
+
+    @Override
+    public void alterAdmin(String username, String newUsername, String password, Admin.AdminRole adminRole, int collegeId) {
+        adminDao.alter(username, newUsername, password, adminRole, collegeId);
     }
 }

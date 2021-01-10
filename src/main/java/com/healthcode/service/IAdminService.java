@@ -3,7 +3,7 @@ package com.healthcode.service;
 import com.healthcode.domain.Admin;
 
 /**
- * @author qianlei
+ * @author qianlei zhenghong
  */
 public interface IAdminService {
     /**
@@ -14,4 +14,19 @@ public interface IAdminService {
      * @return 登陆成功返回管理员信息，否则返回 null
      */
     Admin login(String username, String password);
+
+    /**
+     * 上级管理员添加次级管理员信息
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @param adminRole 管理员权限类型
+     * @param collegeId 学院号，除院级管理员外为null
+     */
+    void insertAdmin(String username, String password, Admin.AdminRole adminRole, int collegeId);
+
+    /**
+     * 修改管理员信息
+     */
+    void alterAdmin(String username, String newUsername, String password, Admin.AdminRole adminRole, int collegeId);
 }
