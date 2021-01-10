@@ -6,14 +6,16 @@ import com.healthcode.dao.StudentDao;
 import com.healthcode.domain.Clazz;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.Student;
-import com.healthcode.domain.StudentDailyCard;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.IStudentService;
+import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -53,7 +55,12 @@ public class StudentServiceImpl implements IStudentService {
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
         for (Student student:students) {
-            StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
+            //当天的打卡健康码情况
+            //StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
+            //实际上的健康码情况
+            List<HealthCodeType> healthCodeTypeList = studentDailyCardDao.judgeHealthCodeTypeByPast(student.getId());
+            HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
+
             StudentDailyCardVo studentDailyCardVo = new StudentDailyCardVo();
 
             studentDailyCardVo.setStudentId(student.getId());
@@ -61,19 +68,30 @@ public class StudentServiceImpl implements IStudentService {
             Clazz clazz = student.getClazz();
             studentDailyCardVo.setClassName(clazz.getName());
             studentDailyCardVo.setMajorName(clazz.getMajor().getName());
-            studentDailyCardVo.setType(!Objects.isNull(studentDailyCard) ? studentDailyCard.getResult() : null);
+            //studentDailyCardVo.setType(!Objects.isNull(studentDailyCard) ? studentDailyCard.getResult() : null);
+            studentDailyCardVo.setType(healthCodeType);
 
-            if(!Objects.isNull(studentDailyCard)){
-                switch (studentDailyCard.getResult()){
-                    case RED:
-                        ++redCodeCount;
-                        break;
-                    case GREEN:
-                        ++greenCodeCount;
-                        break;
-                    case YELLOW:
-                        ++yellowCodeCount;
-                }
+//            if(!Objects.isNull(studentDailyCard)){
+//                switch (studentDailyCard.getResult()){
+//                    case RED:
+//                        ++redCodeCount;
+//                        break;
+//                    case GREEN:
+//                        ++greenCodeCount;
+//                        break;
+//                    case YELLOW:
+//                        ++yellowCodeCount;
+//                }
+//            }
+            switch (healthCodeType){
+                case RED:
+                    ++redCodeCount;
+                    break;
+                case GREEN:
+                    ++greenCodeCount;
+                    break;
+                case YELLOW:
+                    ++yellowCodeCount;
             }
             studentDailyCardVos.add(studentDailyCardVo);
         }
@@ -97,10 +115,11 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public byte[] showHealthCode(Student student) {
         //返回学生二维码
-        StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
-        String content = "姓名:" + student.getName() + "\n学号:" + student.getId() + "\n健康码类型:" + studentDailyCard.getResult() + "\n创建时间:" + studentDailyCard.getCreateTime();
+        List<HealthCodeType> healthCodeTypeList = studentDailyCardDao.judgeHealthCodeTypeByPast(student.getId());
+        HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
+        String content = "姓名:" + student.getName() + "\n学号:" + student.getId() + "\n健康码类型:" + healthCodeType + "\n创建时间:" + new Timestamp(new Date().getTime());
         try {
-            return qrCodeService.getHealthCodeBytes(studentDailyCard.getResult(), content, null, true);
+            return qrCodeService.getHealthCodeBytes(healthCodeType, content, null, true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -109,7 +128,7 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public void submitDailyCard(Student student, CurrentDailyCard card) {
-        //判断健康码类型
+        //判断当前健康状态
         HealthCodeType healthCodeType = qrCodeService.judgeQRCodeType(card);
         //提交至数据库
         studentDao.submitDailyCard(student, healthCodeType);

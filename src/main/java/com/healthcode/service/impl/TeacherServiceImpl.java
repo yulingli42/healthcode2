@@ -6,11 +6,14 @@ import com.healthcode.dao.TeacherDao;
 import com.healthcode.domain.*;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.ITeacherService;
+import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 import com.healthcode.vo.TeacherDailyCardStatistic;
 import com.healthcode.vo.TeacherDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,26 +58,42 @@ public class TeacherServiceImpl implements ITeacherService {
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
         for (Teacher teacher:teachers) {
-            TeacherDailyCard teacherDailyCard = teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId());
+            //当天的打卡健康码情况
+            //TeacherDailyCard teacherDailyCard = teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId());
+            //实际上的健康码情况
+            List<HealthCodeType> healthCodeTypeList = teacherDailyCardDao.judgeHealthCodeTypeByPast(teacher.getId());
+            HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
+
             TeacherDailyCardVo teacherDailyCardVo = new TeacherDailyCardVo();
 
             teacherDailyCardVo.setTeacherId(teacher.getId());
             teacherDailyCardVo.setName(teacher.getName());
             College college = teacher.getCollege();
             teacherDailyCardVo.setCollegeName(college.getName());
-            teacherDailyCardVo.setType(!Objects.isNull(teacherDailyCard) ? teacherDailyCard.getResult() : null);
+            //teacherDailyCardVo.setType(!Objects.isNull(teacherDailyCard) ? teacherDailyCard.getResult() : null);
+            teacherDailyCardVo.setType(healthCodeType);
 
-            if(!Objects.isNull(teacherDailyCard)){
-                switch (teacherDailyCard.getResult()){
-                    case RED:
-                        ++redCodeCount;
-                        break;
-                    case GREEN:
-                        ++greenCodeCount;
-                        break;
-                    case YELLOW:
-                        ++yellowCodeCount;
-                }
+//            if(!Objects.isNull(teacherDailyCard)){
+//                switch (teacherDailyCard.getResult()){
+//                    case RED:
+//                        ++redCodeCount;
+//                        break;
+//                    case GREEN:
+//                        ++greenCodeCount;
+//                        break;
+//                    case YELLOW:
+//                        ++yellowCodeCount;
+//                }
+//            }
+            switch (healthCodeType){
+                case RED:
+                    ++redCodeCount;
+                    break;
+                case GREEN:
+                    ++greenCodeCount;
+                    break;
+                case YELLOW:
+                    ++yellowCodeCount;
             }
             teacherDailyCardVos.add(teacherDailyCardVo);
         }
@@ -97,11 +116,12 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public byte[] showHealthCode(Teacher teacher) {
-        //返回学生二维码
-        TeacherDailyCard teacherDailyCard = teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId());
-        String content = "姓名:" + teacher.getName() + "\n工号:" + teacher.getId() + "\n健康码类型:" + teacherDailyCard.getResult() + "\n创建时间:" + teacherDailyCard.getCreateTime();
+        //返回教师健康码
+        List<HealthCodeType> healthCodeTypeList = teacherDailyCardDao.judgeHealthCodeTypeByPast(teacher.getId());
+        HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
+        String content = "姓名:" + teacher.getName() + "\n工号:" + teacher.getId() + "\n健康码类型:" + healthCodeType + "\n创建时间:" + new Timestamp(new Date().getTime());
         try {
-            return qrCodeService.getHealthCodeBytes(teacherDailyCard.getResult(), content, null, true);
+            return qrCodeService.getHealthCodeBytes(healthCodeType, content, null, true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
