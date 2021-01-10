@@ -49,28 +49,17 @@ public class LoginServlet extends HttpServlet {
             case "student":
                 Student student = studentService.login(username, password);
                 request.getSession().setAttribute(LOGIN_USER_SESSION, student);
-                user = new LoginUser("student", student.getName());
+                user = new LoginUser(student);
                 break;
             case "teacher":
                 Teacher teacher = teacherService.login(username, password);
                 request.getSession().setAttribute(LOGIN_USER_SESSION, teacher);
-                user = new LoginUser("teacher", teacher.getName());
+                user = new LoginUser(teacher);
                 break;
             case "admin":
                 Admin admin = adminService.login(username, password);
                 request.getSession().setAttribute(LOGIN_USER_SESSION, admin);
-                switch (admin.getRole()) {
-                    case COLLEGE_ADMIN:
-                        user = new LoginUser("collegeAdmin", admin.getUsername());
-                        break;
-                    case SYSTEM_ADMIN:
-                        user = new LoginUser("systemAdmin", admin.getUsername());
-                        break;
-                    case SCHOOL_ADMIN:
-                        user = new LoginUser("schoolAdmin", admin.getUsername());
-                        break;
-                    default:
-                }
+                user = new LoginUser(admin);
                 break;
             default:
                 throw new HealthCodeException("不支持的用户类型");

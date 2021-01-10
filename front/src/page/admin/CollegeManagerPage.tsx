@@ -1,4 +1,4 @@
-import {Table} from "antd";
+import {Button, PageHeader, Table} from "antd";
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {College} from "../../entity/College";
@@ -30,6 +30,11 @@ const CollegeManagerPage = () => {
 
     return (
         <div>
+            <PageHeader
+                ghost={false}
+                title="学院管理"
+                extra={<Button type={"primary"}>添加新学院</Button>}>
+            </PageHeader>
             <Table columns={columns} dataSource={data}/>
         </div>
     )

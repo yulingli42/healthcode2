@@ -1,9 +1,10 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../store";
-import {Button} from "antd";
+import {Affix} from "antd";
 import instance from "../axiosInstance";
 import {setUser} from "../reducer/login/actionCreate";
+import {LogoutWrapper, NameWrapper, TopWrapper} from "./style";
 
 const Header = () => {
     const loginUser = useSelector((root: RootState) => root.login)
@@ -16,10 +17,13 @@ const Header = () => {
         dispatch(setUser(null))
     }
 
-    return <>
-        <Button onClick={logout} type={"primary"}>登出</Button>
-        <span>{loginUser.name}</span>
-    </>
+    return <Affix>
+        <TopWrapper>
+            {"name" in loginUser.user && <NameWrapper>{loginUser.user.name}</NameWrapper>}
+            {"username" in loginUser.user && <NameWrapper>{loginUser.user.username}</NameWrapper>}
+            <LogoutWrapper onClick={logout} type={"primary"}>登出</LogoutWrapper>
+        </TopWrapper>
+    </Affix>
 }
 
 export default Header;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Table} from "antd";
+import {Button, PageHeader, Table} from "antd";
 import {Clazz} from "../../entity/Clazz";
 import instance from "../../axiosInstance";
 import {Link, useParams} from "react-router-dom";
@@ -21,6 +21,11 @@ const ClassManagerPage = () => {
     ]
 
     return <div>
+        <PageHeader
+            ghost={false}
+            title="班级管理"
+            extra={<Button type={"primary"}>添加新班级</Button>}>
+        </PageHeader>
         <Table columns={columns} dataSource={data}/>
     </div>
 }

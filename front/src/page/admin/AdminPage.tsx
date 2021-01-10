@@ -8,7 +8,7 @@ import TeacherManagerPage from "./TeacherManagerPage";
 import CollegeManagerPage from "./CollegeManagerPage";
 import {GoldOutlined, LogoutOutlined, TeamOutlined, UserOutlined} from '@ant-design/icons'
 import ClassManagerPage from "./ClassManagerPage";
-import MajorManagerPage from "./MajorManagerPage";
+import MajorManagerPage from "./MajorManagerPageProps";
 import instance from "../../axiosInstance";
 import {setUser} from "../../reducer/login/actionCreate";
 

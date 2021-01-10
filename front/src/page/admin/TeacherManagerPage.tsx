@@ -6,6 +6,7 @@ import {TeacherDailyCardStatistic} from "../../entity/TeacherDailyCardStatistic"
 import InsertTeacherModal from "./InsertTeacherModal";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store";
+import {Admin, AdminRole} from "../../entity/Admin";
 
 const TeacherManagerPage = () => {
     const [visible, setVisible] = useState(false)
@@ -35,6 +36,8 @@ const TeacherManagerPage = () => {
             .then(response => setData(response.data))
     }, [])
 
+    const admin = loginUser.user as Admin
+
     return (
         <div>
             <PageHeader
@@ -42,7 +45,7 @@ const TeacherManagerPage = () => {
                 ghost={false}
                 title="教师管理"
                 extra={
-                    loginUser.type === "systemAdmin" &&
+                    admin.role === AdminRole.SYSTEM_ADMIN &&
                     <Button onClick={() => setVisible(true)} type={"primary"}>添加新教师</Button>
                 }>
                 <Descriptions>

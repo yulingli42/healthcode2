@@ -6,6 +6,7 @@ import instance from "../../axiosInstance";
 import Header from "../../component/Header";
 import SubmitDailyCardForm from "../../component/SubmitDailyCardForm";
 import {Skeleton} from "antd";
+import {Student} from "../../entity/Student";
 
 const StudentPage = () => {
     const loginUser = useSelector((state: RootState) => state.login)
@@ -46,11 +47,14 @@ const StudentPage = () => {
             currentSymptoms
         }).then(() => setSubmitDailyCard(true))
     }
-    return <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
+    return <div>
         <Header/>
-        {isLoading && <Skeleton active={true}/>}
-        {!isLoading && isSubmitDailyCard && <img src={"/student/qrcode"} alt={"健康码"}/>}
-        {!isLoading && !isSubmitDailyCard && <SubmitDailyCardForm onFinish={onFinish}/>}
+        <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
+            {isLoading && <Skeleton active={true}/>}
+            {!isLoading && isSubmitDailyCard && <img src={"/student/qrcode"} alt={"健康码"}/>}
+            {!isLoading && !isSubmitDailyCard &&
+            <SubmitDailyCardForm onFinish={onFinish} isStudent={true} user={loginUser.user as Student}/>}
+        </div>
     </div>
 }
 

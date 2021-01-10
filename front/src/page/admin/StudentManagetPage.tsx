@@ -7,6 +7,7 @@ import {useParams} from "react-router-dom";
 import InsertStudentModal from "./InsertStudentModal";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store";
+import {Admin, AdminRole} from "../../entity/Admin";
 
 const StudentManagerPage = () => {
     const [modalVisible, setModalVisible] = useState(false)
@@ -41,6 +42,7 @@ const StudentManagerPage = () => {
         }).then(response => setData(response.data))
     }, [collegeId, majorId, classId])
 
+    const admin = loginUser.user as Admin
 
     return (
         <div>
@@ -49,7 +51,7 @@ const StudentManagerPage = () => {
                 ghost={false}
                 title="学生管理"
                 extra={
-                    loginUser.type === "systemAdmin" &&
+                    admin.role === AdminRole.SYSTEM_ADMIN &&
                     <Button onClick={() => setModalVisible(true)} type={"primary"}>添加新学生</Button>
                 }>
                 <Descriptions>

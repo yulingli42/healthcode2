@@ -1,44 +1,45 @@
 package com.healthcode.vo;
 
+import com.healthcode.common.HealthCodeException;
+import com.healthcode.domain.Admin;
+import com.healthcode.domain.Student;
+import com.healthcode.domain.Teacher;
+
 /**
  * @author qianlei
  */
 public class LoginUser {
-    private Boolean login;
-    private String type;
-    private String name;
+    private final Boolean login;
+    private final String type;
+    private final Object user;
 
-    public LoginUser() {
-        login = false;
-    }
-
-    public LoginUser(String type, String name) {
-        login = true;
-        this.type = type;
-        this.name = name;
+    public LoginUser(Object user) {
+        login = user != null;
+        if (user == null) {
+            type = "";
+            this.user = null;
+            return;
+        } else if (user instanceof Admin) {
+            type = "admin";
+        } else if (user instanceof Teacher) {
+            type = "teacher";
+        } else if (user instanceof Student) {
+            type = "student";
+        } else {
+            throw new HealthCodeException("未知类型");
+        }
+        this.user = user;
     }
 
     public Boolean getLogin() {
         return login;
     }
 
-    public void setLogin(Boolean login) {
-        this.login = login;
+    public Object getUser() {
+        return user;
     }
 
     public String getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

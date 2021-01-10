@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Table} from "antd";
+import {Button, PageHeader, Table} from "antd";
 import {Link, useParams} from "react-router-dom";
 import {Major} from "../../entity/Major";
 import instance from "../../axiosInstance";
 
-const MajorManagerPage = () => {
+const MajorManagerPage
+    = () => {
     const [data, setData] = useState<Major[]>([])
     const {collegeId} = useParams<{ collegeId: string }>();
 
@@ -27,6 +28,11 @@ const MajorManagerPage = () => {
 
     return (
         <div>
+            <PageHeader
+                ghost={false}
+                title="专业管理"
+                extra={<Button type={"primary"}>添加新专业</Button>}>
+            </PageHeader>
             <Table columns={columns} dataSource={data}/>
         </div>
     )
