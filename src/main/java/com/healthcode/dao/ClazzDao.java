@@ -63,4 +63,23 @@ public class ClazzDao {
             throw new HealthCodeException("获取全部班级失败");
         }
     }
+
+    public Integer getClassIdByName(String className) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id FROM class WHERE name = ?")) {
+                statement.setString(1, className);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("id");
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取班级号失败");
+        }
+    }
 }

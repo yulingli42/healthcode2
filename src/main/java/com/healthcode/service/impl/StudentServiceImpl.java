@@ -1,19 +1,24 @@
 package com.healthcode.service.impl;
 
+import com.alibaba.excel.metadata.BaseRowModel;
 import com.healthcode.common.HealthCodeException;
+import com.healthcode.dao.ClazzDao;
 import com.healthcode.dao.StudentDailyCardDao;
 import com.healthcode.dao.StudentDao;
 import com.healthcode.domain.Clazz;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.Student;
+import com.healthcode.domain.StudentDailyCard;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.IStudentService;
+import com.healthcode.utils.ExcelUtil;
 import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +30,7 @@ import java.util.Objects;
  */
 public class StudentServiceImpl implements IStudentService {
     private final StudentDao studentDao = new StudentDao();
+    private final ClazzDao clazzDao = new ClazzDao();
     private final StudentDailyCardDao studentDailyCardDao = new StudentDailyCardDao();
 
     private final QRCodeServiceImpl qrCodeService = new QRCodeServiceImpl();
@@ -56,13 +62,16 @@ public class StudentServiceImpl implements IStudentService {
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
         for (Student student:students) {
+
+            StudentDailyCardVo studentDailyCardVo = new StudentDailyCardVo();
+
             //当天的打卡健康码情况
-            //StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
+            StudentDailyCard studentDailyCard = studentDailyCardDao.getToDayCardByStudentID(student.getId());
+            studentDailyCardVo.setHadSubmitDailyCard(studentDailyCard != null);
+
             //实际上的健康码情况
             List<HealthCodeType> healthCodeTypeList = studentDailyCardDao.judgeHealthCodeTypeByPast(student.getId());
             HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
-
-            StudentDailyCardVo studentDailyCardVo = new StudentDailyCardVo();
 
             studentDailyCardVo.setStudentId(student.getId());
             studentDailyCardVo.setName(student.getName());
@@ -126,6 +135,30 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public void addStudentFromExcel(Part filePart) {
-        //TODO
+        //将Excel文件中的学生数据导入数据库
+        try {
+            List<Object> studentData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
+
+            for(int i = 1;i < studentData.size();i++){
+                @SuppressWarnings("unchecked") ArrayList<String> list = (ArrayList<String>)studentData.get(i);
+                System.out.println(list);
+                String id = list.get(0);
+                String name = list.get(1);
+                String className = list.get(2);
+                String idCard = list.get(3);
+
+                if(id == null || name == null || className == null || idCard == null){
+                    continue;
+                }
+                //获取教室号
+                Integer classId = clazzDao.getClassIdByName(className);
+                //插入学生信息
+                insertStudent(id, name, classId, idCard);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new HealthCodeException("导入学生Excel失败");
+        }
     }
 }

@@ -1,19 +1,23 @@
 package com.healthcode.service.impl;
 
 import com.healthcode.common.HealthCodeException;
+import com.healthcode.dao.CollegeDao;
 import com.healthcode.dao.TeacherDailyCardDao;
 import com.healthcode.dao.TeacherDao;
 import com.healthcode.domain.College;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.Teacher;
+import com.healthcode.domain.TeacherDailyCard;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.ITeacherService;
+import com.healthcode.utils.ExcelUtil;
 import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 import com.healthcode.vo.TeacherDailyCardStatistic;
 import com.healthcode.vo.TeacherDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +29,7 @@ import java.util.Objects;
  */
 public class TeacherServiceImpl implements ITeacherService {
     private final TeacherDao teacherDao = new TeacherDao();
+    private final CollegeDao collegeDao = new CollegeDao();
     private final TeacherDailyCardDao teacherDailyCardDao = new TeacherDailyCardDao();
 
     private final QRCodeServiceImpl qrCodeService = new QRCodeServiceImpl();
@@ -61,19 +66,20 @@ public class TeacherServiceImpl implements ITeacherService {
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
         for (Teacher teacher:teachers) {
+            TeacherDailyCardVo teacherDailyCardVo = new TeacherDailyCardVo();
+
             //当天的打卡健康码情况
-            //TeacherDailyCard teacherDailyCard = teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId());
+            TeacherDailyCard teacherDailyCard = teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId());
+            teacherDailyCardVo.setHadSubmitDailyCard(teacherDailyCard != null);
+
             //实际上的健康码情况
             List<HealthCodeType> healthCodeTypeList = teacherDailyCardDao.judgeHealthCodeTypeByPast(teacher.getId());
             HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
-
-            TeacherDailyCardVo teacherDailyCardVo = new TeacherDailyCardVo();
 
             teacherDailyCardVo.setTeacherId(teacher.getId());
             teacherDailyCardVo.setName(teacher.getName());
             College college = teacher.getCollege();
             teacherDailyCardVo.setCollegeName(college.getName());
-            //teacherDailyCardVo.setType(!Objects.isNull(teacherDailyCard) ? teacherDailyCard.getResult() : null);
             teacherDailyCardVo.setType(healthCodeType);
 
 //            if(!Objects.isNull(teacherDailyCard)){
@@ -133,6 +139,28 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void addTeacherFromExcel(Part filePart) {
-        //TODO
+        //将Excel文件中的教师数据导入数据库
+        try {
+            List<Object> teacherData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
+
+            for(int i = 1;i < teacherData.size();i++){
+                @SuppressWarnings("unchecked") ArrayList<String> list = (ArrayList<String>)teacherData.get(i);
+                System.out.println(list);
+                String id = list.get(0);
+                String name = list.get(1);
+                String collegeName = list.get(2);
+                String idCard = list.get(3);
+
+                if(id == null || name == null || collegeName == null || idCard == null){
+                    continue;
+                }
+                //获取教室号
+                Integer collegeId = collegeDao.getCollegeIdByName(collegeName);
+                //插入教师信息
+                insertTeacher(id, name, idCard, collegeId);
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

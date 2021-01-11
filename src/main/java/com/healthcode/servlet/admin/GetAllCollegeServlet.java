@@ -9,7 +9,6 @@ import com.healthcode.service.ICollegeService;
 import com.healthcode.service.impl.CollegeServiceImpl;
 import com.healthcode.utils.JsonUtil;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +27,7 @@ public class GetAllCollegeServlet extends HttpServlet {
     private final ICollegeService collegeService = new CollegeServiceImpl();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Admin admin = (Admin) req.getSession().getAttribute(LOGIN_USER_SESSION);
         List<College> colleges;
         if (admin.getRole() == Admin.AdminRole.COLLEGE_ADMIN) {

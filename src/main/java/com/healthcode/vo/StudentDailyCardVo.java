@@ -11,6 +11,7 @@ public class StudentDailyCardVo {
     private String className;
     private String majorName;
     private String collegeName;
+    private Boolean hadSubmitDailyCard;
     private HealthCodeType type;
 
     public String getStudentId() {
@@ -27,6 +28,14 @@ public class StudentDailyCardVo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getHadSubmitDailyCard() {
+        return hadSubmitDailyCard;
+    }
+
+    public void setHadSubmitDailyCard(Boolean hadSubmitDailyCard) {
+        this.hadSubmitDailyCard = hadSubmitDailyCard;
     }
 
     public String getClassName() {

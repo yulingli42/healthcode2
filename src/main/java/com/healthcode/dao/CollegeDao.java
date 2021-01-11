@@ -72,4 +72,23 @@ public class CollegeDao {
             throw new HealthCodeException("获取学院失败");
         }
     }
+
+    public Integer getCollegeIdByName(String collegeName) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT id FROM college WHERE name = ?")) {
+                statement.setString(1, collegeName);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("id");
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取学院号失败");
+        }
+    }
 }

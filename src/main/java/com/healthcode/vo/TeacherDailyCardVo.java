@@ -9,6 +9,16 @@ public class TeacherDailyCardVo {
     private String teacherId;
     private String name;
     private String collegeName;
+    private Boolean hadSubmitDailyCard;
+
+    public Boolean getHadSubmitDailyCard() {
+        return hadSubmitDailyCard;
+    }
+
+    public void setHadSubmitDailyCard(Boolean hadSubmitDailyCard) {
+        this.hadSubmitDailyCard = hadSubmitDailyCard;
+    }
+
     private HealthCodeType type;
 
     public String getName() {

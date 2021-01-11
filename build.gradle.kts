@@ -24,6 +24,11 @@ dependencies {
     implementation("com.google.zxing", "core", "3.4.1")
     implementation("com.google.zxing", "javase", "3.4.1")
 
+    implementation("org.apache.poi", "poi", "3.9")
+    implementation("org.apache.poi", "poi-excelant", "3.9")
+    implementation("org.apache.poi", "poi-scratchpad", "3.9")
+    implementation("com.alibaba", "easyexcel", "1.1.2-beat1")
+
     implementation("cn.hutool", "hutool-all", "5.5.2")
     implementation("com.google.guava", "guava", "30.1-jre")
     implementation("org.apache.commons", "commons-collections4", "4.4")

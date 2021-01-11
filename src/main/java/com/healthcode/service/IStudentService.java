@@ -66,8 +66,9 @@ public interface IStudentService {
      * @return 健康码byte数组
      */
     byte[] showHealthCode(Student student);
+
     /**
-     * 从 excel 表格中添加教师
+     * 从 excel 表格中添加学生
      *
      * @param filePart 上传的文件
      */
