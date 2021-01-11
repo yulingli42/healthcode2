@@ -68,21 +68,9 @@ public class StudentServiceImpl implements IStudentService {
             Clazz clazz = student.getClazz();
             studentDailyCardVo.setClassName(clazz.getName());
             studentDailyCardVo.setMajorName(clazz.getMajor().getName());
-            //studentDailyCardVo.setType(!Objects.isNull(studentDailyCard) ? studentDailyCard.getResult() : null);
+            studentDailyCardVo.setCollegeName(clazz.getMajor().getCollege().getName());
             studentDailyCardVo.setType(healthCodeType);
 
-//            if(!Objects.isNull(studentDailyCard)){
-//                switch (studentDailyCard.getResult()){
-//                    case RED:
-//                        ++redCodeCount;
-//                        break;
-//                    case GREEN:
-//                        ++greenCodeCount;
-//                        break;
-//                    case YELLOW:
-//                        ++yellowCodeCount;
-//                }
-//            }
             switch (healthCodeType){
                 case RED:
                     ++redCodeCount;
