@@ -3,7 +3,6 @@ package com.healthcode.dao;
 import com.google.common.collect.Lists;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
-import com.healthcode.domain.Clazz;
 import com.healthcode.domain.Major;
 
 import java.sql.Connection;
@@ -46,6 +45,7 @@ public class MajorDao {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM profession WHERE college_id = ?")) {
+                statement.setInt(1, collegeId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     ArrayList<Major> list = Lists.newArrayList();
                     while (resultSet.next()) {

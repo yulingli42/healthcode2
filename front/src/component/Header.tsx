@@ -5,16 +5,17 @@ import {Affix} from "antd";
 import instance from "../axiosInstance";
 import {setUser} from "../reducer/login/actionCreate";
 import {LogoutWrapper, NameWrapper, TopWrapper} from "./style";
+import {useHistory} from "react-router";
 
 const Header = () => {
-    const loginUser = useSelector((root: RootState) => root.login)
+    const loginUser = useSelector((root: RootState) => root.login)!!
     const dispatch = useDispatch()
-    if (loginUser == null || !loginUser.login) {
-        return <></>
-    }
+    const history = useHistory()
+
     const logout = async () => {
         await instance.post("/logout")
         dispatch(setUser(null))
+        history.push("/")
     }
 
     return <Affix>

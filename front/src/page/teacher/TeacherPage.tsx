@@ -7,11 +7,12 @@ import instance from "../../axiosInstance";
 import SubmitDailyCardForm from "../../component/SubmitDailyCardForm";
 import {Skeleton} from "antd";
 import {Teacher} from "../../entity/Teacher";
+import QrcodeImage from "../../component/QRCodeImage";
 
 
 const TeacherPage = () => {
     const [isSubmitDailyCard, setSubmitDailyCard] = useState<Boolean>(false)
-    const loginUser = useSelector((state: RootState) => state.login)
+    const loginUser = useSelector((state: RootState) => state.login)!!
     const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {
@@ -21,8 +22,7 @@ const TeacherPage = () => {
             .finally(() => setLoading(false))
     }, [])
 
-
-    if (loginUser == null || !loginUser.login) {
+    if (!loginUser.login) {
         return <Redirect to={"/"}/>
     }
     if (loginUser.type === "student") {
@@ -51,7 +51,7 @@ const TeacherPage = () => {
         <Header/>
         <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
             {isLoading && <Skeleton active={true}/>}
-            {!isLoading && isSubmitDailyCard && <img src={"/teacher/qrcode"} alt={"健康码"}/>}
+            {!isLoading && isSubmitDailyCard && <QrcodeImage/>}
             {!isLoading && !isSubmitDailyCard &&
             <SubmitDailyCardForm onFinish={onFinish} user={loginUser.user as Teacher} isStudent={false}/>}
         </div>

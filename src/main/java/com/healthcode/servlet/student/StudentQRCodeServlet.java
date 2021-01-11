@@ -1,5 +1,6 @@
 package com.healthcode.servlet.student;
 
+import cn.hutool.http.ContentType;
 import com.healthcode.domain.Student;
 import com.healthcode.service.impl.StudentServiceImpl;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
 
@@ -22,5 +24,7 @@ public class StudentQRCodeServlet extends HttpServlet {
         //显示学生二维码
         Student student = (Student) req.getSession().getAttribute(LOGIN_USER_SESSION);
         resp.getOutputStream().write(studentService.showHealthCode(student));
+        resp.setContentType("image/png");
+        resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));
     }
 }

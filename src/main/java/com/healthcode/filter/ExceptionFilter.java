@@ -28,6 +28,11 @@ public class ExceptionFilter extends HttpFilter {
             map.put("message", e.getMessage());
             res.getOutputStream().write(JsonUtil.writeValue(map));
             res.setStatus(HttpStatus.HTTP_BAD_REQUEST);
+        } catch (Exception e) {
+            Map<Object, Object> map = Maps.newHashMap();
+            map.put("message", "服务器内部错误");
+            res.getOutputStream().write(JsonUtil.writeValue(map));
+            res.setStatus(HttpStatus.HTTP_INTERNAL_ERROR);
         }
     }
 }

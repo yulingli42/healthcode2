@@ -1,5 +1,6 @@
 package com.healthcode.servlet;
 
+import cn.hutool.http.ContentType;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.domain.Admin;
 import com.healthcode.domain.Student;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
@@ -44,7 +46,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("/index.jsp").forward(request, response);
             return;
         }
-        LoginUser user = null;
+        LoginUser user;
         switch (type) {
             case "student":
                 Student student = studentService.login(username, password);
@@ -65,6 +67,6 @@ public class LoginServlet extends HttpServlet {
                 throw new HealthCodeException("不支持的用户类型");
         }
         response.getOutputStream().write(JsonUtil.writeValue(user));
-
+        response.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));
     }
 }

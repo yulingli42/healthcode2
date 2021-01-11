@@ -15,10 +15,10 @@ interface FormProps {
 
 const SubmitDailyCardForm: React.FC<FormProps> = ({onFinish, user, isStudent}) => {
     const finish = (values: any) => {
-        const haveBeenToKeyEpidemicAreas = values.haveBeenToKeyEpidemicAreas != null
-        const haveBeenAbroad = values.haveBeenAbroad != null
-        const isTheExposed = values.isTheExposed != null
-        const isSuspectedCase = values.isSuspectedCase != null
+        const haveBeenToKeyEpidemicAreas = values.haveBeenToKeyEpidemicAreas
+        const haveBeenAbroad = values.haveBeenAbroad
+        const isTheExposed = values.isTheExposed
+        const isSuspectedCase = values.isSuspectedCase
         const currentSymptoms = values.currentSymptoms
         onFinish(haveBeenToKeyEpidemicAreas, haveBeenAbroad, isTheExposed, isSuspectedCase, currentSymptoms)
     }
@@ -82,8 +82,8 @@ const SubmitDailyCardForm: React.FC<FormProps> = ({onFinish, user, isStudent}) =
                 </Form.Item>
                 <Divider/>
                 <Form.Item name="currentSymptoms"
-                           label="身体健康情况"
-                           style={{display: "block"}}>
+                           style={{display: "block"}}
+                           label="身体健康情况">
                     <Checkbox.Group>
                         <Row>
                             <Col span={8}><Checkbox value="发烧">发烧（≥37.3℃）</Checkbox></Col>
@@ -97,10 +97,18 @@ const SubmitDailyCardForm: React.FC<FormProps> = ({onFinish, user, isStudent}) =
                     </Checkbox.Group>
                 </Form.Item>
                 <Divider/>
-                <Form.Item rules={[{required: true, message: '未勾选此项'}]}>
-                    <Radio.Group>
-                        <Radio>本人郑重承诺：填报信息真实，愿意承担相应的法律责任。</Radio>
-                    </Radio.Group>
+                <Form.Item
+                    name={"check"}
+                    rules={[
+                        {required: true, message: '未勾选此项'},
+                        () => ({
+                            validator(_, value) {
+                                return value ? Promise.resolve() : Promise.reject('请勾选此项');
+                            },
+                        })]}>
+                    <Checkbox.Group>
+                        <Checkbox value="true">本人郑重承诺：填报信息真实，愿意承担相应的法律责任。</Checkbox>
+                    </Checkbox.Group>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

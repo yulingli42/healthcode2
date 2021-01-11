@@ -1,5 +1,6 @@
 package com.healthcode.servlet.student;
 
+import cn.hutool.http.ContentType;
 import com.healthcode.domain.Student;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.IStudentService;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
 
@@ -29,5 +31,6 @@ public class StudentSubmitDailyCardServlet extends HttpServlet {
         card.setCurrentSymptoms(req.getParameterValues("currentSymptoms"));
 
         studentService.submitDailyCard(student, card);
+        resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));
     }
 }

@@ -7,9 +7,10 @@ import Header from "../../component/Header";
 import SubmitDailyCardForm from "../../component/SubmitDailyCardForm";
 import {Skeleton} from "antd";
 import {Student} from "../../entity/Student";
+import QrcodeImage from "../../component/QRCodeImage";
 
 const StudentPage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)
+    const loginUser = useSelector((state: RootState) => state.login)!!
 
     const [isSubmitDailyCard, setSubmitDailyCard] = useState<Boolean>(false)
     const [isLoading, setLoading] = useState(true)
@@ -21,7 +22,7 @@ const StudentPage = () => {
             .finally(() => setLoading(false))
     }, [])
 
-    if (loginUser == null || !loginUser.login) {
+    if (!loginUser.login) {
         return <Redirect to={"/"}/>
     }
 
@@ -47,11 +48,12 @@ const StudentPage = () => {
             currentSymptoms
         }).then(() => setSubmitDailyCard(true))
     }
+
     return <div>
         <Header/>
         <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
             {isLoading && <Skeleton active={true}/>}
-            {!isLoading && isSubmitDailyCard && <img src={"/student/qrcode"} alt={"健康码"}/>}
+            {!isLoading && isSubmitDailyCard && <QrcodeImage/>}
             {!isLoading && !isSubmitDailyCard &&
             <SubmitDailyCardForm onFinish={onFinish} isStudent={true} user={loginUser.user as Student}/>}
         </div>

@@ -3,13 +3,20 @@ import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {College} from "../../entity/College";
 import instance from "../../axiosInstance";
+import {Admin, AdminRole} from "../../entity/Admin";
+import {useSelector} from "react-redux";
+import {RootState} from "../../store";
 
 const CollegeManagerPage = () => {
+    const loginUser = useSelector((state: RootState) => state.login)!!
+    const [loading, setLoading] = useState(false)
     const [data, setData] = useState<College[]>([])
 
     useEffect(() => {
+        setLoading(true)
         instance.get<College[]>("/admin/getAllCollege")
             .then((resp) => setData(resp.data))
+            .finally(() => setLoading(false))
     }, [])
 
     const columns = [
@@ -28,14 +35,15 @@ const CollegeManagerPage = () => {
         }
     ]
 
+    const admin = loginUser.user as Admin
     return (
         <div>
             <PageHeader
                 ghost={false}
                 title="学院管理"
-                extra={<Button type={"primary"}>添加新学院</Button>}>
+                extra={admin.role === AdminRole.SYSTEM_ADMIN && <Button type={"primary"}>添加新学院</Button>}>
             </PageHeader>
-            <Table columns={columns} dataSource={data}/>
+            <Table loading={loading} rowKey={"name"} columns={columns} dataSource={data}/>
         </div>
     )
 }

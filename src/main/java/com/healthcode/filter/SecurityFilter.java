@@ -25,10 +25,6 @@ import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
 public class SecurityFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        System.out.println(req.getPathInfo());
-        System.out.println(req.getPathTranslated());
-        System.out.println(req.getContextPath());
-        System.out.println(req.getServletPath());
         Object user = req.getSession().getAttribute(LOGIN_USER_SESSION);
         if (req.getServletPath().startsWith("/admin/")) {
             if (user == null) {

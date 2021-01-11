@@ -1,6 +1,7 @@
 package com.healthcode.servlet.admin;
 
 
+import cn.hutool.http.ContentType;
 import com.google.common.collect.Lists;
 import com.healthcode.domain.Admin;
 import com.healthcode.domain.College;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
@@ -35,5 +37,6 @@ public class GetAllCollegeServlet extends HttpServlet {
             colleges = collegeService.getAllCollege();
         }
         resp.getOutputStream().write(JsonUtil.writeValue(colleges));
+        resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));
     }
 }

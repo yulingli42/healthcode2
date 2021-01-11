@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.Clazz;
-import com.healthcode.domain.College;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -42,10 +41,11 @@ public class ClazzDao {
         }
     }
 
-    public List<Clazz> listAll(Integer majorId){
+    public List<Clazz> listAll(Integer majorId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM class WHERE profession_id = ?")) {
+                statement.setInt(1, majorId);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     ArrayList<Clazz> list = Lists.newArrayList();
                     while (resultSet.next()) {

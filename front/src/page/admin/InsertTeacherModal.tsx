@@ -22,7 +22,7 @@ const InsertTeacherModal: React.FC<ModalProps> = ({visible, setVisible}) => {
     useEffect(() => {
         instance.get<College[]>("/admin/getAllCollege")
             .then(response => setCollegeList(response.data))
-    })
+    }, [])
 
     const onSubmit = async () => {
         await instance.post("/admin/insertTeacher", {
@@ -42,7 +42,7 @@ const InsertTeacherModal: React.FC<ModalProps> = ({visible, setVisible}) => {
             onOk={onSubmit}>
             <Select placeholder={"学院"} style={{width: "100%"}} onChange={(value) => setCollegeId(value as number)}>
                 {
-                    collegeList.map(college => <Option value={college.id}>{college.name}</Option>)
+                    collegeList.map(college => <Option key={college.id} value={college.id}>{college.name}</Option>)
                 }
             </Select>
             <Input placeholder={"工号"}

@@ -1,39 +1,43 @@
 import React, {useEffect, useState} from "react";
 import {Button, Descriptions, PageHeader, Table} from "antd";
-import {HealthCodeType} from "../../entity/HealthCodeType";
+import {healthCodeName, HealthCodeType} from "../../entity/HealthCodeType";
 import instance from "../../axiosInstance";
 import {TeacherDailyCardStatistic} from "../../entity/TeacherDailyCardStatistic";
 import InsertTeacherModal from "./InsertTeacherModal";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store";
 import {Admin, AdminRole} from "../../entity/Admin";
+import {TeacherDailyCardVo} from "../../entity/TeacherDailyCardVo";
+import {ColumnsType} from "antd/es/table";
 
 const TeacherManagerPage = () => {
     const [visible, setVisible] = useState(false)
     const loginUser = useSelector((state: RootState) => state.login)!!
+    const [loading, setLoading] = useState(false)
 
     const [data, setData] = useState<TeacherDailyCardStatistic>()
-    const columns = [
+    const columns : ColumnsType<TeacherDailyCardVo>= [
         {title: '工号', dataIndex: 'teacherId', key: 'teacherId'},
         {title: '姓名', dataIndex: 'name', key: 'name'},
-        {title: '学院', dataIndex: 'className', key: 'className'},
+        {title: '学院', dataIndex: 'collegeName', key: 'collegeName'},
         {
-            title: '健康码', dataIndex: 'type', key: 'type',
-            render: (type: HealthCodeType) => {
-                switch (type) {
-                    case HealthCodeType.GREEN:
-                        return "绿码"
-                    case HealthCodeType.RED:
-                        return "红码"
-                    case HealthCodeType.YELLOW:
-                        return "黄码"
-                }
-            }
+            title: '健康码',
+            dataIndex: 'type',
+            key: 'type',
+            render: (type?: HealthCodeType) => healthCodeName(type),
+            filters: [{text: '红码', value: '红码'},
+                {text: '绿码', value: '绿码'},
+                {text: '黄码', value: '黄码'},
+                {text: '未填报', value: '未填报'}
+            ],
+            onFilter: (value: string | number | boolean, record: TeacherDailyCardVo) => healthCodeName(record.type) === value,
         }];
 
     useEffect(() => {
+        setLoading(true)
         instance.get<TeacherDailyCardStatistic>("/admin/getTeacherStatistic")
             .then(response => setData(response.data))
+            .finally(() => setLoading(false))
     }, [])
 
     const admin = loginUser.user as Admin
@@ -56,7 +60,7 @@ const TeacherManagerPage = () => {
                 </Descriptions>
             </PageHeader>
             <InsertTeacherModal visible={visible} setVisible={setVisible}/>
-            <Table columns={columns} dataSource={data?.dailyCardList}/>
+            <Table loading={loading} columns={columns} rowKey={"teacherId"} dataSource={data?.dailyCardList}/>
         </div>
     )
 }
