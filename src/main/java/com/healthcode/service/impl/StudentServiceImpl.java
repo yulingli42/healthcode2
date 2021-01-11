@@ -13,6 +13,7 @@ import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
+import javax.servlet.http.Part;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -120,5 +121,11 @@ public class StudentServiceImpl implements IStudentService {
         HealthCodeType healthCodeType = qrCodeService.judgeQRCodeType(card);
         //提交至数据库
         studentDao.submitDailyCard(student, healthCodeType);
+    }
+
+
+    @Override
+    public void addStudentFromExcel(Part filePart) {
+        //TODO
     }
 }

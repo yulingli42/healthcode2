@@ -16,7 +16,7 @@ const StudentManagerPage = () => {
     const [modalVisible, setModalVisible] = useState(false)
     const [data, setData] = useState<StudentDailyCardStatistic>()
     const {collegeId, majorId, classId} = useParams<{ collegeId: string, majorId: string, classId: string }>()
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
 
     const columns: ColumnsType<StudentDailyCardVo> = [
         {title: '学号', dataIndex: 'studentId', key: 'studentId'},

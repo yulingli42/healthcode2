@@ -24,12 +24,12 @@ function App() {
         {!loginUser && <div style={{width: "100%", height: "100%", textAlign: "center", marginTop: "20%"}}>
             <Spin size={"large"}/>
         </div>}
-        {loginUser && <Switch>
+        <Switch>
             <Route path="/" exact component={LoginPage}/>
             <Route path="/teacher" component={TeacherPage}/>
             <Route path="/admin" component={AdminPage}/>
             <Route path="/student" component={StudentPage}/>
-        </Switch>}
+        </Switch>
     </>
 }
 

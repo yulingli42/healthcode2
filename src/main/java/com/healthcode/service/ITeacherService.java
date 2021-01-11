@@ -5,6 +5,8 @@ import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.vo.TeacherDailyCardStatistic;
 import org.jetbrains.annotations.Nullable;
 
+import javax.servlet.http.Part;
+
 /**
  * @author zhenghong
  */
@@ -59,4 +61,11 @@ public interface ITeacherService {
      * @return 健康码byte数组
      */
     byte[] showHealthCode(Teacher teacher);
+
+    /**
+     * 从 excel 表格中添加教师
+     *
+     * @param filePart 上传的文件
+     */
+    void addTeacherFromExcel(Part filePart);
 }

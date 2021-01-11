@@ -4,7 +4,7 @@ import {RootState} from "../../store";
 import {SetLoginStatus} from "./loginReducer";
 import {LoginUser} from "../../entity/LoginUser";
 
-export const setUser = (user: LoginUser | null = null): ThunkAction<void, RootState, unknown, Action> => {
+export const setUser = (user: LoginUser = {login: false} as LoginUser): ThunkAction<void, RootState, unknown, Action> => {
     return (dispatch: Dispatch) => {
         dispatch({
             type: SetLoginStatus,

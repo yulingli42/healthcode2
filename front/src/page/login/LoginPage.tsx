@@ -11,7 +11,7 @@ import ParticlesBg from 'particles-bg'
 import {LoginForm} from "./style";
 
 const LoginPage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const dispatch = useDispatch()
 
     if (loginUser.login) {

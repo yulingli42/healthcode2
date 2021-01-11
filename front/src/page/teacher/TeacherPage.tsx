@@ -12,7 +12,7 @@ import QrcodeImage from "../../component/QRCodeImage";
 
 const TeacherPage = () => {
     const [isSubmitDailyCard, setSubmitDailyCard] = useState<Boolean>(false)
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const [isLoading, setLoading] = useState(true)
 
     useEffect(() => {

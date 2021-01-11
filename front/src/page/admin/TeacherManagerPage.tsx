@@ -12,7 +12,7 @@ import {ColumnsType} from "antd/es/table";
 
 const TeacherManagerPage = () => {
     const [visible, setVisible] = useState(false)
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const [loading, setLoading] = useState(false)
 
     const [data, setData] = useState<TeacherDailyCardStatistic>()

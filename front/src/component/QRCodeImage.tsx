@@ -7,7 +7,7 @@ import {Teacher} from "../entity/Teacher";
 
 
 const QrcodeImage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const user = loginUser.user as Student | Teacher
 
     return <div style={{display: "block", textAlign: "center"}}>

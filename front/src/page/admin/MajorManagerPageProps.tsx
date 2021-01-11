@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../store";
 
 const MajorManagerPage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState<Major[]>([])
     const {collegeId} = useParams<{ collegeId: string }>();

@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {Input, Modal, Select} from "antd";
+import {Button, Input, message, Modal, Select, Upload} from "antd";
 import instance from "../../axiosInstance";
 import {College} from "../../entity/College";
+import {UploadOutlined} from "@ant-design/icons";
 
 const {Option} = Select;
 
@@ -40,6 +41,17 @@ const InsertTeacherModal: React.FC<ModalProps> = ({visible, setVisible}) => {
             onCancel={() => setVisible(false)}
             visible={visible}
             onOk={onSubmit}>
+            <Upload name={"file"}
+                    fileList={[]}
+                    action={"/admin/addTeacherFromExcel"}
+                    onChange={(info) => {
+                        if (info.file.status === "done") {
+                            message.info("导入成功")
+                            setVisible(false)
+                        }
+                    }}>
+                <Button icon={<UploadOutlined/>}>从 excel 导入</Button>
+            </Upload>
             <Select placeholder={"学院"} style={{width: "100%"}} onChange={(value) => setCollegeId(value as number)}>
                 {
                     collegeList.map(college => <Option key={college.id} value={college.id}>{college.name}</Option>)

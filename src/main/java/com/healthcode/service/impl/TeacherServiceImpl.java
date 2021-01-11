@@ -3,7 +3,9 @@ package com.healthcode.service.impl;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.TeacherDailyCardDao;
 import com.healthcode.dao.TeacherDao;
-import com.healthcode.domain.*;
+import com.healthcode.domain.College;
+import com.healthcode.domain.HealthCodeType;
+import com.healthcode.domain.Teacher;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.ITeacherService;
 import com.healthcode.utils.JudgeHealthCodeTypeUtil;
@@ -11,6 +13,7 @@ import com.healthcode.vo.TeacherDailyCardStatistic;
 import com.healthcode.vo.TeacherDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
+import javax.servlet.http.Part;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -126,5 +129,10 @@ public class TeacherServiceImpl implements ITeacherService {
             exception.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void addTeacherFromExcel(Part filePart) {
+        //TODO
     }
 }

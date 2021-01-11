@@ -10,7 +10,7 @@ import {Student} from "../../entity/Student";
 import QrcodeImage from "../../component/QRCodeImage";
 
 const StudentPage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
 
     const [isSubmitDailyCard, setSubmitDailyCard] = useState<Boolean>(false)
     const [isLoading, setLoading] = useState(true)

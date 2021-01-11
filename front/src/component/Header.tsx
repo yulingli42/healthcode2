@@ -8,13 +8,13 @@ import {LogoutWrapper, NameWrapper, TopWrapper} from "./style";
 import {useHistory} from "react-router";
 
 const Header = () => {
-    const loginUser = useSelector((root: RootState) => root.login)!!
+    const loginUser = useSelector((root: RootState) => root.login)
     const dispatch = useDispatch()
     const history = useHistory()
 
     const logout = async () => {
         await instance.post("/logout")
-        dispatch(setUser(null))
+        dispatch(setUser())
         history.push("/")
     }
 

@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../store";
 
 const CollegeManagerPage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState<College[]>([])
 

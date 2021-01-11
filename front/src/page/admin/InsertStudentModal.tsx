@@ -1,4 +1,5 @@
-import {Cascader, Input, Modal} from "antd";
+import {Button, Cascader, Input, message, Modal, Upload} from "antd";
+import {UploadOutlined} from '@ant-design/icons';
 import React, {useEffect, useState} from "react";
 import {CascaderOptionType} from "antd/lib/cascader";
 import instance from "../../axiosInstance";
@@ -95,6 +96,18 @@ const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible}) => {
             onCancel={() => setVisible(false)}
             visible={visible}
             onOk={onSubmit}>
+            <Upload
+                name="file"
+                fileList={[]}
+                action={"/admin/addStudentFromExcel"}
+                onChange={(info) => {
+                    if (info.file.status === "done") {
+                        message.info("导入成功")
+                        setVisible(false)
+                    }
+                }}>
+                <Button icon={<UploadOutlined/>}>从 excel 导入</Button>
+            </Upload>
             <Cascader options={options}
                       loadData={loadData}
                       changeOnSelect

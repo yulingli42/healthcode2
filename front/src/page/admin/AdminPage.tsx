@@ -15,7 +15,7 @@ import {setUser} from "../../reducer/login/actionCreate";
 const {Content, Sider} = Layout;
 
 const AdminPage = () => {
-    const loginUser = useSelector((state: RootState) => state.login)!!
+    const loginUser = useSelector((state: RootState) => state.login)
     const history = useHistory()
     const dispatch = useDispatch()
 
@@ -33,7 +33,7 @@ const AdminPage = () => {
 
     const logout = async () => {
         await instance.post("/logout")
-        dispatch(setUser(null))
+        dispatch(setUser())
         history.push("/")
     }
 
