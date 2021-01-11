@@ -66,23 +66,53 @@ public class StudentDao {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM student ")) {
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    ArrayList<Student> list = Lists.newArrayList();
-                    while (resultSet.next()) {
-                        Student student = new Student();
-                        student.setId(resultSet.getString("id"));
-                        student.setName(resultSet.getString("name"));
-                        student.setPassword(resultSet.getString("password"));
-                        student.setClazz(clazzDao.getById(resultSet.getInt("class_id")));
-                        student.setIdCard(resultSet.getString("id_card"));
-                        list.add(student);
-                    }
-                    return list;
-                }
+                return listAllHelper(statement);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new HealthCodeException("获取学生列表失败");
+        }
+    }
+
+    public List<Student> listAllByClazzId(Integer clazzId) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM student WHERE class_id = ?")) {
+                statement.setInt(1,clazzId);
+                return listAllHelper(statement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取学生列表失败");
+        }
+    }
+
+//    public List<Student> listAllByMajorId(Integer majorId) {
+//        try (Connection connection = DatasourceConfig.getConnection()) {
+//            try (PreparedStatement statement = connection.prepareStatement(
+//                    "SELECT * FROM student, profession WHERE (SELECT pr)")) {
+//                statement.setInt(1,clazzId);
+//                return listAllHelper(statement);
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            throw new HealthCodeException("获取学生列表失败");
+//        }
+//    }
+
+    private List<Student> listAllHelper(PreparedStatement statement) throws SQLException {
+        ArrayList<Student> list = Lists.newArrayList();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Student student = new Student();
+                student.setId(resultSet.getString("id"));
+                student.setName(resultSet.getString("name"));
+                student.setPassword(resultSet.getString("password"));
+                student.setClazz(clazzDao.getById(resultSet.getInt("class_id")));
+                student.setIdCard(resultSet.getString("id_card"));
+                list.add(student);
+            }
+            return list;
         }
     }
 
