@@ -4,9 +4,9 @@ import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.StudentDailyCard;
+import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,14 +45,7 @@ public class StudentDailyCardDao {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM (SELECT id, result, create_time FROM student_daily_card " +
                             "WHERE student_id = ? ORDER BY create_time DESC LIMIT 14) AS TEMP ORDER BY create_time")) {
-                statement.setString(1,studentId);
-                List<HealthCodeType> healthCodeTypeList = new ArrayList<>();
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()){
-                        healthCodeTypeList.add(HealthCodeType.of(resultSet.getString("result")));
-                    }
-                }
-                return healthCodeTypeList;
+                return JudgeHealthCodeTypeUtil.getHealthCodeTypes(studentId, statement);
             }
         } catch (SQLException e) {
             e.printStackTrace();

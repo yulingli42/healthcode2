@@ -6,7 +6,6 @@ import com.healthcode.utils.IntegerUtil;
 import com.healthcode.utils.JsonUtil;
 import com.healthcode.vo.TeacherDailyCardStatistic;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ public class GetTeacherStatisticServlet extends HttpServlet {
     private final ITeacherService teacherService = new TeacherServiceImpl();
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Integer collegeId = IntegerUtil.parseInt(request.getParameter("collegeId"));
         TeacherDailyCardStatistic statistic = teacherService.getTeacherStatistic(collegeId);
         response.getOutputStream().write(JsonUtil.writeValue(statistic));

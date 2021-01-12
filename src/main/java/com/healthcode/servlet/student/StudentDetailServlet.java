@@ -24,7 +24,7 @@ public class StudentDetailServlet extends HttpServlet {
     private final IStudentService studentService = new StudentServiceImpl();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Student student = (Student) req.getSession().getAttribute(LOGIN_USER_SESSION);
         Boolean dailyCardSubmit = studentService.checkStudentDailyCardToday(student);
         resp.getOutputStream().write(JsonUtil.writeValue(dailyCardSubmit));

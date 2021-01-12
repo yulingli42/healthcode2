@@ -87,18 +87,39 @@ public class StudentDao {
         }
     }
 
-//    public List<Student> listAllByMajorId(Integer majorId) {
-//        try (Connection connection = DatasourceConfig.getConnection()) {
-//            try (PreparedStatement statement = connection.prepareStatement(
-//                    "SELECT * FROM student, profession WHERE (SELECT pr)")) {
-//                statement.setInt(1,clazzId);
-//                return listAllHelper(statement);
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            throw new HealthCodeException("获取学生列表失败");
-//        }
-//    }
+    public List<Student> listAllByMajorId(Integer majorId) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT student.* FROM college, profession, class, student " +
+                            "WHERE college.id=profession.college_id " +
+                            "AND student.class_id=class.id " +
+                            "AND class.profession_id=profession.id " +
+                            "AND profession_id=?")) {
+                statement.setInt(1,majorId);
+                return listAllHelper(statement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取学生列表失败");
+        }
+    }
+
+    public List<Student> listAllByCollegeId(Integer collegeId) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT student.* FROM college, profession, class, student " +
+                            "WHERE college.id=profession.college_id " +
+                            "AND student.class_id=class.id " +
+                            "AND class.profession_id=profession.id " +
+                            "AND college_id= ?")) {
+                statement.setInt(1,collegeId);
+                return listAllHelper(statement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取学生列表失败");
+        }
+    }
 
     private List<Student> listAllHelper(PreparedStatement statement) throws SQLException {
         ArrayList<Student> list = Lists.newArrayList();

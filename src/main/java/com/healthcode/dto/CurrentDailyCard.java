@@ -13,13 +13,6 @@ public class CurrentDailyCard {
     private String[] currentSymptoms;
 
     public CurrentDailyCard(){}
-    public CurrentDailyCard(boolean haveBeenToKeyEpidemicAreas, boolean haveBeenAbroad, boolean isTheExposed, boolean isSuspectedCase, String[] currentSymptoms){
-        this.haveBeenToKeyEpidemicAreas = haveBeenToKeyEpidemicAreas;
-        this.haveBeenAbroad = haveBeenAbroad;
-        this.isTheExposed = isTheExposed;
-        this.isSuspectedCase = isSuspectedCase;
-        this.currentSymptoms = currentSymptoms;
-    }
 
     public boolean isHaveBeenToKeyEpidemicAreas() {
         return haveBeenToKeyEpidemicAreas;

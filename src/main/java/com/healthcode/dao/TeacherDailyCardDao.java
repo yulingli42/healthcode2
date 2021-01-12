@@ -4,12 +4,12 @@ import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.HealthCodeType;
 import com.healthcode.domain.TeacherDailyCard;
+import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,14 +48,7 @@ public class TeacherDailyCardDao {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM (SELECT id, result, create_time FROM teacher_daily_card " +
                             "WHERE teacher_id = ? ORDER BY create_time DESC LIMIT 14) AS TEMP ORDER BY create_time")) {
-                statement.setString(1,teacherId);
-                List<HealthCodeType> healthCodeTypeList = new ArrayList<>();
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    while (resultSet.next()){
-                        healthCodeTypeList.add(HealthCodeType.of(resultSet.getString("result")));
-                    }
-                }
-                return healthCodeTypeList;
+                return JudgeHealthCodeTypeUtil.getHealthCodeTypes(teacherId, statement);
             }
         } catch (SQLException e) {
             e.printStackTrace();

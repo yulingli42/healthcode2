@@ -29,6 +29,7 @@ public class ExcelUtil {
      * 读取少于1000行数据
      * @param filePath 文件绝对路径
      */
+    @SuppressWarnings("unused")
     public static List<Object> readLessThan1000Row(String filePath){
         return readLessThan1000RowBySheet(filePath,null);
     }
@@ -79,6 +80,7 @@ public class ExcelUtil {
      * 读大于1000行数据
      * @param filePath 文件绝对路径
      */
+    @SuppressWarnings("unused")
     public static List<Object> readMoreThan1000Row(String filePath){
         return readMoreThan1000RowBySheet(filePath,null);
     }
@@ -120,6 +122,7 @@ public class ExcelUtil {
      * @param data 数据源
      * @param head 表头
      */
+    @SuppressWarnings("unused")
     public static void writeBySimple(String filePath, List<List<Object>> data, List<String> head){
         writeSimpleBySheet(filePath,data,head,null);
     }
@@ -170,6 +173,7 @@ public class ExcelUtil {
      * @param filePath 绝对路径
      * @param data 数据源
      */
+    @SuppressWarnings("unused")
     public static void writeWithTemplate(String filePath, List<? extends BaseRowModel> data){
         writeWithTemplateAndSheet(filePath,data,null);
     }
@@ -217,6 +221,7 @@ public class ExcelUtil {
      * @param filePath 绝对路径
      * @param multipleSheetProperty 多sheet的内容
      */
+    @SuppressWarnings("unused")
     public static void writeWithMultipleSheets(String filePath,List<MultipleSheetProperty> multipleSheetProperty){
         if(Objects.isNull(multipleSheetProperty)){
             return;

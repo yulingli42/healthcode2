@@ -67,23 +67,43 @@ public class TeacherDao {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM teacher ")) {
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    ArrayList<Teacher> list = Lists.newArrayList();
-                    while (resultSet.next()) {
-                        Teacher teacher = new Teacher();
-                        teacher.setId(resultSet.getString("id"));
-                        teacher.setName(resultSet.getString("name"));
-                        teacher.setPassword(resultSet.getString("password"));
-                        teacher.setCollege(collegeDao.getById(resultSet.getInt("college_id")));
-                        teacher.setIdCard(resultSet.getString("id_card"));
-                        list.add(teacher);
-                    }
-                    return list;
-                }
+                return listAllHelper(statement);
             }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new HealthCodeException("获取教师列表失败");
+        }
+    }
+
+    public List<Teacher> listAllByCollegeId(Integer collegeId) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT teacher.* FROM college, profession, teacher " +
+                            "WHERE college.id=profession.college_id " +
+                            "AND teacher.college_id=college.id " +
+                            "AND college.id= ? ")) {
+                statement.setInt(1,collegeId);
+                return listAllHelper(statement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取教师列表失败");
+        }
+    }
+
+    private List<Teacher> listAllHelper(PreparedStatement statement) throws SQLException {
+        ArrayList<Teacher> list = Lists.newArrayList();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                Teacher teacher = new Teacher();
+                teacher.setId(resultSet.getString("id"));
+                teacher.setName(resultSet.getString("name"));
+                teacher.setPassword(resultSet.getString("password"));
+                teacher.setCollege(collegeDao.getById(resultSet.getInt("college_id")));
+                teacher.setIdCard(resultSet.getString("id_card"));
+                list.add(teacher);
+            }
+            return list;
         }
     }
 

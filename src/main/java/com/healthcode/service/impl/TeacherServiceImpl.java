@@ -61,7 +61,14 @@ public class TeacherServiceImpl implements ITeacherService {
     @Override
     public TeacherDailyCardStatistic getTeacherStatistic(@Nullable Integer collegeId) {
         TeacherDailyCardStatistic statistic = new TeacherDailyCardStatistic();
-        List<Teacher> teachers = teacherDao.listAll();
+        List<Teacher> teachers;
+
+        if(!Objects.isNull(collegeId)){
+            teachers = teacherDao.listAllByCollegeId(collegeId);
+        }else {
+            teachers = teacherDao.listAll();
+        }
+
         List<TeacherDailyCardVo> teacherDailyCardVos = new ArrayList<>();
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
@@ -76,24 +83,12 @@ public class TeacherServiceImpl implements ITeacherService {
             List<HealthCodeType> healthCodeTypeList = teacherDailyCardDao.judgeHealthCodeTypeByPast(teacher.getId());
             HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
 
+            teacherDailyCardVo.setType(healthCodeType);
             teacherDailyCardVo.setTeacherId(teacher.getId());
             teacherDailyCardVo.setName(teacher.getName());
             College college = teacher.getCollege();
             teacherDailyCardVo.setCollegeName(college.getName());
-            teacherDailyCardVo.setType(healthCodeType);
 
-//            if(!Objects.isNull(teacherDailyCard)){
-//                switch (teacherDailyCard.getResult()){
-//                    case RED:
-//                        ++redCodeCount;
-//                        break;
-//                    case GREEN:
-//                        ++greenCodeCount;
-//                        break;
-//                    case YELLOW:
-//                        ++yellowCodeCount;
-//                }
-//            }
             switch (healthCodeType){
                 case RED:
                     ++redCodeCount;
@@ -144,7 +139,8 @@ public class TeacherServiceImpl implements ITeacherService {
             List<Object> teacherData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
 
             for(int i = 1;i < teacherData.size();i++){
-                @SuppressWarnings("unchecked") ArrayList<String> list = (ArrayList<String>)teacherData.get(i);
+                @SuppressWarnings("unchecked")
+                ArrayList<String> list = (ArrayList<String>)teacherData.get(i);
                 System.out.println(list);
                 String id = list.get(0);
                 String name = list.get(1);

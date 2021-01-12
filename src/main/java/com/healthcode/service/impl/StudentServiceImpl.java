@@ -1,6 +1,5 @@
 package com.healthcode.service.impl;
 
-import com.alibaba.excel.metadata.BaseRowModel;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.ClazzDao;
 import com.healthcode.dao.StudentDailyCardDao;
@@ -18,7 +17,6 @@ import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.Part;
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,7 +55,18 @@ public class StudentServiceImpl implements IStudentService {
             @Nullable Integer majorId,
             @Nullable Integer collegeId) {
         StudentDailyCardStatistic statistic = new StudentDailyCardStatistic();
-        List<Student> students = studentDao.listAll();
+        List<Student> students;
+        System.out.println("class:" + clazzId + " major:" + majorId + " college:" + collegeId);
+        if (!Objects.isNull(clazzId)){
+            students = studentDao.listAllByClazzId(clazzId);
+        }else if (!Objects.isNull(majorId)){
+            students = studentDao.listAllByMajorId(majorId);
+        }else if (!Objects.isNull(collegeId)){
+            students = studentDao.listAllByCollegeId(collegeId);
+        }else {
+            students = studentDao.listAll();
+        }
+
         List<StudentDailyCardVo> studentDailyCardVos = new ArrayList<>();
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
@@ -73,15 +82,15 @@ public class StudentServiceImpl implements IStudentService {
             List<HealthCodeType> healthCodeTypeList = studentDailyCardDao.judgeHealthCodeTypeByPast(student.getId());
             HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
 
+            studentDailyCardVo.setType(healthCodeType);
             studentDailyCardVo.setStudentId(student.getId());
             studentDailyCardVo.setName(student.getName());
             Clazz clazz = student.getClazz();
             studentDailyCardVo.setClassName(clazz.getName());
             studentDailyCardVo.setMajorName(clazz.getMajor().getName());
             studentDailyCardVo.setCollegeName(clazz.getMajor().getCollege().getName());
-            studentDailyCardVo.setType(healthCodeType);
 
-            switch (healthCodeType){
+            switch (healthCodeType) {
                 case RED:
                     ++redCodeCount;
                     break;
@@ -91,6 +100,7 @@ public class StudentServiceImpl implements IStudentService {
                 case YELLOW:
                     ++yellowCodeCount;
             }
+
             studentDailyCardVos.add(studentDailyCardVo);
         }
 
@@ -140,7 +150,8 @@ public class StudentServiceImpl implements IStudentService {
             List<Object> studentData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
 
             for(int i = 1;i < studentData.size();i++){
-                @SuppressWarnings("unchecked") ArrayList<String> list = (ArrayList<String>)studentData.get(i);
+                @SuppressWarnings("unchecked")
+                ArrayList<String> list = (ArrayList<String>)studentData.get(i);
                 System.out.println(list);
                 String id = list.get(0);
                 String name = list.get(1);

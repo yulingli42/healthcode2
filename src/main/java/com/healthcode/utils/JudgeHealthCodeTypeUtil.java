@@ -1,7 +1,12 @@
 package com.healthcode.utils;
 
 import com.healthcode.domain.HealthCodeType;
+import org.jetbrains.annotations.NotNull;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JudgeHealthCodeTypeUtil {
@@ -51,5 +56,17 @@ public class JudgeHealthCodeTypeUtil {
             }
         }
         return healthCodeType;
+    }
+
+    @NotNull
+    public static List<HealthCodeType> getHealthCodeTypes(String teacherId, PreparedStatement statement) throws SQLException {
+        statement.setString(1,teacherId);
+        List<HealthCodeType> healthCodeTypeList = new ArrayList<>();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()){
+                healthCodeTypeList.add(HealthCodeType.of(resultSet.getString("result")));
+            }
+        }
+        return healthCodeTypeList;
     }
 }
