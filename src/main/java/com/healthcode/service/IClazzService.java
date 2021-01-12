@@ -10,8 +10,17 @@ import java.util.List;
 public interface IClazzService {
     /**
      * 根据专业编号获取该专业所有的班级信息
+     *
      * @param majorId 班级信息
      * @return 该专业所有的班级信息
      */
     List<Clazz> getAllClazzByMajor(Integer majorId);
+
+    /**
+     * 添加班级
+     *
+     * @param majorId 专业id
+     * @param name    班级
+     */
+    void addClazz(Integer majorId, String name);
 }

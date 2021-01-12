@@ -16,4 +16,12 @@ public class MajorServiceImpl implements IMajorService {
         //根据学院号获取所有专业
         return majorDao.listAll(collegeId);
     }
+
+    @Override
+    public void addMajor(Integer collegeId, String name) {
+
+        System.out.println("collegeId:" + collegeId);
+        System.out.println("name:" + name);
+        // TODO
+    }
 }

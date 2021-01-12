@@ -1,23 +1,20 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {RootState} from "../../store";
-import {Redirect, Route, Switch, useHistory} from "react-router";
-import {Layout, Menu} from 'antd';
+import {Redirect, Route, Switch} from "react-router";
+import {Layout} from 'antd';
 import React from "react";
-import StudentManagerPage from "./StudentManagetPage";
-import TeacherManagerPage from "./TeacherManagerPage";
-import CollegeManagerPage from "./CollegeManagerPage";
-import {GoldOutlined, LogoutOutlined, TeamOutlined, UserOutlined} from '@ant-design/icons'
-import ClassManagerPage from "./ClassManagerPage";
-import MajorManagerPage from "./MajorManagerPageProps";
-import instance from "../../axiosInstance";
-import {setUser} from "../../reducer/login/actionCreate";
+import StudentManagerPage from "./student/StudentManagetPage";
+import TeacherManagerPage from "./teacher/TeacherManagerPage";
+import CollegeManagerPage from "./college/CollegeManagerPage";
+import ClassManagerPage from "./class/ClassManagerPage";
+import MajorManagerPage from "./major/MajorManagerPageProps";
+import AdminSider from "./AdminSider";
+import AdminManagerPage from "./admin/AdminManagerPage";
 
-const {Content, Sider} = Layout;
+const {Content} = Layout;
 
 const AdminPage = () => {
     const loginUser = useSelector((state: RootState) => state.login)
-    const history = useHistory()
-    const dispatch = useDispatch()
 
     if (!loginUser.login) {
         return <Redirect to={"/"}/>
@@ -31,43 +28,14 @@ const AdminPage = () => {
         return <Redirect to={"/student"}/>
     }
 
-    const logout = async () => {
-        await instance.post("/logout")
-        dispatch(setUser())
-        history.push("/")
-    }
-
     return (<div>
         <Layout style={{minHeight: '100vh'}}>
-            <Sider collapsible className="site-layout-background">
-                <div className="logo"/>
-                <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-                    <Menu.Item key="1"
-                               icon={<TeamOutlined/>}
-                               onClick={() => history.push("/admin/student")}>
-                        学生管理
-                    </Menu.Item>
-                    <Menu.Item key="2"
-                               icon={<UserOutlined/>}
-                               onClick={() => history.push("/admin/teacher")}>
-                        教师管理
-                    </Menu.Item>
-                    <Menu.Item key="3"
-                               icon={<GoldOutlined/>}
-                               onClick={() => history.push("/admin/college")}>
-                        学院管理
-                    </Menu.Item>
-                    <Menu.Item key="4"
-                               icon={<LogoutOutlined/>}
-                               onClick={logout}>
-                        登出
-                    </Menu.Item>
-                </Menu>
-            </Sider>
+            <AdminSider/>
             <Layout className="site-layout">
                 <Content>
                     <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
                         <Switch>
+                            <Route path={"/admin/admin"} exact component={AdminManagerPage}/>
                             <Route path={"/admin/student"} exact component={StudentManagerPage}/>
                             <Route path={"/admin/student/:collegeId"} exact component={StudentManagerPage}/>
                             <Route path={"/admin/student/:collegeId/:majorId"} exact component={StudentManagerPage}/>

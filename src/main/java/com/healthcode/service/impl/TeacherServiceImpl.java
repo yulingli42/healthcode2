@@ -159,4 +159,10 @@ public class TeacherServiceImpl implements ITeacherService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void deleteById(String id) {
+        System.out.println("id:" + id);
+        // TODO
+    }
 }

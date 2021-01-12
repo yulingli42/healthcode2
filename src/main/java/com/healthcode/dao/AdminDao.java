@@ -45,7 +45,7 @@ public class AdminDao {
         }
     }
 
-    public void insert(String username, String password, Admin.AdminRole adminRole, int collegeId){
+    public void insert(String username, String password, Admin.AdminRole adminRole, Integer collegeId){
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO admin(username, password, role, college_id) VALUES (?, ?, ?, ?)")) {

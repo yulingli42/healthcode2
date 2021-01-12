@@ -25,6 +25,7 @@ public class GetAllClazzByMajorServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Integer majorId = Integer.valueOf(req.getParameter("majorId"));
         List<Clazz> list = clazzService.getAllClazzByMajor(majorId);
-        resp.getOutputStream().write(JsonUtil.writeValue(list));resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));
+        resp.getOutputStream().write(JsonUtil.writeValue(list));
+        resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));
     }
 }

@@ -3,7 +3,6 @@ import {College} from "./College";
 export interface Admin {
     id: number;
     username: string;
-    password: string;
     role: AdminRole;
     college: College;
 }
@@ -19,3 +18,4 @@ export enum AdminRole {
      */
     COLLEGE_ADMIN = "COLLEGE_ADMIN"
 }
+

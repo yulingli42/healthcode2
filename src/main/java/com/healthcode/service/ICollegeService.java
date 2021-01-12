@@ -17,8 +17,16 @@ public interface ICollegeService {
 
     /**
      * 根据学院编号获取学院信息
+     *
      * @param id 学院编号
      * @return 学院信息
      */
     College getCollegeById(Integer id);
+
+    /**
+     * 添加学院
+     *
+     * @param name 学院名
+     */
+    void addCollege(String name);
 }

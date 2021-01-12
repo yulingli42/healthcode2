@@ -172,4 +172,10 @@ public class StudentServiceImpl implements IStudentService {
             throw new HealthCodeException("导入学生Excel失败");
         }
     }
+
+    @Override
+    public void deleteById(String id) {
+        System.out.println("id:" + id);
+        // TODO
+    }
 }

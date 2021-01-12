@@ -68,4 +68,10 @@ public interface ITeacherService {
      * @param filePart 上传的文件
      */
     void addTeacherFromExcel(Part filePart);
+
+    /**
+     * 删除教师
+     * @param id 工号
+     */
+    void deleteById(String id);
 }

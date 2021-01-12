@@ -15,4 +15,12 @@ public interface IMajorService {
      * @return 该学院所有专业
      */
     List<Major> getAllMajorByCollegeId(Integer collegeId);
+
+    /**
+     * 添加专业
+     *
+     * @param collegeId 学院id
+     * @param name      名称
+     */
+    void addMajor(Integer collegeId, String name);
 }

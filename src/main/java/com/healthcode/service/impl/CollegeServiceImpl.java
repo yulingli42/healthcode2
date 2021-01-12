@@ -22,4 +22,9 @@ public class CollegeServiceImpl implements ICollegeService {
         //获取单个学院信息
         return collegeDao.getById(id);
     }
+
+    @Override
+    public void addCollege(String name) {
+        System.out.println("name:" + name);
+    }
 }

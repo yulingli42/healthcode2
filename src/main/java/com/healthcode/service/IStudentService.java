@@ -73,4 +73,10 @@ public interface IStudentService {
      * @param filePart 上传的文件
      */
     void addStudentFromExcel(Part filePart);
+
+    /**
+     * 删除学生
+     * @param id 学生 id
+     */
+    void deleteById(String id);
 }
