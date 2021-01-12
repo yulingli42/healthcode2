@@ -9,6 +9,8 @@ import {RootState} from "../../store";
 import {Admin, AdminRole} from "../../entity/Admin";
 import {TeacherDailyCardVo} from "../../entity/TeacherDailyCardVo";
 import {ColumnsType} from "antd/es/table";
+import {Pie} from "@ant-design/charts";
+import {PieConfig} from "@ant-design/charts/es/pie";
 
 const TeacherManagerPage = () => {
     const [visible, setVisible] = useState(false)
@@ -16,7 +18,7 @@ const TeacherManagerPage = () => {
     const [loading, setLoading] = useState(false)
 
     const [data, setData] = useState<TeacherDailyCardStatistic>()
-    const columns : ColumnsType<TeacherDailyCardVo>= [
+    const columns: ColumnsType<TeacherDailyCardVo> = [
         {title: '工号', dataIndex: 'teacherId', key: 'teacherId'},
         {title: '姓名', dataIndex: 'name', key: 'name'},
         {title: '学院', dataIndex: 'collegeName', key: 'collegeName'},
@@ -42,6 +44,34 @@ const TeacherManagerPage = () => {
 
     const admin = loginUser.user as Admin
 
+    const notSubmitNumber = data == null ? 0: data.totalTeacherCount - data.greenCodeTeacherCount - data.yellowCodeTeacherCount - data.redCodeTeacherCount
+
+    const config: PieConfig = {
+        autoFit: false,
+        data: [
+            {type: '绿码', value: data?.greenCodeTeacherCount},
+            {type: '黄码', value: data?.yellowCodeTeacherCount},
+            {type: '红码', value: data?.redCodeTeacherCount},
+            {type: '未填报', value:notSubmitNumber}
+        ],
+        angleField: 'value',
+        colorField: 'type',
+        width: 200,
+        height: 200,
+        color: ({type}) => {
+            switch (type) {
+                case "绿码":
+                    return "green";
+                case "黄码":
+                    return "yellow";
+                case "红码":
+                    return "red"
+                default:
+                    return "grey"
+            }
+        }
+    };
+
     return (
         <div>
             <PageHeader
@@ -58,6 +88,7 @@ const TeacherManagerPage = () => {
                     <Descriptions.Item label="黄码教师数量">{data?.yellowCodeTeacherCount}</Descriptions.Item>
                     <Descriptions.Item label="红码教师数量">{data?.redCodeTeacherCount}</Descriptions.Item>
                 </Descriptions>
+                <Pie style={{paddingLeft: "41%", display: "block"}} {...config} />
             </PageHeader>
             <InsertTeacherModal visible={visible} setVisible={setVisible}/>
             <Table loading={loading} columns={columns} rowKey={"teacherId"} dataSource={data?.dailyCardList}/>

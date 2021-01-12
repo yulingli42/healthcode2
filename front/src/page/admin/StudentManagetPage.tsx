@@ -10,6 +10,8 @@ import {RootState} from "../../store";
 import {Admin, AdminRole} from "../../entity/Admin";
 import {StudentDailyCardVo} from "../../entity/StudentDailyCardVo";
 import {ColumnsType} from "antd/es/table";
+import {Pie} from '@ant-design/charts';
+import {PieConfig} from "@ant-design/charts/es/pie";
 
 const StudentManagerPage = () => {
     const [loading, setLoading] = useState(false)
@@ -31,10 +33,11 @@ const StudentManagerPage = () => {
             render: (type?: HealthCodeType) => healthCodeName(type),
             filters: [{text: '红码', value: '红码'},
                 {text: '绿码', value: '绿码'},
-                {text: '黄码', value: '黄码'},
-                {text: '未填报', value: '未填报'}
+                {text: '黄码', value: '黄码'}
             ],
             onFilter: (value: string | number | boolean, record: StudentDailyCardVo) => healthCodeName(record.type) === value,
+        }, {
+            title: "今日填报", dataIndex: ""
         }];
 
     useEffect(() => {
@@ -48,6 +51,36 @@ const StudentManagerPage = () => {
     }, [collegeId, majorId, classId])
 
     const admin = loginUser.user as Admin
+
+    const notSubmitNumber = data == null ? 0 : data.totalStudentCount - data.greenCodeStudentCount -
+        data.yellowCodeStudentCount - data.redCodeStudentCount
+
+    const testData: Record<string, any>[] = [
+        {type: '绿码', value: data?.greenCodeStudentCount},
+        {type: '黄码', value: data?.yellowCodeStudentCount},
+        {type: '红码', value: data?.redCodeStudentCount},
+        {type: '未填报', value: notSubmitNumber}
+    ];
+    const config: PieConfig = {
+        autoFit: false,
+        data: testData,
+        angleField: 'value',
+        colorField: 'type',
+        width: 200,
+        height: 200,
+        color: ({type}) => {
+            switch (type) {
+                case "绿码":
+                    return "green";
+                case "黄码":
+                    return "yellow";
+                case "红码":
+                    return "red"
+                default:
+                    return "grey"
+            }
+        }
+    };
 
     return (
         <div>
@@ -65,6 +98,7 @@ const StudentManagerPage = () => {
                     <Descriptions.Item label="黄码学生数量">{data?.yellowCodeStudentCount}</Descriptions.Item>
                     <Descriptions.Item label="红码学生数量">{data?.redCodeStudentCount}</Descriptions.Item>
                 </Descriptions>
+                <Pie style={{marginLeft: "41%", display: "block"}} {...config} />
             </PageHeader>
 
             <InsertStudentModal visible={modalVisible} setVisible={setModalVisible}/>

@@ -21,7 +21,7 @@ public class GetStudentStatisticServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Integer clazzId = IntegerUtil.parseInt(request.getParameter("clazzId"));
+        Integer clazzId = IntegerUtil.parseInt(request.getParameter("classId"));
         Integer majorId = IntegerUtil.parseInt(request.getParameter("majorId"));
         Integer collegeId = IntegerUtil.parseInt(request.getParameter("collegeId"));
         StudentDailyCardStatistic statistic = studentService.getStudentStatistic(clazzId, majorId, collegeId);
