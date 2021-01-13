@@ -23,4 +23,12 @@ public interface IClazzService {
      * @param name    班级
      */
     void addClazz(Integer majorId, String name);
+
+    /**
+     * 根据班级id获取班级信息
+     *
+     * @param id 班级id
+     * @return 班级信息
+     */
+    Clazz getClazzById(Integer id);
 }

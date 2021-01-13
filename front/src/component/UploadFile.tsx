@@ -1,28 +1,31 @@
-import {Button, message, Upload} from "antd";
-import {UploadOutlined} from "@ant-design/icons";
+import {message} from "antd";
+import {InboxOutlined} from "@ant-design/icons";
 import React from "react";
+import Dragger from "antd/es/upload/Dragger";
 
 interface UploadFileProps {
     onSuccess: () => void,
     url: string
 }
 
-const UploadFile: React.FC<UploadFileProps> = ({onSuccess,url}) => {
+const UploadFile: React.FC<UploadFileProps> = ({onSuccess, url}) => {
     return (
-        <div>
-            <Upload
-                name="file"
-                fileList={[]}
-                action={url}
-                onChange={(info) => {
-                    if (info.file.status === "done") {
-                        message.info("导入成功")
-                        onSuccess()
-                    }
-                }}>
-                <Button icon={<UploadOutlined/>}>从 excel 导入</Button>
-            </Upload>
-        </div>
+        <Dragger
+            name="file"
+            fileList={[]}
+            action={url}
+            onChange={(info) => {
+                if (info.file.status === "done") {
+                    message.info("导入成功")
+                    onSuccess()
+                }
+            }}>
+            <p className="ant-upload-drag-icon">
+                <InboxOutlined/>
+            </p>
+            <p className="ant-upload-text">从excel中导入</p>
+            <p className="ant-upload-hint">点击或拖拽文件上传</p>
+        </Dragger>
     )
 }
 

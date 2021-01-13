@@ -11,8 +11,6 @@ const TeacherPieChart: React.FC<TeacherPieChartProps> = ({data}) => {
     if (data == null) {
         return <></>
     }
-    const notSubmitNumber = data.totalTeacherCount - data.greenCodeTeacherCount -
-        data.yellowCodeTeacherCount - data.redCodeTeacherCount
 
     const config: PieConfig = {
         autoFit: false,
@@ -20,7 +18,6 @@ const TeacherPieChart: React.FC<TeacherPieChartProps> = ({data}) => {
             {type: '绿码', value: data?.greenCodeTeacherCount},
             {type: '黄码', value: data?.yellowCodeTeacherCount},
             {type: '红码', value: data?.redCodeTeacherCount},
-            {type: '未填报', value: notSubmitNumber}
         ],
         angleField: 'value',
         colorField: 'type',

@@ -44,11 +44,14 @@ const AdminSider = () => {
                        onClick={() => history.push("/admin/college")}>
                 学院管理
             </Menu.Item>
-            <Menu.Item key="4"
-                       icon={<PartitionOutlined/>}
-                       onClick={() => history.push("/admin/admin")}>
-                管理员管理
-            </Menu.Item>
+            {
+                admin.role === AdminRole.SYSTEM_ADMIN &&
+                <Menu.Item key="4"
+                           icon={<PartitionOutlined/>}
+                           onClick={() => history.push("/admin/admin")}>
+                    管理员管理
+                </Menu.Item>
+            }
             <Menu.Item key="5"
                        icon={<LogoutOutlined/>}
                        onClick={logout}>

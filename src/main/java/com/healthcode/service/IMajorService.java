@@ -23,4 +23,12 @@ public interface IMajorService {
      * @param name      名称
      */
     void addMajor(Integer collegeId, String name);
+
+    /**
+     * 根据专业 id 获取专业信息
+     *
+     * @param id 专业 id
+     * @return 专业信息
+     */
+    Major getMajorById(Integer id);
 }

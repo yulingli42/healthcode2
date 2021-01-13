@@ -1,4 +1,4 @@
-import {Input, Modal} from "antd";
+import {Input, Modal, Tabs} from "antd";
 import React, {useState} from "react";
 import instance from "../../../axiosInstance";
 import ClassCascader from "./ClassCascader";
@@ -8,6 +8,8 @@ interface ModalProps {
     visible: boolean,
     setVisible: (visible: boolean) => void
 }
+
+const {TabPane} = Tabs;
 
 const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible}) => {
     const [classId, setClassId] = useState<number | null>(null)
@@ -26,17 +28,28 @@ const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible}) => {
             onCancel={() => setVisible(false)}
             visible={visible}
             onOk={onSubmit}>
-            <UploadFile url="/admin/addStudentFromExcel" onSuccess={() => setVisible(false)}/>
-            <ClassCascader changeClass={value => setClassId(value)}/>
-            <Input placeholder={"学号"}
-                   onChange={(e) => setStudentId(e.target.value)}
-                   value={studentId}/>
-            <Input placeholder={"姓名"}
-                   onChange={(e) => setName(e.target.value)}
-                   value={name}/>
-            <Input placeholder={"身份证号"}
-                   onChange={(e) => setIdCard(e.target.value)}
-                   value={idCard}/>
+            <Tabs>
+                <TabPane tab="手动导入" key="1">
+                    <ClassCascader changeClass={value => setClassId(value)} style={{marginBottom: 15, width: "100%"}}/>
+                    <Input placeholder={"学号"}
+                           style={{marginBottom: 15}}
+                           onChange={(e) => setStudentId(e.target.value)}
+                           value={studentId}/>
+                    <Input placeholder={"姓名"}
+                           style={{marginBottom: 15}}
+                           onChange={(e) => setName(e.target.value)}
+                           value={name}/>
+                    <Input placeholder={"身份证号"}
+                           style={{marginBottom: 15}}
+                           onChange={(e) => setIdCard(e.target.value)}
+                           value={idCard}/>
+                </TabPane>
+                <TabPane tab="从 excel 中导入" key="2">
+                    <UploadFile url="/admin/addStudentFromExcel" onSuccess={() => setVisible(false)}/>
+                </TabPane>
+            </Tabs>
+
+
         </Modal>
     )
 }

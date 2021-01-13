@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class MajorServiceImpl implements IMajorService {
     private final MajorDao majorDao = new MajorDao();
+
     @Override
     public List<Major> getAllMajorByCollegeId(Integer collegeId) {
         //根据学院号获取所有专业
@@ -23,5 +24,10 @@ public class MajorServiceImpl implements IMajorService {
         System.out.println("collegeId:" + collegeId);
         System.out.println("name:" + name);
         // TODO
+    }
+
+    @Override
+    public Major getMajorById(Integer id) {
+        return majorDao.getById(id);
     }
 }

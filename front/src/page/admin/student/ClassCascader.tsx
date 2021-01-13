@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {CSSProperties, useEffect, useState} from "react";
 import instance from "../../../axiosInstance";
 import {Major} from "../../../entity/Major";
 import {College} from "../../../entity/College";
@@ -6,10 +6,11 @@ import {Cascader} from "antd";
 import {CascaderOptionType, CascaderValueType} from "antd/lib/cascader";
 
 interface ClassCascaderProps {
-    changeClass: (id: number | null) => void
+    changeClass: (id: number | null) => void,
+    style?: CSSProperties;
 }
 
-const ClassCascader: React.FC<ClassCascaderProps> = ({changeClass}) => {
+const ClassCascader: React.FC<ClassCascaderProps> = ({changeClass,style}) => {
     const [options, setOptions] = useState<Array<CascaderOptionType>>([]);
 
     useEffect(() => {
@@ -88,7 +89,7 @@ const ClassCascader: React.FC<ClassCascaderProps> = ({changeClass}) => {
         changeOnSelect
         placeholder={"请选择班级"}
         onChange={onChange}
-        style={{width: '100%'}}/>
+        style={style}/>
 }
 
 export default ClassCascader;

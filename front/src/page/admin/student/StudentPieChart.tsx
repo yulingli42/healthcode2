@@ -11,14 +11,11 @@ const StudentPieChart: React.FC<StudentPieChartProps> = ({data}) => {
     if (data == null) {
         return <></>
     }
-    const notSubmitNumber = data.totalStudentCount - data.greenCodeStudentCount -
-        data.yellowCodeStudentCount - data.redCodeStudentCount
 
     const testData: Record<string, any>[] = [
         {type: '绿码', value: data?.greenCodeStudentCount},
         {type: '黄码', value: data?.yellowCodeStudentCount},
-        {type: '红码', value: data?.redCodeStudentCount},
-        {type: '未填报', value: notSubmitNumber}
+        {type: '红码', value: data?.redCodeStudentCount}
     ];
 
     const config: PieConfig = {

@@ -21,4 +21,9 @@ public class ClazzServiceImpl implements IClazzService {
         System.out.println("name:" + name);
         //TODO
     }
+
+    @Override
+    public Clazz getClazzById(Integer id) {
+        return clazzDao.getById(id);
+    }
 }
