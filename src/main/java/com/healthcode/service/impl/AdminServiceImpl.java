@@ -1,6 +1,5 @@
 package com.healthcode.service.impl;
 
-import com.google.common.collect.Lists;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.AdminDao;
 import com.healthcode.domain.Admin;
@@ -36,7 +35,6 @@ public class AdminServiceImpl implements IAdminService {
 
     @Override
     public List<Admin> findAll() {
-        //TODO
-        return Lists.newArrayList();
+        return adminDao.listAll();
     }
 }

@@ -19,7 +19,7 @@ public interface IQRCodeService {
     BufferedImage createQRCode(HealthCodeType healthCodeType, String content, String logoPath, boolean needCompress) throws Exception;
 
     /**
-     * 二维吗类型判断
+     * 健康码类型判断
      *
      * @param currentDailyCard 正在提交的每日一报信息
      * @return HealthCodeType 健康码类型
