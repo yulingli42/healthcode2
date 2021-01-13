@@ -20,10 +20,8 @@ public class MajorServiceImpl implements IMajorService {
 
     @Override
     public void addMajor(Integer collegeId, String name) {
-
-        System.out.println("collegeId:" + collegeId);
-        System.out.println("name:" + name);
-        // TODO
+        //添加专业
+        majorDao.insert(collegeId, name);
     }
 
     @Override

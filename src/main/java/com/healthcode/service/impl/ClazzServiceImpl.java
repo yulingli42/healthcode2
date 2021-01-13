@@ -17,9 +17,8 @@ public class ClazzServiceImpl implements IClazzService {
 
     @Override
     public void addClazz(Integer majorId, String name) {
-        System.out.println("majorId:" + majorId);
-        System.out.println("name:" + name);
-        //TODO
+        //添加班级
+        clazzDao.insert(majorId, name);
     }
 
     @Override

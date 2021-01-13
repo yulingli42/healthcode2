@@ -162,7 +162,6 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void deleteById(String id) {
-        System.out.println("id:" + id);
-        // TODO
+        teacherDao.delete(id);
     }
 }

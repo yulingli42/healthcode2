@@ -20,7 +20,7 @@ public class ClazzDao {
 
     public Clazz getById(Integer id) {
         try (Connection connection = DatasourceConfig.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("" +
+            try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT name, profession_id FROM class WHERE id = ?")) {
                 statement.setInt(1, id);
                 try (ResultSet resultSet = statement.executeQuery()) {
@@ -80,6 +80,21 @@ public class ClazzDao {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new HealthCodeException("获取班级号失败");
+        }
+    }
+
+    public void insert(Integer majorId, String name){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO class(name, profession_id) VALUES (?, ?)")) {
+                statement.setString(1, name);
+                statement.setInt(2, majorId);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加班级失败");
         }
     }
 }

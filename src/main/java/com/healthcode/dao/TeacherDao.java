@@ -78,10 +78,7 @@ public class TeacherDao {
     public List<Teacher> listAllByCollegeId(Integer collegeId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT teacher.* FROM college, profession, teacher " +
-                            "WHERE college.id=profession.college_id " +
-                            "AND teacher.college_id=college.id " +
-                            "AND college.id= ? ")) {
+                    "SELECT * FROM teacher WHERE college_id=?")) {
                 statement.setInt(1,collegeId);
                 return listAllHelper(statement);
             }
@@ -122,6 +119,20 @@ public class TeacherDao {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new HealthCodeException("添加教师失败");
+        }
+    }
+
+    public void delete(String id){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM teacher WHERE id = ?")) {
+                statement.setString(1, id);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("删除教师失败");
         }
     }
 }

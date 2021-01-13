@@ -15,12 +15,12 @@ import java.nio.charset.StandardCharsets;
 import static com.healthcode.common.Constant.SessionConstant.LOGIN_USER_SESSION;
 
 /**
- * @author qianlei
+ * @author qianlei jiangwenwen
  */
 @WebServlet(urlPatterns = "/checkLoginStatus")
 public class CheckLoginServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Object user = req.getSession().getAttribute(LOGIN_USER_SESSION);
         LoginUser loginUser = new LoginUser(user);
         resp.getOutputStream().write(JsonUtil.writeValue(loginUser));

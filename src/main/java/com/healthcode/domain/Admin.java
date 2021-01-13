@@ -1,5 +1,7 @@
 package com.healthcode.domain;
 
+import com.healthcode.dao.CollegeDao;
+
 /**
  * @author qianlei
  */
@@ -41,6 +43,17 @@ public class Admin {
             }
             return null;
         }
+    }
+
+    public Admin(){}
+
+    public Admin(Integer id,String username,String password,String role,Integer college_id){
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.role = AdminRole.of(role);
+        CollegeDao cd = new CollegeDao();
+        this.college = cd.getById(college_id);
     }
 
     public Integer getId() {

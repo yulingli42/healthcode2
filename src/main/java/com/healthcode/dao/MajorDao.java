@@ -63,4 +63,20 @@ public class MajorDao {
             throw new HealthCodeException("获取全部专业失败");
         }
     }
+
+    public int insert(Integer collegeId, String name) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO profession(college_id, name) VALUES (?, ?)")) {
+                statement.setInt(1, collegeId);
+                statement.setString(2, name);
+
+                return statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加专业失败");
+        }
+    }
+
 }

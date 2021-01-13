@@ -154,4 +154,18 @@ public class StudentDao {
             throw new HealthCodeException("添加学生失败");
         }
     }
+
+    public void delete(String id){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM student WHERE id = ?")) {
+                statement.setString(1, id);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("删除学生失败");
+        }
+    }
 }

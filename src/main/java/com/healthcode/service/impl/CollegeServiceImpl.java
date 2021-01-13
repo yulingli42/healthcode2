@@ -25,6 +25,7 @@ public class CollegeServiceImpl implements ICollegeService {
 
     @Override
     public void addCollege(String name) {
-        System.out.println("name:" + name);
+        //添加学院
+        collegeDao.insert(name);
     }
 }

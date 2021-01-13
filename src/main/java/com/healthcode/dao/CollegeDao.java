@@ -39,10 +39,24 @@ public class CollegeDao {
 
     public int insert(College college) {
         try (Connection connection = DatasourceConfig.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("" +
+            try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO college(id, name) VALUES (?,?)")) {
                 statement.setInt(1, college.getId());
                 statement.setString(2, college.getName());
+                return statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加学院失败");
+        }
+    }
+
+    public int insert(String name) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "INSERT INTO college(name) VALUES (?)")) {
+                statement.setString(1, name);
+
                 return statement.executeUpdate();
             }
         } catch (SQLException e) {
