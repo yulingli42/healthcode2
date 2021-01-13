@@ -57,7 +57,10 @@ const TeacherManagerPage = () => {
                 </Descriptions>
                 <TeacherPieChart data={data}/>
             </PageHeader>
-            <InsertTeacherModal visible={visible} setVisible={setVisible}/>
+            <InsertTeacherModal
+                visible={visible}
+                setVisible={setVisible}
+                onSuccess={() => loadTeacher().then(response => setData(response.data))}/>
             <TeacherTable dailyCardList={data?.dailyCardList} onDelete={(id) => deleteTeacher(id)}/>
         </div>
     )

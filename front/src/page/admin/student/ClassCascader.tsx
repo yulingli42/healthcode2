@@ -10,7 +10,7 @@ interface ClassCascaderProps {
     style?: CSSProperties;
 }
 
-const ClassCascader: React.FC<ClassCascaderProps> = ({changeClass,style}) => {
+const ClassCascader: React.FC<ClassCascaderProps> = ({changeClass, style}) => {
     const [options, setOptions] = useState<Array<CascaderOptionType>>([]);
 
     useEffect(() => {
@@ -29,7 +29,6 @@ const ClassCascader: React.FC<ClassCascaderProps> = ({changeClass,style}) => {
         if (!selectedOptions) {
             return
         }
-        console.log(selectedOptions)
         const targetOption = selectedOptions[selectedOptions.length - 1];
         targetOption.loading = true;
 

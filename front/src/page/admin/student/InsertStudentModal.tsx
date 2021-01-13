@@ -6,20 +6,26 @@ import UploadFile from "../../../component/UploadFile";
 
 interface ModalProps {
     visible: boolean,
-    setVisible: (visible: boolean) => void
+    setVisible: (visible: boolean) => void,
+    onSuccess: () => void
 }
 
 const {TabPane} = Tabs;
 
-const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible}) => {
-    const [classId, setClassId] = useState<number | null>(null)
+const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible, onSuccess}) => {
+    const [classId, setClassId] = useState<number | null>()
     const [studentId, setStudentId] = useState<string>('')
     const [name, setName] = useState<string>('')
     const [idCard, setIdCard] = useState<string>('')
 
     const onSubmit = async () => {
         await instance.post("/admin/insertStudent", {id: studentId, name: name, classId: classId, idCard: idCard})
+        setClassId(undefined)
+        setStudentId('')
+        setName('')
+        setIdCard('')
         setVisible(false)
+        onSuccess()
     }
 
     return (
@@ -27,7 +33,7 @@ const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible}) => {
             title="添加新学生"
             onCancel={() => setVisible(false)}
             visible={visible}
-            onOk={onSubmit}>
+            onOk={() => onSubmit()}>
             <Tabs>
                 <TabPane tab="手动导入" key="1">
                     <ClassCascader changeClass={value => setClassId(value)} style={{marginBottom: 15, width: "100%"}}/>
@@ -45,11 +51,13 @@ const InsertStudentModal: React.FC<ModalProps> = ({visible, setVisible}) => {
                            value={idCard}/>
                 </TabPane>
                 <TabPane tab="从 excel 中导入" key="2">
-                    <UploadFile url="/admin/addStudentFromExcel" onSuccess={() => setVisible(false)}/>
+                    <UploadFile url="/admin/addStudentFromExcel"
+                                onSuccess={() => {
+                                    setVisible(false);
+                                    onSuccess()
+                                }}/>
                 </TabPane>
             </Tabs>
-
-
         </Modal>
     )
 }

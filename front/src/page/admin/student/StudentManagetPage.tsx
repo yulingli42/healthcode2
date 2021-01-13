@@ -22,8 +22,8 @@ const StudentManagerPage = () => {
     const [major, setMajor] = useState<Major>()
     const [college, setCollege] = useState<College>()
 
-    const loadStudent = async () => {
-        return await instance.get<StudentDailyCardStatistic>("/admin/getStudentStatistic", {
+    const loadStudent = () => {
+        return instance.get<StudentDailyCardStatistic>("/admin/getStudentStatistic", {
             params: {
                 collegeId, majorId, classId
             }
@@ -98,7 +98,10 @@ const StudentManagerPage = () => {
                 </Descriptions>
                 <StudentPieChart data={data}/>
             </PageHeader>
-            <InsertStudentModal visible={modalVisible} setVisible={setModalVisible}/>
+            <InsertStudentModal
+                visible={modalVisible}
+                setVisible={setModalVisible}
+                onSuccess={() => loadStudent().then(response => setData(response.data))}/>
             <StudentTable dataSource={data?.dailyCardList} onDelete={(id) => deleteStudent(id)}/>
         </div>
     )

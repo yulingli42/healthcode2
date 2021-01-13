@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 public class InsertTeacherServlet extends HttpServlet {
     private final ITeacherService teacherService=new TeacherServiceImpl();
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String teacherId = req.getParameter("teacherId");
         String name = req.getParameter("name");
         String idCard = req.getParameter("idCard");
