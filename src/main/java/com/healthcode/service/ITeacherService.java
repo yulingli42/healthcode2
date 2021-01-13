@@ -71,7 +71,18 @@ public interface ITeacherService {
 
     /**
      * 删除教师
+     *
      * @param id 工号
      */
     void deleteById(String id);
+
+    /**
+     * 更新教师信息
+     *
+     * @param id        教师工号
+     * @param collegeId 学院 id
+     * @param name      名称
+     * @param idCard    身份证号
+     */
+    void updateTeacher(String id, Integer collegeId, String name, String idCard);
 }

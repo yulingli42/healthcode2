@@ -3,13 +3,19 @@ import {Button, Table} from "antd";
 import React from "react";
 import {ColumnsType} from "antd/es/table";
 import {healthCodeName, HealthCodeType} from "../../../entity/HealthCodeType";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
+import {Admin, AdminRole} from "../../../entity/Admin";
 
 interface StudentTableProps {
     dataSource?: StudentDailyCardVo[],
-    onDelete: (id: string) => void
+    onDelete: (id: string) => void,
+    clickUpdate: (id: string) => void
 }
 
-const StudentTable: React.FC<StudentTableProps> = ({dataSource, onDelete}) => {
+const StudentTable: React.FC<StudentTableProps> = ({dataSource, onDelete, clickUpdate}) => {
+    const admin = useSelector((root: RootState) => root.login).user as Admin
+
     const columns: ColumnsType<StudentDailyCardVo> = [
         {title: '学号', dataIndex: 'studentId', key: 'studentId'},
         {title: '姓名', dataIndex: 'name', key: 'name'},
@@ -38,9 +44,13 @@ const StudentTable: React.FC<StudentTableProps> = ({dataSource, onDelete}) => {
             title: "操作",
             dataIndex: "studentId",
             key: "studentId",
-            render: (id: string) => <>
-                <Button type="link">编辑</Button>
-                <Button type="link" onClick={() => onDelete(id)}>删除</Button>
+            render: (id: string, student: StudentDailyCardVo) => <>
+                {
+                    admin.role === AdminRole.SYSTEM_ADMIN && <>
+                        <Button type="link" onClick={() => clickUpdate(id)}>编辑</Button>
+                        <Button type="link" onClick={() => onDelete(id)}>删除</Button>
+                    </>
+                }
             </>
         }];
 

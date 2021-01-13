@@ -10,21 +10,26 @@ import TeacherTable from "./TeacherTable";
 import TeacherPieChart from "./TeacherPieChart";
 import {useParams} from "react-router-dom";
 import {College} from "../../../entity/College";
+import UpdateTeacherModal from "./UpdateTeacherModal";
 
 const TeacherManagerPage = () => {
-    const [visible, setVisible] = useState(false)
+    const [insertVisible, setInsertVisible] = useState(false)
+    const [updateVisible, setUpdateVisible] = useState(false)
+    const [updateTeacherId, setUpdateTeacherId] = useState<string>()
     const loginUser = useSelector((state: RootState) => state.login).user as Admin
     const {collegeId} = useParams<{ collegeId?: string }>()
     const [data, setData] = useState<TeacherDailyCardStatistic>()
     const [college, setCollege] = useState<College>()
 
-    function loadTeacher() {
-        return instance.get<TeacherDailyCardStatistic>("/admin/getTeacherStatistic", {params: {collegeId: collegeId}});
+    const loadTeacher = async (collegeId?: string) => {
+        const response = await instance
+            .get<TeacherDailyCardStatistic>("/admin/getTeacherStatistic", {params: {collegeId: collegeId}});
+        setData(() => response.data)
     }
 
     useEffect(() => {
         setCollege(undefined)
-        loadTeacher().then(response => setData(response.data))
+        loadTeacher(collegeId)
         if (collegeId != null) {
             instance
                 .get<College>("/admin/getCollege", {params: {id: collegeId}})
@@ -34,7 +39,7 @@ const TeacherManagerPage = () => {
 
     const deleteTeacher = async (id: string) => {
         await instance.post("/admin/deleteTeacher", {id: id})
-        loadTeacher().then(response => setData(response.data))
+        await loadTeacher()
     }
 
     return (
@@ -46,7 +51,7 @@ const TeacherManagerPage = () => {
                 subTitle={college?.name}
                 extra={
                     loginUser.role === AdminRole.SYSTEM_ADMIN &&
-                    <Button onClick={() => setVisible(true)} type={"primary"}>添加新教师</Button>
+                    <Button onClick={() => setInsertVisible(true)} type={"primary"}>添加新教师</Button>
                 }>
                 <Descriptions>
                     {college && <Descriptions.Item label={"学院名"}> {college.name}</Descriptions.Item>}
@@ -57,11 +62,23 @@ const TeacherManagerPage = () => {
                 </Descriptions>
                 <TeacherPieChart data={data}/>
             </PageHeader>
+            <UpdateTeacherModal
+                visible={updateVisible}
+                setVisible={setUpdateVisible}
+                onSuccess={() => loadTeacher()}
+                teacherId={updateTeacherId}
+            />
             <InsertTeacherModal
-                visible={visible}
-                setVisible={setVisible}
-                onSuccess={() => loadTeacher().then(response => setData(response.data))}/>
-            <TeacherTable dailyCardList={data?.dailyCardList} onDelete={(id) => deleteTeacher(id)}/>
+                visible={insertVisible}
+                setVisible={setInsertVisible}
+                onSuccess={() => loadTeacher()}/>
+            <TeacherTable
+                clickUpdate={(id) => {
+                    setUpdateTeacherId(id);
+                    setUpdateVisible(true);
+                }}
+                dailyCardList={data?.dailyCardList}
+                onDelete={(id) => deleteTeacher(id)}/>
         </div>
     )
 }

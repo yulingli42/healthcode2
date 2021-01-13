@@ -57,20 +57,20 @@ public class StudentServiceImpl implements IStudentService {
         StudentDailyCardStatistic statistic = new StudentDailyCardStatistic();
         List<Student> students;
         System.out.println("class:" + clazzId + " major:" + majorId + " college:" + collegeId);
-        if (!Objects.isNull(clazzId)){
+        if (!Objects.isNull(clazzId)) {
             students = studentDao.listAllByClazzId(clazzId);
-        }else if (!Objects.isNull(majorId)){
+        } else if (!Objects.isNull(majorId)) {
             students = studentDao.listAllByMajorId(majorId);
-        }else if (!Objects.isNull(collegeId)){
+        } else if (!Objects.isNull(collegeId)) {
             students = studentDao.listAllByCollegeId(collegeId);
-        }else {
+        } else {
             students = studentDao.listAll();
         }
 
         List<StudentDailyCardVo> studentDailyCardVos = new ArrayList<>();
 
         int greenCodeCount = 0, yellowCodeCount = 0, redCodeCount = 0;
-        for (Student student:students) {
+        for (Student student : students) {
 
             StudentDailyCardVo studentDailyCardVo = new StudentDailyCardVo();
 
@@ -149,16 +149,16 @@ public class StudentServiceImpl implements IStudentService {
         try {
             List<Object> studentData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
 
-            for(int i = 1;i < studentData.size();i++){
+            for (int i = 1; i < studentData.size(); i++) {
                 @SuppressWarnings("unchecked")
-                ArrayList<String> list = (ArrayList<String>)studentData.get(i);
+                ArrayList<String> list = (ArrayList<String>) studentData.get(i);
                 System.out.println(list);
                 String id = list.get(0);
                 String name = list.get(1);
                 String className = list.get(2);
                 String idCard = list.get(3);
 
-                if(id == null || name == null || className == null || idCard == null){
+                if (id == null || name == null || className == null || idCard == null) {
                     continue;
                 }
                 //获取教室号
@@ -167,7 +167,7 @@ public class StudentServiceImpl implements IStudentService {
                 insertStudent(id, name, classId, idCard);
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw new HealthCodeException("导入学生Excel失败");
         }
@@ -176,5 +176,15 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void deleteById(String id) {
         studentDao.delete(id);
+    }
+
+    @Override
+    public Student getById(String id) {
+        return studentDao.getByUsername(id);
+    }
+
+    @Override
+    public void updateStudent(String id, Integer classId, String name, String idCard) {
+        //TODO
     }
 }

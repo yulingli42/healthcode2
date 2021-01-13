@@ -46,7 +46,7 @@ const AdminManagerPage = () => {
                 <Button type={"primary"} onClick={() => setVisible(true)}>添加新管理员</Button>}>
             </PageHeader>
             <AddAdminModal visible={visible} setVisible={setVisible}/>
-            <Table dataSource={admins} columns={columns}/>
+            <Table rowKey={"username"} dataSource={admins} columns={columns}/>
         </div>
     )
 

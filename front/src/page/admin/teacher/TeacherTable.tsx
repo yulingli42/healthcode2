@@ -3,13 +3,19 @@ import {Button, Table} from "antd";
 import {TeacherDailyCardVo} from "../../../entity/TeacherDailyCardVo";
 import {ColumnsType} from "antd/es/table";
 import {healthCodeName, HealthCodeType} from "../../../entity/HealthCodeType";
+import {useSelector} from "react-redux";
+import {RootState} from "../../../store";
+import {Admin, AdminRole} from "../../../entity/Admin";
 
 interface TeacherTableProps {
     dailyCardList?: TeacherDailyCardVo[],
-    onDelete: (id: string) => void
+    onDelete: (id: string) => void,
+    clickUpdate: (id: string) => void,
 }
 
-const TeacherTable: React.FC<TeacherTableProps> = ({dailyCardList, onDelete}) => {
+const TeacherTable: React.FC<TeacherTableProps> = ({dailyCardList, onDelete, clickUpdate}) => {
+    const admin = useSelector((root: RootState) => root.login).user as Admin
+
     const columns: ColumnsType<TeacherDailyCardVo> = [
         {title: '工号', dataIndex: 'teacherId', key: 'teacherId'},
         {title: '姓名', dataIndex: 'name', key: 'name'},
@@ -37,8 +43,12 @@ const TeacherTable: React.FC<TeacherTableProps> = ({dailyCardList, onDelete}) =>
             dataIndex: "teacherId",
             key: "teacherId",
             render: (id: string) => <>
-                <Button type="link">编辑</Button>
-                <Button type="link" onClick={() => onDelete(id)}>删除</Button>
+                {
+                    admin.role === AdminRole.SYSTEM_ADMIN && <>
+                        <Button type="link" onClick={() => clickUpdate(id)}>编辑</Button>
+                        <Button type="link" onClick={() => onDelete(id)}>删除</Button>
+                    </>
+                }
             </>
         }];
 

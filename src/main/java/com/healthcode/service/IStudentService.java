@@ -30,7 +30,7 @@ public interface IStudentService {
 
     /**
      * @param student 学生
-     * @param card 当前提交的每日一报
+     * @param card    当前提交的每日一报
      */
     void submitDailyCard(Student student, CurrentDailyCard card);
 
@@ -76,7 +76,26 @@ public interface IStudentService {
 
     /**
      * 删除学生
+     *
      * @param id 学生 id
      */
     void deleteById(String id);
+
+    /**
+     * 根据学生学号获取信息
+     *
+     * @param id 学生学号
+     * @return 学生信息
+     */
+    Student getById(String id);
+
+    /**
+     * 更新学生
+     *
+     * @param id      学号
+     * @param classId 班级号
+     * @param name    姓名
+     * @param idCard  身份证号
+     */
+    void updateStudent(String id, Integer classId, String name, String idCard);
 }

@@ -164,4 +164,9 @@ public class TeacherServiceImpl implements ITeacherService {
     public void deleteById(String id) {
         teacherDao.delete(id);
     }
+
+    @Override
+    public void updateTeacher(String id, Integer collegeId, String name, String idCard) {
+        //TODO
+    }
 }

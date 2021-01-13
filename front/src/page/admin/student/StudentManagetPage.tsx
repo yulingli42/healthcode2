@@ -12,9 +12,12 @@ import StudentPieChart from "./StudentPieChart";
 import {Clazz} from "../../../entity/Clazz";
 import {Major} from "../../../entity/Major";
 import {College} from "../../../entity/College";
+import UploadStudentModal from "./UpdateStudentModal";
 
 const StudentManagerPage = () => {
-    const [modalVisible, setModalVisible] = useState(false)
+    const [insertVisible, setInsertVisible] = useState(false)
+    const [uploadVisible, setUploadVisible] = useState(false)
+    const [needUpdateStudentId, setNeedUpdateStudentId] = useState<string>()
     const [data, setData] = useState<StudentDailyCardStatistic>()
     const {collegeId, majorId, classId} = useParams<{ collegeId?: string, majorId?: string, classId?: string }>()
     const loginUser = useSelector((state: RootState) => state.login).user as Admin
@@ -22,40 +25,45 @@ const StudentManagerPage = () => {
     const [major, setMajor] = useState<Major>()
     const [college, setCollege] = useState<College>()
 
-    const loadStudent = () => {
-        return instance.get<StudentDailyCardStatistic>("/admin/getStudentStatistic", {
+    const loadStudent = (collegeId?: string, majorId?: string, classId?: string) => {
+        instance.get<StudentDailyCardStatistic>("/admin/getStudentStatistic", {
             params: {
                 collegeId, majorId, classId
             }
-        });
+        }).then(response => setData(() => response.data));
     }
 
     useEffect(() => {
         setClazz(undefined)
         setMajor(undefined)
         setCollege(undefined)
-        loadStudent().then(response => setData(response.data))
+        loadStudent(collegeId, majorId, classId)
         if (classId != null) {
             instance
                 .get<Clazz>("/admin/getClass", {params: {id: classId}})
-                .then(response => setClazz(response.data))
+                .then(response => setClazz(() => response.data))
         } else if (majorId != null) {
             instance
                 .get<Major>("/admin/getMajor", {params: {id: majorId}})
-                .then(response => setMajor(response.data))
+                .then(response => setMajor(() => response.data))
         } else if (collegeId != null) {
             instance
                 .get<College>("/admin/getCollege", {params: {id: collegeId}})
-                .then(response => setCollege(response.data))
+                .then(response => setCollege(() => response.data))
         }
     }, [collegeId, majorId, classId])
 
 
     const deleteStudent = async (id: string) => {
         await instance.post("/admin/deleteStudent", {id: id})
-        const response = await loadStudent();
-        setData(response.data)
+        await loadStudent();
     }
+
+    const onClickStudent = (id: string) => {
+        setNeedUpdateStudentId(id)
+        setUploadVisible(true)
+    }
+
     const getTitle = (): string => {
         if (clazz != null) {
             return `${clazz.name}`
@@ -66,6 +74,7 @@ const StudentManagerPage = () => {
         }
         return ''
     }
+
     return (
         <div>
             <PageHeader
@@ -76,7 +85,7 @@ const StudentManagerPage = () => {
                 extra={[
                     <Button
                         key={3}
-                        onClick={() => setModalVisible(true)}
+                        onClick={() => setInsertVisible(true)}
                         type={"primary"}
                         hidden={loginUser.role !== AdminRole.SYSTEM_ADMIN}>添加新学生</Button>
                 ]}>
@@ -98,11 +107,18 @@ const StudentManagerPage = () => {
                 </Descriptions>
                 <StudentPieChart data={data}/>
             </PageHeader>
+            <UploadStudentModal
+                updateStudentId={needUpdateStudentId}
+                visible={uploadVisible}
+                setVisible={setUploadVisible}
+                onSuccess={() => loadStudent()}/>
             <InsertStudentModal
-                visible={modalVisible}
-                setVisible={setModalVisible}
-                onSuccess={() => loadStudent().then(response => setData(response.data))}/>
-            <StudentTable dataSource={data?.dailyCardList} onDelete={(id) => deleteStudent(id)}/>
+                visible={insertVisible}
+                setVisible={setInsertVisible}
+                onSuccess={() => loadStudent()}/>
+            <StudentTable
+                clickUpdate={(id) => onClickStudent(id)}
+                dataSource={data?.dailyCardList} onDelete={(id) => deleteStudent(id)}/>
         </div>
     )
 }
