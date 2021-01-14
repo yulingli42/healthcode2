@@ -55,7 +55,7 @@ public class AdminDao {
                 statement.setString(1,username);
                 statement.setString(2,password);
                 statement.setString(3,adminRole.getDesc());
-                statement.setInt(4,collegeId);
+                statement.setObject(4,collegeId);
 
                 statement.execute();
             }

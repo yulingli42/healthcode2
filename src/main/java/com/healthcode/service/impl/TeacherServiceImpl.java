@@ -36,7 +36,7 @@ public class TeacherServiceImpl implements ITeacherService {
     @Override
     public @Nullable Teacher login(String username, String password) {
         //校验数据
-        if (CheckValueUtil.checkStringHelper(username, password)){
+        if (!CheckValueUtil.checkStringHelper(username, password)){
             throw new HealthCodeException("信息不可为空");
         }
         //教师登录

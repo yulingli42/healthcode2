@@ -41,7 +41,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Student login(String username, String password) {
         //校验数据
-        if (CheckValueUtil.checkStringHelper(username, password)){
+        if (!CheckValueUtil.checkStringHelper(username, password)){
             throw new HealthCodeException("信息不可为空");
         }
         //学生登录
@@ -129,7 +129,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void insertStudent(String id, String name, Integer classId, String idCard) {
         //校验数据
-        if (CheckValueUtil.checkStringHelper(id, name, idCard)){
+        if (!CheckValueUtil.checkStringHelper(id, name, idCard)){
             throw new HealthCodeException("信息不可为空");
         }
         if (Objects.isNull(clazzDao.getById(classId))){
@@ -211,7 +211,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void deleteById(String id) {
         //校验数据
-        if (CheckValueUtil.checkStringHelper(id)){
+        if (!CheckValueUtil.checkStringHelper(id)){
             throw new HealthCodeException("信息不可为空");
         }
         studentDao.delete(id);
@@ -220,7 +220,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Student getById(String id) {
         //校验数据
-        if (CheckValueUtil.checkStringHelper(id)){
+        if (!CheckValueUtil.checkStringHelper(id)){
             throw new HealthCodeException("信息不可为空");
         }
         return studentDao.getByUsername(id);
@@ -229,7 +229,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void updateStudent(String id, String password, Integer classId, String name, String idCard) {
         //校验数据
-        if (CheckValueUtil.checkStringHelper(id)){
+        if (!CheckValueUtil.checkStringHelper(id)){
             throw new HealthCodeException("id不可为空");
         }
         //获取当前数据

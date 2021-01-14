@@ -29,7 +29,8 @@ public class AdminServiceImpl implements IAdminService {
     @Override
     public void insertAdmin(String username, String password, Admin.AdminRole adminRole, Integer collegeId) {
         //校验数据
-        if(CheckValueUtil.checkStringHelper(username, password) || Objects.isNull(adminRole) || Objects.isNull(collegeId)){
+        if(!CheckValueUtil.checkStringHelper(username, password) || Objects.isNull(adminRole)
+                || (Admin.AdminRole.COLLEGE_ADMIN.equals(adminRole) && Objects.isNull(collegeId))){
             throw new HealthCodeException("信息不可为空");
         }
         adminDao.insert(username, password, adminRole, collegeId);
@@ -38,7 +39,7 @@ public class AdminServiceImpl implements IAdminService {
     @Override
     public void alterAdmin(String username, String newUsername, String password, Admin.AdminRole adminRole, Integer collegeId) {
         //校验数据
-        if(CheckValueUtil.checkStringHelper(username)){
+        if(!CheckValueUtil.checkStringHelper(username)){
             throw new HealthCodeException("用户名不可为空");
         }
         Admin admin = adminDao.getByUsername(username);
