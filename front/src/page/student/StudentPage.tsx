@@ -52,7 +52,7 @@ const StudentPage = () => {
 
     return <div>
         <Helmet title={isSubmitDailyCard ? "健康码" : "每日一报"}/>
-        <Header/>
+        <Header url={"/student/changePassword"}/>
         <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
             {isLoading && <Skeleton active={true}/>}
             {!isLoading && isSubmitDailyCard && <QrcodeImage/>}

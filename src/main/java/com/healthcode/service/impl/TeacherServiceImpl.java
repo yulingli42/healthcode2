@@ -217,4 +217,9 @@ public class TeacherServiceImpl implements ITeacherService {
             throw new HealthCodeException("当前教师不存在");
         }
     }
+
+    @Override
+    public void changePassword(String id, String oldPassword, String newPassword) {
+        //TODO
+    }
 }

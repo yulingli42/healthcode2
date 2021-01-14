@@ -86,4 +86,13 @@ public interface ITeacherService {
      * @param idCard    身份证号
      */
     void updateTeacher(String id, String password, Integer collegeId, String name, String idCard);
+
+    /**
+     * 修改密码
+     *
+     * @param id          工号
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     */
+    void changePassword(String id, String oldPassword, String newPassword);
 }

@@ -1,6 +1,5 @@
 package com.healthcode.service.impl;
 
-import cn.hutool.Hutool;
 import cn.hutool.core.util.IdcardUtil;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.ClazzDao;
@@ -17,11 +16,9 @@ import com.healthcode.utils.ExcelUtil;
 import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
-import javafx.beans.binding.ObjectExpression;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.Part;
-import javax.swing.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +38,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Student login(String username, String password) {
         //校验数据
-        if (!CheckValueUtil.checkStringHelper(username, password)){
+        if (!CheckValueUtil.checkStringHelper(username, password)) {
             throw new HealthCodeException("信息不可为空");
         }
         //学生登录
@@ -55,7 +52,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Boolean checkStudentDailyCardToday(Student student) {
         //校验数据
-        if (Objects.isNull(student)){
+        if (Objects.isNull(student)) {
             throw new HealthCodeException("当前学生不存在");
         }
         //true:已打卡 false:未打卡
@@ -129,13 +126,13 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void insertStudent(String id, String name, Integer classId, String idCard) {
         //校验数据
-        if (!CheckValueUtil.checkStringHelper(id, name, idCard)){
+        if (!CheckValueUtil.checkStringHelper(id, name, idCard)) {
             throw new HealthCodeException("信息不可为空");
         }
-        if (Objects.isNull(clazzDao.getById(classId))){
+        if (Objects.isNull(clazzDao.getById(classId))) {
             throw new HealthCodeException("该班级号不存在");
         }
-        if (!IdcardUtil.isValidCard(idCard)){
+        if (!IdcardUtil.isValidCard(idCard)) {
             throw new HealthCodeException("身份证无效");
         }
         //添加学生
@@ -146,7 +143,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public byte[] showHealthCode(Student student) {
         //校验数据
-        if (Objects.isNull(student)){
+        if (Objects.isNull(student)) {
             throw new HealthCodeException("信息不可为空");
         }
         //返回学生二维码
@@ -164,7 +161,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void submitDailyCard(Student student, CurrentDailyCard card) {
         //校验数据
-        if (Objects.isNull(student) || Objects.isNull(card)){
+        if (Objects.isNull(student) || Objects.isNull(card)) {
             throw new HealthCodeException("信息不可为空");
         }
         //判断当前健康状态
@@ -177,7 +174,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void addStudentFromExcel(Part filePart) {
         //校验数据
-        if (Objects.isNull(filePart)){
+        if (Objects.isNull(filePart)) {
             throw new HealthCodeException("导入的文件为空");
         }
         //将Excel文件中的学生数据导入数据库
@@ -211,7 +208,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void deleteById(String id) {
         //校验数据
-        if (!CheckValueUtil.checkStringHelper(id)){
+        if (!CheckValueUtil.checkStringHelper(id)) {
             throw new HealthCodeException("信息不可为空");
         }
         studentDao.delete(id);
@@ -220,7 +217,7 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public Student getById(String id) {
         //校验数据
-        if (!CheckValueUtil.checkStringHelper(id)){
+        if (!CheckValueUtil.checkStringHelper(id)) {
             throw new HealthCodeException("信息不可为空");
         }
         return studentDao.getByUsername(id);
@@ -229,22 +226,27 @@ public class StudentServiceImpl implements IStudentService {
     @Override
     public void updateStudent(String id, String password, Integer classId, String name, String idCard) {
         //校验数据
-        if (!CheckValueUtil.checkStringHelper(id)){
+        if (!CheckValueUtil.checkStringHelper(id)) {
             throw new HealthCodeException("id不可为空");
         }
         //获取当前数据
         Student student = studentDao.getByUsername(id);
-        if(!Objects.isNull(student)){
+        if (!Objects.isNull(student)) {
             name = "".equals(name) ? student.getName() : name;
             password = "".equals(password) ? student.getPassword() : password;
             classId = Objects.isNull(classId) ? student.getClazz().getId() : classId;
-            if(!"".equals(idCard) && !IdcardUtil.isValidCard(idCard)){
+            if (!"".equals(idCard) && !IdcardUtil.isValidCard(idCard)) {
                 throw new HealthCodeException("身份证无效");
             }
             idCard = "".equals(idCard) ? student.getIdCard() : idCard;
             studentDao.alter(id, name, password, classId, idCard);
-        }else {
+        } else {
             throw new HealthCodeException("当前学生不存在");
         }
+    }
+
+    @Override
+    public void changePassword(String id, String oldPassword, String newPassword) {
+        //TODO
     }
 }

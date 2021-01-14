@@ -92,11 +92,20 @@ public interface IStudentService {
     /**
      * 更新学生
      *
-     * @param id      学号
+     * @param id       学号
      * @param password 密码
-     * @param classId 班级号
-     * @param name    姓名
-     * @param idCard  身份证号
+     * @param classId  班级号
+     * @param name     姓名
+     * @param idCard   身份证号
      */
     void updateStudent(String id, String password, Integer classId, String name, String idCard);
+
+    /**
+     * 修改密码
+     *
+     * @param id          学号
+     * @param oldPassword 旧密码
+     * @param newPassword 新密码
+     */
+    void changePassword(String id, String oldPassword, String newPassword);
 }

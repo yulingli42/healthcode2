@@ -22,3 +22,8 @@ export const NameWrapper=styled(Text)`
   margin-left: 30%;
   float: left;
 `
+
+export const ChangePasswordWrapper=styled(Button)`
+  margin-top: 10px;
+  float: right;
+`
