@@ -218,8 +218,8 @@ public class TeacherServiceImpl implements ITeacherService {
         //获取当前数据
         Teacher teacher = teacherDao.getByUsername(id);
         if(!Objects.isNull(teacher)){
-            name = "".equals(name) ? teacher.getName() : name;
-            password = "".equals(password) ? teacher.getPassword() : password;
+            name = Objects.isNull(name) || "".equals(name) ? teacher.getName() : name;
+            password = Objects.isNull(password) || "".equals(password) ? teacher.getPassword() : password;
             if(Objects.isNull(collegeId) || Objects.isNull(collegeDao.getById(collegeId))){
                 collegeId = teacher.getCollege().getId();
             }

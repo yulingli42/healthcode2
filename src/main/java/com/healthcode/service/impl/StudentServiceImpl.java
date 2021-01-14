@@ -16,6 +16,7 @@ import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -210,7 +211,7 @@ public class StudentServiceImpl implements IStudentService {
                 //插入学生信息
                 insertStudent(student.getId(), student.getName(), student.getClazz().getId(), student.getIdCard());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new HealthCodeException("导入学生Excel失败");
         }
@@ -243,8 +244,8 @@ public class StudentServiceImpl implements IStudentService {
         //获取当前数据
         Student student = studentDao.getByUsername(id);
         if (!Objects.isNull(student)) {
-            name = "".equals(name) ? student.getName() : name;
-            password = "".equals(password) ? student.getPassword() : password;
+            name = Objects.isNull(name) || "".equals(name) ? student.getName() : name;
+            password = Objects.isNull(password) || "".equals(password) ? student.getPassword() : password;
             classId = Objects.isNull(classId) ? student.getClazz().getId() : classId;
             if (!"".equals(idCard) && !IdcardUtil.isValidCard(idCard)) {
                 throw new HealthCodeException("身份证无效");
