@@ -187,15 +187,21 @@ public class StudentServiceImpl implements IStudentService {
                 String name = list.get(1);
                 String className = list.get(2);
                 String idCard = list.get(3);
-                //获取教室
-                Clazz clazz = clazzDao.getClassByName(className);
-
                 //校验数据
                 if (id == null && name == null && className == null && idCard == null) {
                     continue;
                 }
-                if (CheckValueUtil.checkStringHelper(id, name, className, idCard) || !IdcardUtil.isValidCard(idCard)) {
-                    throw new HealthCodeException("第" + i + "行数据无效，拒绝导入");
+
+                //获取教室
+                Clazz clazz = clazzDao.getClassByName(className);
+                if (Objects.isNull(clazz)){
+                    throw new HealthCodeException("第" + (i + 1) + "行班级不存在，拒绝导入");
+                }
+
+                if (!CheckValueUtil.checkStringHelper(id, name, className, idCard)) {
+                    throw new HealthCodeException("第" + (i + 1) + "行数据不完整，拒绝导入");
+                } else if (!IdcardUtil.isValidCard(idCard)){
+                    throw new HealthCodeException("第" + (i + 1) + "行身份证无效，拒绝导入");
                 }
                 students.add(new Student(id, name, null, idCard, clazz));
             }
