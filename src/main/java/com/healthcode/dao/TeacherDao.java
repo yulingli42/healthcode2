@@ -104,7 +104,7 @@ public class TeacherDao {
         }
     }
 
-    public void insert(String id, String name, String password, int collegeId, String idCard){
+    public void insert(String id, String name, String password, Integer collegeId, String idCard){
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO teacher(id, name, password, college_id, id_card) VALUES (?, ?, ?, ?, ?)")) {
@@ -134,5 +134,28 @@ public class TeacherDao {
             e.printStackTrace();
             throw new HealthCodeException("删除教师失败");
         }
+    }
+
+    public void alter(String id, String name, String password, Integer collegeId, String idCard){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE teacher SET id = ?, name = ?, password = ?, college_id = ?, id_card = ? WHERE (id = ?)")) {
+                updateHelper(id, name, password, collegeId, idCard, statement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("更新教师失败");
+        }
+    }
+
+    static void updateHelper(String id, String name, String password, Integer collegeOrClassId, String idCard, PreparedStatement statement) throws SQLException {
+        statement.setString(1,id);
+        statement.setString(2,name);
+        statement.setString(3,password);
+        statement.setInt(4,collegeOrClassId);
+        statement.setString(5, idCard);
+        statement.setString(6,id);
+
+        statement.execute();
     }
 }

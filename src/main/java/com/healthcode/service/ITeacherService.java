@@ -80,9 +80,10 @@ public interface ITeacherService {
      * 更新教师信息
      *
      * @param id        教师工号
+     * @param password  密码
      * @param collegeId 学院 id
      * @param name      名称
      * @param idCard    身份证号
      */
-    void updateTeacher(String id, Integer collegeId, String name, String idCard);
+    void updateTeacher(String id, String password, Integer collegeId, String name, String idCard);
 }

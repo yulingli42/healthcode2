@@ -30,7 +30,7 @@ public interface IAdminService {
     /**
      * 修改管理员信息
      */
-    void alterAdmin(String username, String newUsername, String password, Admin.AdminRole adminRole, int collegeId);
+    void alterAdmin(String username, String newUsername, String password, Admin.AdminRole adminRole, Integer collegeId);
 
     /**
      * 列出所有管理员

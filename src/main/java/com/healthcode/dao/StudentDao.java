@@ -137,7 +137,7 @@ public class StudentDao {
         }
     }
 
-    public void insert(String id, String name, String password, int classId, String idCard){
+    public void insert(String id, String name, String password, Integer classId, String idCard){
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO student(id, name, password, class_id, id_card) VALUES (?, ?, ?, ?, ?)")) {
@@ -166,6 +166,18 @@ public class StudentDao {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new HealthCodeException("删除学生失败");
+        }
+    }
+
+    public void alter(String id, String name, String password, Integer classId, String idCard){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE student SET id = ?, name = ?, password = ?, class_id = ?, id_card = ? WHERE (id = ?)")) {
+                TeacherDao.updateHelper(id, name, password, classId, idCard, statement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("更新学生失败");
         }
     }
 }

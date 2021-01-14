@@ -18,11 +18,11 @@ public class UpdateStudentServlet extends HttpServlet {
     private final IStudentService studentService = new StudentServiceImpl();
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         String id = req.getParameter("id");
         Integer classId = Integer.valueOf(req.getParameter("classId"));
         String name = req.getParameter("name");
         String idCard = req.getParameter("idCard");
-        studentService.updateStudent(id, classId, name, idCard);
+        studentService.updateStudent(id, null, classId, name, idCard);
     }
 }

@@ -93,9 +93,10 @@ public interface IStudentService {
      * 更新学生
      *
      * @param id      学号
+     * @param password 密码
      * @param classId 班级号
      * @param name    姓名
      * @param idCard  身份证号
      */
-    void updateStudent(String id, Integer classId, String name, String idCard);
+    void updateStudent(String id, String password, Integer classId, String name, String idCard);
 }
