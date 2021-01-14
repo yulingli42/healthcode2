@@ -1,15 +1,14 @@
 package com.healthcode.service.impl;
 
+import cn.hutool.core.util.IdcardUtil;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.CollegeDao;
 import com.healthcode.dao.TeacherDailyCardDao;
 import com.healthcode.dao.TeacherDao;
-import com.healthcode.domain.College;
-import com.healthcode.domain.HealthCodeType;
-import com.healthcode.domain.Teacher;
-import com.healthcode.domain.TeacherDailyCard;
+import com.healthcode.domain.*;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.ITeacherService;
+import com.healthcode.utils.CheckValueUtil;
 import com.healthcode.utils.ExcelUtil;
 import com.healthcode.utils.JudgeHealthCodeTypeUtil;
 import com.healthcode.vo.TeacherDailyCardStatistic;
@@ -36,6 +35,10 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public @Nullable Teacher login(String username, String password) {
+        //校验数据
+        if (!CheckValueUtil.checkStringHelper(username, password)){
+            throw new HealthCodeException("信息不可为空");
+        }
         //教师登录
         Teacher teacher = teacherDao.getByUsername(username);
         if(Objects.isNull(username) || !teacher.getPassword().equals(password)){
@@ -46,6 +49,10 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public Boolean getDailyCardStatus(Teacher teacher) {
+        //校验数据
+        if (Objects.isNull(teacher)){
+            throw new HealthCodeException("当前教师不存在");
+        }
         //true:已打卡 false:未打卡
         return teacherDailyCardDao.getToDayCardByTeacherID(teacher.getId()) != null;
     }
@@ -113,6 +120,16 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void insertTeacher(String teacherId, String name, String idCard, Integer collegeId) {
+        //校验数据
+        if (!CheckValueUtil.checkStringHelper(teacherId, name, idCard) || Objects.isNull(collegeId)){
+            throw new HealthCodeException("信息不可为空");
+        }
+        if (Objects.isNull(collegeDao.getById(collegeId))){
+            throw new HealthCodeException("该学院号不存在");
+        }
+        if (!IdcardUtil.isValidCard(idCard)){
+            throw new HealthCodeException("身份证无效");
+        }
         //添加教师
         //密码默认为身份证后六位
         teacherDao.insert(teacherId, name, idCard.substring(idCard.length() - 6), collegeId, idCard);
@@ -120,6 +137,10 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public byte[] showHealthCode(Teacher teacher) {
+        //校验数据
+        if (Objects.isNull(teacher)){
+            throw new HealthCodeException("当前教师不存在");
+        }
         //返回教师健康码
         List<HealthCodeType> healthCodeTypeList = teacherDailyCardDao.judgeHealthCodeTypeByPast(teacher.getId());
         HealthCodeType healthCodeType = JudgeHealthCodeTypeUtil.judgeHealthTypeHelper(healthCodeTypeList);
@@ -134,6 +155,10 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void addTeacherFromExcel(Part filePart) {
+        //校验数据
+        if (Objects.isNull(filePart)){
+            throw new HealthCodeException("导入的文件为空");
+        }
         //将Excel文件中的教师数据导入数据库
         try {
             List<Object> teacherData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
@@ -162,11 +187,34 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void deleteById(String id) {
+        //校验数据
+        if (!CheckValueUtil.checkStringHelper(id)){
+            throw new HealthCodeException("id不可为空");
+        }
         teacherDao.delete(id);
     }
 
     @Override
-    public void updateTeacher(String id, Integer collegeId, String name, String idCard) {
-        //TODO
+    public void updateTeacher(String id, String password, Integer collegeId, String name, String idCard) {
+        //校验数据
+        if (!CheckValueUtil.checkStringHelper(id)){
+            throw new HealthCodeException("id不可为空");
+        }
+        //获取当前数据
+        Teacher teacher = teacherDao.getByUsername(id);
+        if(!Objects.isNull(teacher)){
+            name = "".equals(name) ? teacher.getName() : name;
+            password = "".equals(password) ? teacher.getPassword() : password;
+            if(Objects.isNull(collegeId) || Objects.isNull(collegeDao.getById(collegeId))){
+                collegeId = teacher.getCollege().getId();
+            }
+            if(!"".equals(idCard) && !IdcardUtil.isValidCard(idCard)){
+                throw new HealthCodeException("身份证无效");
+            }
+            idCard = "".equals(idCard) ? teacher.getIdCard() : idCard;
+            teacherDao.alter(id, name, password, collegeId, idCard);
+        }else {
+            throw new HealthCodeException("当前教师不存在");
+        }
     }
 }
