@@ -10,6 +10,7 @@ import ClassManagerPage from "./class/ClassManagerPage";
 import MajorManagerPage from "./major/MajorManagerPageProps";
 import AdminSider from "./AdminSider";
 import AdminManagerPage from "./admin/AdminManagerPage";
+import {Helmet} from "react-helmet";
 
 const {Content} = Layout;
 
@@ -29,6 +30,7 @@ const AdminPage = () => {
     }
 
     return (<div>
+        <Helmet title={"管理员界面"}/>
         <Layout style={{minHeight: '100vh'}}>
             <AdminSider/>
             <Layout className="site-layout">

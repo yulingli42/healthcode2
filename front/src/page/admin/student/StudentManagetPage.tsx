@@ -13,6 +13,7 @@ import {Clazz} from "../../../entity/Clazz";
 import {Major} from "../../../entity/Major";
 import {College} from "../../../entity/College";
 import UploadStudentModal from "./UpdateStudentModal";
+import {Helmet} from "react-helmet";
 
 const StudentManagerPage = () => {
     const [insertVisible, setInsertVisible] = useState(false)
@@ -77,6 +78,7 @@ const StudentManagerPage = () => {
 
     return (
         <div>
+            <Helmet title={"学生管理"}/>
             <PageHeader
                 onBack={() => window.history.back()}
                 ghost={false}

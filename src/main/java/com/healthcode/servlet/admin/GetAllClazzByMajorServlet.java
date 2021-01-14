@@ -4,6 +4,7 @@ import cn.hutool.http.ContentType;
 import com.healthcode.domain.Clazz;
 import com.healthcode.service.IClazzService;
 import com.healthcode.service.impl.ClazzServiceImpl;
+import com.healthcode.utils.IntegerUtil;
 import com.healthcode.utils.JsonUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +24,7 @@ public class GetAllClazzByMajorServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Integer majorId = Integer.valueOf(req.getParameter("majorId"));
+        Integer majorId = IntegerUtil.parseInt(req.getParameter("majorId"));
         List<Clazz> list = clazzService.getAllClazzByMajor(majorId);
         resp.getOutputStream().write(JsonUtil.writeValue(list));
         resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));

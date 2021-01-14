@@ -11,6 +11,7 @@ import TeacherPieChart from "./TeacherPieChart";
 import {useParams} from "react-router-dom";
 import {College} from "../../../entity/College";
 import UpdateTeacherModal from "./UpdateTeacherModal";
+import {Helmet} from "react-helmet";
 
 const TeacherManagerPage = () => {
     const [insertVisible, setInsertVisible] = useState(false)
@@ -44,6 +45,7 @@ const TeacherManagerPage = () => {
 
     return (
         <div>
+            <Helmet title={"教师管理"}/>
             <PageHeader
                 onBack={() => window.history.back()}
                 ghost={false}

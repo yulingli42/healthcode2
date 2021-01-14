@@ -4,6 +4,7 @@ import com.healthcode.service.IStudentService;
 import com.healthcode.service.ITeacherService;
 import com.healthcode.service.impl.StudentServiceImpl;
 import com.healthcode.service.impl.TeacherServiceImpl;
+import com.healthcode.utils.IntegerUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +23,7 @@ public class UpdateTeacherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String id = req.getParameter("id");
-        Integer collegeId = Integer.valueOf(req.getParameter("collegeId"));
+        Integer collegeId = IntegerUtil.parseInt(req.getParameter("collegeId"));
         String name = req.getParameter("name");
         String idCard = req.getParameter("idCard");
         teacherService.updateTeacher(id, collegeId, name, idCard);

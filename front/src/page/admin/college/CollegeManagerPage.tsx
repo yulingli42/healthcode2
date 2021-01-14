@@ -7,6 +7,7 @@ import {Admin, AdminRole} from "../../../entity/Admin";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import AddCollegeModal from "./AddCollegeModal";
+import {Helmet} from "react-helmet";
 
 const CollegeManagerPage = () => {
     const loginUser = useSelector((state: RootState) => state.login).user as Admin
@@ -39,6 +40,7 @@ const CollegeManagerPage = () => {
 
     return (
         <div>
+            <Helmet title={"学院管理"}/>
             <PageHeader
                 ghost={false}
                 title="学院管理"

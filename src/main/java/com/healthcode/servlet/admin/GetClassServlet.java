@@ -4,6 +4,7 @@ import cn.hutool.http.ContentType;
 import com.healthcode.domain.Clazz;
 import com.healthcode.service.IClazzService;
 import com.healthcode.service.impl.ClazzServiceImpl;
+import com.healthcode.utils.IntegerUtil;
 import com.healthcode.utils.JsonUtil;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ public class GetClassServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer id = Integer.valueOf(req.getParameter("id"));
+        Integer id = IntegerUtil.parseInt(req.getParameter("id"));
         Clazz clazz = clazzService.getClazzById(id);
         resp.getOutputStream().write(JsonUtil.writeValue(clazz));
         resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));

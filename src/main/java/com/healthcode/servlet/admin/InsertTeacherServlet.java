@@ -2,6 +2,7 @@ package com.healthcode.servlet.admin;
 
 import com.healthcode.service.ITeacherService;
 import com.healthcode.service.impl.TeacherServiceImpl;
+import com.healthcode.utils.IntegerUtil;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +20,7 @@ public class InsertTeacherServlet extends HttpServlet {
         String teacherId = req.getParameter("teacherId");
         String name = req.getParameter("name");
         String idCard = req.getParameter("idCard");
-        Integer collegeId = Integer.valueOf(req.getParameter("collegeId"));
+        Integer collegeId = IntegerUtil.parseInt(req.getParameter("collegeId"));
         teacherService.insertTeacher(teacherId,name,idCard,collegeId);
     }
 }

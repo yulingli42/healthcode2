@@ -8,6 +8,7 @@ import SubmitDailyCardForm from "../../component/SubmitDailyCardForm";
 import {Skeleton} from "antd";
 import {Teacher} from "../../entity/Teacher";
 import QrcodeImage from "../../component/QRCodeImage";
+import {Helmet} from "react-helmet";
 
 
 const TeacherPage = () => {
@@ -48,6 +49,7 @@ const TeacherPage = () => {
     }
 
     return <div>
+        <Helmet title={isSubmitDailyCard ? "健康码" : "每日一报"}/>
         <Header/>
         <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
             {isLoading && <Skeleton active={true}/>}

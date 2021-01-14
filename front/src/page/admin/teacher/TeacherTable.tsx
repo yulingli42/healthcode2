@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Table} from "antd";
+import {Button, Popconfirm, Table} from "antd";
 import {TeacherDailyCardVo} from "../../../entity/TeacherDailyCardVo";
 import {ColumnsType} from "antd/es/table";
 import {healthCodeName, HealthCodeType} from "../../../entity/HealthCodeType";
@@ -46,7 +46,9 @@ const TeacherTable: React.FC<TeacherTableProps> = ({dailyCardList, onDelete, cli
                 {
                     admin.role === AdminRole.SYSTEM_ADMIN && <>
                         <Button type="link" onClick={() => clickUpdate(id)}>编辑</Button>
-                        <Button type="link" onClick={() => onDelete(id)}>删除</Button>
+                        <Popconfirm title={"是否删除该教师"} onConfirm={() => onDelete(id)}>
+                            <Button type="link">删除</Button>
+                        </Popconfirm>
                     </>
                 }
             </>

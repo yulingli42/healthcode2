@@ -1,5 +1,5 @@
 import {StudentDailyCardVo} from "../../../entity/StudentDailyCardVo";
-import {Button, Table} from "antd";
+import {Button, Popconfirm, Table} from "antd";
 import React from "react";
 import {ColumnsType} from "antd/es/table";
 import {healthCodeName, HealthCodeType} from "../../../entity/HealthCodeType";
@@ -44,11 +44,14 @@ const StudentTable: React.FC<StudentTableProps> = ({dataSource, onDelete, clickU
             title: "操作",
             dataIndex: "studentId",
             key: "studentId",
-            render: (id: string, student: StudentDailyCardVo) => <>
+            render: (id: string) => <>
                 {
                     admin.role === AdminRole.SYSTEM_ADMIN && <>
+
                         <Button type="link" onClick={() => clickUpdate(id)}>编辑</Button>
-                        <Button type="link" onClick={() => onDelete(id)}>删除</Button>
+                        <Popconfirm title={"是否删除该学生"} onConfirm={() => onDelete(id)}>
+                            <Button type="link">删除</Button>
+                        </Popconfirm>
                     </>
                 }
             </>

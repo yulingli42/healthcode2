@@ -3,11 +3,12 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../store";
 import {Redirect} from "react-router";
 import instance from "../../axiosInstance";
-import Header from "../../component/Header";
 import SubmitDailyCardForm from "../../component/SubmitDailyCardForm";
 import {Skeleton} from "antd";
 import {Student} from "../../entity/Student";
 import QrcodeImage from "../../component/QRCodeImage";
+import Header from "../../component/Header";
+import {Helmet} from "react-helmet";
 
 const StudentPage = () => {
     const loginUser = useSelector((state: RootState) => state.login)
@@ -50,12 +51,15 @@ const StudentPage = () => {
     }
 
     return <div>
+        <Helmet title={isSubmitDailyCard ? "健康码" : "每日一报"}/>
         <Header/>
         <div style={{marginLeft: '30%', marginRight: "30%", marginTop: 30}}>
             {isLoading && <Skeleton active={true}/>}
             {!isLoading && isSubmitDailyCard && <QrcodeImage/>}
-            {!isLoading && !isSubmitDailyCard &&
-            <SubmitDailyCardForm onFinish={onFinish} isStudent={true} user={loginUser.user as Student}/>}
+            {
+                !isLoading && !isSubmitDailyCard &&
+                <SubmitDailyCardForm onFinish={onFinish} isStudent={true} user={loginUser.user as Student}/>
+            }
         </div>
     </div>
 }

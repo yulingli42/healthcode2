@@ -7,6 +7,7 @@ import {Admin, AdminRole} from "../../../entity/Admin";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import AddMajorModal from "./AddMajorModal";
+import {Helmet} from "react-helmet";
 
 const MajorManagerPage = () => {
     const loginUser = useSelector((state: RootState) => state.login).user as Admin
@@ -36,6 +37,7 @@ const MajorManagerPage = () => {
 
     return (
         <div>
+            <Helmet title={"专业管理"}/>
             <PageHeader
                 onBack={() => window.history.back()}
                 ghost={false}

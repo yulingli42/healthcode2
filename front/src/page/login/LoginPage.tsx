@@ -9,6 +9,7 @@ import {RootState} from "../../store";
 import {Redirect} from "react-router";
 import ParticlesBg from 'particles-bg'
 import {LoginForm} from "./style";
+import {Helmet} from "react-helmet";
 
 const LoginPage = () => {
     const loginUser = useSelector((state: RootState) => state.login)
@@ -39,6 +40,7 @@ const LoginPage = () => {
 
     return (
         <div>
+            <Helmet title={"登录"}/>
             <ParticlesBg type="cobweb" bg={true} num={60}/>
             <LoginForm onFinish={onFinish}>
                 <h2 style={{display: "block", fontSize: 30, textAlign: "center"}}>健康码管理系统</h2>

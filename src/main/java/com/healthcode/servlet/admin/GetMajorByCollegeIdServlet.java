@@ -4,6 +4,7 @@ import cn.hutool.http.ContentType;
 import com.healthcode.domain.Major;
 import com.healthcode.service.IMajorService;
 import com.healthcode.service.impl.MajorServiceImpl;
+import com.healthcode.utils.IntegerUtil;
 import com.healthcode.utils.JsonUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +24,7 @@ public class GetMajorByCollegeIdServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Integer collegeId = Integer.valueOf(req.getParameter("collegeId"));
+        Integer collegeId = IntegerUtil.parseInt(req.getParameter("collegeId"));
         List<Major> majors = majorService.getAllMajorByCollegeId(collegeId);
         resp.getOutputStream().write(JsonUtil.writeValue(majors));
         resp.setContentType(ContentType.build(ContentType.JSON.getValue(), StandardCharsets.UTF_8));

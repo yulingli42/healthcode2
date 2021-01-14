@@ -7,6 +7,7 @@ import {Admin, AdminRole} from "../../../entity/Admin";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import AddClassModal from "./AddClassModal";
+import {Helmet} from "react-helmet";
 
 const ClassManagerPage = () => {
     const loginUser = useSelector((state: RootState) => state.login).user as Admin
@@ -31,6 +32,7 @@ const ClassManagerPage = () => {
     ]
 
     return <div>
+        <Helmet title={"班级管理"}/>
         <PageHeader
             onBack={() => window.history.back()}
             ghost={false}

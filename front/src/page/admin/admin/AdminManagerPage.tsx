@@ -7,6 +7,7 @@ import {RootState} from "../../../store";
 import {College} from "../../../entity/College";
 import AddAdminModal from "./AddAdminModal";
 import instance from "../../../axiosInstance";
+import {Helmet} from "react-helmet";
 
 const AdminManagerPage = () => {
     const loginUser = useSelector((state: RootState) => state.login).user as Admin
@@ -39,6 +40,7 @@ const AdminManagerPage = () => {
 
     return (
         <div>
+            <Helmet title={"管理员管理"}/>
             <PageHeader
                 ghost={false}
                 title="管理员管理"

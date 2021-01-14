@@ -29,6 +29,7 @@ public class ExceptionFilter extends HttpFilter {
             res.getOutputStream().write(JsonUtil.writeValue(map));
             res.setStatus(HttpStatus.HTTP_BAD_REQUEST);
         } catch (Exception e) {
+            e.printStackTrace();
             Map<Object, Object> map = Maps.newHashMap();
             map.put("message", "服务器内部错误");
             res.getOutputStream().write(JsonUtil.writeValue(map));
