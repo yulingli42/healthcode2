@@ -16,12 +16,21 @@ const MajorManagerPage = () => {
     const [data, setData] = useState<Major[]>([])
     const {collegeId} = useParams<{ collegeId: string }>();
 
-    useEffect(() => {
+    const loadMajor = (collegeId: number) => {
         setLoading(true)
         instance.get<Major[]>("/admin/getMajorByCollegeId", {params: {collegeId: collegeId}})
             .then(response => setData(response.data))
             .finally(() => setLoading(false))
+    }
+
+    useEffect(() => {
+        loadMajor(Number(collegeId))
     }, [collegeId])
+
+    const deleteMajor = (id: number) => {
+        instance.post("/admin/deleteMajor", {id})
+            .then(() => loadMajor(Number(collegeId)))
+    }
 
     const columns = [
         {title: '专业名', dataIndex: 'name', key: 'name'},
@@ -32,6 +41,10 @@ const MajorManagerPage = () => {
         {
             title: '', dataIndex: 'id', key: 'id',
             render: (id: number) => <Link to={`/admin/student/${collegeId}/${id}`}>查看该专业所有学生信息</Link>
+        },
+        {
+            title: '', dataIndex: 'id', key: 'id',
+            render: (id: number) => loginUser.role === AdminRole.SYSTEM_ADMIN &&<Button type={"link"} onClick={() => deleteMajor(id)}>删除</Button>
         }
     ]
 
@@ -45,7 +58,11 @@ const MajorManagerPage = () => {
                 extra={loginUser.role === AdminRole.SYSTEM_ADMIN &&
                 <Button type={"primary"} onClick={() => setVisible(true)}>添加新专业</Button>}>
             </PageHeader>
-            <AddMajorModal visible={visible} setVisible={setVisible} collegeId={Number(collegeId)}/>
+            <AddMajorModal
+                visible={visible}
+                setVisible={setVisible}
+                collegeId={Number(collegeId)}
+                onSuccess={() => loadMajor(Number(collegeId))}/>
             <Table loading={loading} rowKey={"name"} columns={columns} dataSource={data}/>
         </div>
     )

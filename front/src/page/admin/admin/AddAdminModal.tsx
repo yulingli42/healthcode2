@@ -8,10 +8,11 @@ const {Option} = Select;
 
 interface AddAdminModalProps {
     visible: boolean,
-    setVisible: (value: boolean) => void
+    setVisible: (value: boolean) => void,
+    onSuccess: () => void
 }
 
-const AddAdminModal: React.FC<AddAdminModalProps> = ({visible, setVisible}) => {
+const AddAdminModal: React.FC<AddAdminModalProps> = ({visible, setVisible, onSuccess}) => {
     const [colleges, setColleges] = useState<College[]>([])
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
@@ -25,8 +26,9 @@ const AddAdminModal: React.FC<AddAdminModalProps> = ({visible, setVisible}) => {
     }, [])
 
     const submit = async () => {
-        await instance.post("/admin/addAdmin",{name, password, type, collegeId})
+        await instance.post("/admin/addAdmin", {name, password, type, collegeId})
         setVisible(false)
+        onSuccess()
     }
 
     const onTypeChange = (type: AdminRole) => {

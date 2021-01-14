@@ -23,7 +23,7 @@ public class AdminDao {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT id, password, role, college_id " +
                             "FROM admin WHERE username = ?")) {
-                statement.setString(1,username);
+                statement.setString(1, username);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     if (!resultSet.next()) {
                         return null;
@@ -48,14 +48,14 @@ public class AdminDao {
         }
     }
 
-    public void insert(String username, String password, Admin.AdminRole adminRole, Integer collegeId){
+    public void insert(String username, String password, Admin.AdminRole adminRole, Integer collegeId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO admin(username, password, role, college_id) VALUES (?, ?, ?, ?)")) {
-                statement.setString(1,username);
-                statement.setString(2,password);
-                statement.setString(3,adminRole.getDesc());
-                statement.setObject(4,collegeId);
+                statement.setString(1, username);
+                statement.setString(2, password);
+                statement.setString(3, adminRole.getDesc());
+                statement.setObject(4, collegeId);
 
                 statement.execute();
             }
@@ -65,14 +65,14 @@ public class AdminDao {
         }
     }
 
-    public void alter(String username, String newUsername, String password, Admin.AdminRole adminRole, int collegeId){
+    public void alter(String username, String newUsername, String password, Admin.AdminRole adminRole, int collegeId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "UPDATE admin SET username = ?, password = ?, role = ?, college_id = ? WHERE (username = ?)")) {
-                statement.setString(1,newUsername);
-                statement.setString(2,password);
-                statement.setString(3,adminRole.getDesc());
-                statement.setInt(4,collegeId);
+                statement.setString(1, newUsername);
+                statement.setString(2, password);
+                statement.setString(3, adminRole.getDesc());
+                statement.setInt(4, collegeId);
                 statement.setString(5, username);
 
                 statement.execute();
@@ -108,6 +108,19 @@ public class AdminDao {
                 list.add(admin);
             }
             return list;
+        }
+    }
+
+    public void deleteById(Integer id) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM admin WHERE id = ?")) {
+                statement.setInt(1, id);
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加管理员失败");
         }
     }
 }

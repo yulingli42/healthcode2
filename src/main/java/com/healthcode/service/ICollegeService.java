@@ -29,4 +29,11 @@ public interface ICollegeService {
      * @param name 学院名
      */
     void addCollege(String name);
+
+    /**
+     * 根据id删除
+     *
+     * @param id 学院id
+     */
+    void deleteById(Integer id);
 }

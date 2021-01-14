@@ -15,9 +15,18 @@ const AdminManagerPage = () => {
 
     const [admins, setAdmins] = useState<Admin[]>([])
 
-    useEffect(() => {
-        instance.get<Admin[]>("/admin/getAllAdmin")
+    const loadAdmin = () => {
+        instance.get<Admin[]>("/admin/getAllAdmin",)
             .then(response => setAdmins(response.data))
+    }
+
+    const deleteAdmin = (id: number) => {
+        instance.post("/admin/deleteAdmin", {id})
+            .then(() => loadAdmin())
+    }
+
+    useEffect(() => {
+        loadAdmin();
     }, [])
 
     const columns: ColumnsType<Admin> = [
@@ -36,6 +45,14 @@ const AdminManagerPage = () => {
             }
         },
         {title: '学院', dataIndex: 'college', key: 'college', render: (college?: College) => college?.name},
+        {
+            title: '',
+            dataIndex: 'id',
+            key: 'id',
+            render: (id: number) => id === loginUser.id ? null :
+
+                <Button type={"link"} onClick={() => deleteAdmin(id)}>删除</Button>
+        },
     ]
 
     return (
@@ -47,7 +64,7 @@ const AdminManagerPage = () => {
                 extra={loginUser.role === AdminRole.SYSTEM_ADMIN &&
                 <Button type={"primary"} onClick={() => setVisible(true)}>添加新管理员</Button>}>
             </PageHeader>
-            <AddAdminModal visible={visible} setVisible={setVisible}/>
+            <AddAdminModal visible={visible} setVisible={setVisible} onSuccess={() => loadAdmin()}/>
             <Table rowKey={"username"} dataSource={admins} columns={columns}/>
         </div>
     )

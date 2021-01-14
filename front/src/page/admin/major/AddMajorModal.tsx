@@ -5,14 +5,16 @@ import instance from "../../../axiosInstance";
 interface AddMajorModalProps {
     visible: boolean,
     setVisible: (visible: boolean) => void,
-    collegeId: number
+    collegeId: number,
+    onSuccess: () => void
 }
 
-const AddMajorModal: React.FC<AddMajorModalProps> = ({visible, setVisible, collegeId}) => {
+const AddMajorModal: React.FC<AddMajorModalProps> = ({visible, setVisible, collegeId, onSuccess}) => {
     const [name, setName] = useState('')
     const onSubmit = async () => {
         await instance.post("/admin/addMajor", {name, collegeId})
         setVisible(false)
+        onSuccess()
     }
 
     return (

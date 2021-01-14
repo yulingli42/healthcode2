@@ -3,6 +3,7 @@ package com.healthcode.dao;
 import com.google.common.collect.Lists;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
+import com.healthcode.domain.College;
 import com.healthcode.domain.Major;
 
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class MajorDao {
         }
     }
 
-    public List<Major> listAll(Integer collegeId){
+    public List<Major> listAllByCollegeId(Integer collegeId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM profession WHERE college_id = ?")) {
@@ -79,4 +80,16 @@ public class MajorDao {
         }
     }
 
+    public int deleteById(Integer id) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM profession WHERE id = ?")) {
+                statement.setInt(1, id);
+                return statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加专业失败");
+        }
+    }
 }

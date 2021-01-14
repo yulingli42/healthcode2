@@ -41,7 +41,7 @@ public class ClazzDao {
         }
     }
 
-    public List<Clazz> listAll(Integer majorId) {
+    public List<Clazz> listAllByMajorId(Integer majorId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM class WHERE profession_id = ?")) {
@@ -106,7 +106,7 @@ public class ClazzDao {
         }
     }
 
-    public void insert(Integer majorId, String name){
+    public void insert(Integer majorId, String name) {
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO class(name, profession_id) VALUES (?, ?)")) {
@@ -114,6 +114,19 @@ public class ClazzDao {
                 statement.setInt(2, majorId);
 
                 statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("添加班级失败");
+        }
+    }
+
+    public int deleteById(Integer id) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM class WHERE id = ?")) {
+                statement.setInt(1, id);
+                return statement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
