@@ -52,4 +52,18 @@ public class StudentDailyCardDao {
             throw new HealthCodeException("检查学生过去打卡记录失败");
         }
     }
+
+    public void deleteByStudentId(String studentId){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM student_daily_card WHERE student_id = ?")) {
+                statement.setString(1, studentId);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("删除学生打卡记录失败");
+        }
+    }
 }

@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class StudentDao {
     private final ClazzDao clazzDao = new ClazzDao();
+    private final StudentDailyCardDao studentDailyCardDao = new StudentDailyCardDao();
 
     public Student getByUsername(String studentId) {
         try (Connection connection = DatasourceConfig.getConnection()) {
@@ -156,6 +157,9 @@ public class StudentDao {
     }
 
     public void delete(String id){
+        //先删除该学生的打卡信息
+        studentDailyCardDao.deleteByStudentId(id);
+
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
                     "DELETE FROM student WHERE id = ?")) {
