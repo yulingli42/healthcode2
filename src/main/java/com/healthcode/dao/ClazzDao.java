@@ -83,6 +83,29 @@ public class ClazzDao {
         }
     }
 
+    public Clazz getClassByName(String className) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM class WHERE name = ?")) {
+                statement.setString(1, className);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        Clazz clazz = new Clazz();
+                        clazz.setId(resultSet.getInt("id"));
+                        clazz.setName(resultSet.getString("name"));
+                        clazz.setMajor(majorDao.getById(resultSet.getInt("profession_id")));
+                        return clazz;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取班级失败");
+        }
+    }
+
     public void insert(Integer majorId, String name){
         try (Connection connection = DatasourceConfig.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(

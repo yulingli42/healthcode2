@@ -10,6 +10,16 @@ public class Teacher {
     private String idCard;
     private College college;
 
+    public Teacher(){}
+
+    public Teacher(String id, String name, String password, String idCard, College college){
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.idCard = idCard;
+        this.college = college;
+    }
+
     public String getId() {
         return id;
     }

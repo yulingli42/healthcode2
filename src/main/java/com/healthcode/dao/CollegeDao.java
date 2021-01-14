@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.healthcode.common.HealthCodeException;
 import com.healthcode.config.DatasourceConfig;
 import com.healthcode.domain.College;
+import org.checkerframework.checker.units.qual.C;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -103,6 +104,28 @@ public class CollegeDao {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new HealthCodeException("获取学院号失败");
+        }
+    }
+
+    public College getCollegeByName(String collegeName) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "SELECT * FROM college WHERE name = ?")) {
+                statement.setString(1, collegeName);
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    if (resultSet.next()) {
+                        College college = new College();
+                        college.setId(resultSet.getInt("id"));
+                        college.setName(resultSet.getString("name"));
+                        return college;
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("获取学院失败");
         }
     }
 }

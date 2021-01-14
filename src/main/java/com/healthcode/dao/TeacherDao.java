@@ -152,6 +152,21 @@ public class TeacherDao {
         }
     }
 
+    public void alterPassword(String id, String password){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE teacher SET password = ? WHERE (id = ?)")) {
+                statement.setString(1, password);
+                statement.setString(2, id);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("更新教师密码失败");
+        }
+    }
+
     static void updateHelper(String id, String name, String password, Integer collegeOrClassId, String idCard, PreparedStatement statement) throws SQLException {
         statement.setString(1,id);
         statement.setString(2,name);

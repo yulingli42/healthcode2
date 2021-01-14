@@ -5,10 +5,7 @@ import com.healthcode.common.HealthCodeException;
 import com.healthcode.dao.ClazzDao;
 import com.healthcode.dao.StudentDailyCardDao;
 import com.healthcode.dao.StudentDao;
-import com.healthcode.domain.Clazz;
-import com.healthcode.domain.HealthCodeType;
-import com.healthcode.domain.Student;
-import com.healthcode.domain.StudentDailyCard;
+import com.healthcode.domain.*;
 import com.healthcode.dto.CurrentDailyCard;
 import com.healthcode.service.IStudentService;
 import com.healthcode.utils.CheckValueUtil;
@@ -180,6 +177,7 @@ public class StudentServiceImpl implements IStudentService {
         //将Excel文件中的学生数据导入数据库
         try {
             List<Object> studentData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
+            List<Student> students = new ArrayList<>();
 
             for (int i = 1; i < studentData.size(); i++) {
                 @SuppressWarnings("unchecked")
@@ -189,16 +187,23 @@ public class StudentServiceImpl implements IStudentService {
                 String name = list.get(1);
                 String className = list.get(2);
                 String idCard = list.get(3);
+                //获取教室
+                Clazz clazz = clazzDao.getClassByName(className);
 
-                if (id == null || name == null || className == null || idCard == null) {
+                //校验数据
+                if (id == null && name == null && className == null && idCard == null) {
                     continue;
                 }
-                //获取教室号
-                Integer classId = clazzDao.getClassIdByName(className);
-                //插入学生信息
-                insertStudent(id, name, classId, idCard);
+                if (CheckValueUtil.checkStringHelper(id, name, className, idCard) || !IdcardUtil.isValidCard(idCard)) {
+                    throw new HealthCodeException("第" + i + "行数据无效，拒绝导入");
+                }
+                students.add(new Student(id, name, null, idCard, clazz));
             }
 
+            for (Student student : students){
+                //插入学生信息
+                insertStudent(student.getId(), student.getName(), student.getClazz().getId(), student.getIdCard());
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new HealthCodeException("导入学生Excel失败");
@@ -247,6 +252,20 @@ public class StudentServiceImpl implements IStudentService {
 
     @Override
     public void changePassword(String id, String oldPassword, String newPassword) {
-        //TODO
+        //校验数据
+        if(!CheckValueUtil.checkStringHelper(id, oldPassword, newPassword)){
+            throw new HealthCodeException("信息不可为空");
+        }
+        //验证旧密码
+        Student student = studentDao.getByUsername(id);
+        if(!Objects.isNull(student)){
+            if(!student.getPassword().equals(oldPassword)){
+                throw new HealthCodeException("原密码错误");
+            }
+        }else {
+            throw new HealthCodeException("当前学生不存在");
+        }
+        //修改为新密码
+        studentDao.alterPassword(id, newPassword);
     }
 }

@@ -184,4 +184,19 @@ public class StudentDao {
             throw new HealthCodeException("更新学生失败");
         }
     }
+
+    public void alterPassword(String id, String password){
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "UPDATE student SET password = ? WHERE (id = ?)")) {
+                statement.setString(1, password);
+                statement.setString(2, id);
+
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("更新学生密码失败");
+        }
+    }
 }

@@ -162,6 +162,7 @@ public class TeacherServiceImpl implements ITeacherService {
         //将Excel文件中的教师数据导入数据库
         try {
             List<Object> teacherData = ExcelUtil.readLessThan1000RowBySheet(filePart.getInputStream(), null);
+            List<Teacher> teachers = new ArrayList<>();
 
             for(int i = 1;i < teacherData.size();i++){
                 @SuppressWarnings("unchecked")
@@ -171,14 +172,21 @@ public class TeacherServiceImpl implements ITeacherService {
                 String name = list.get(1);
                 String collegeName = list.get(2);
                 String idCard = list.get(3);
+                //获取教室号
+                College college = collegeDao.getCollegeByName(collegeName);
 
-                if(id == null || name == null || collegeName == null || idCard == null){
+                //校验数据
+                if(id == null && name == null && collegeName == null && idCard == null){
                     continue;
                 }
-                //获取教室号
-                Integer collegeId = collegeDao.getCollegeIdByName(collegeName);
+                if (CheckValueUtil.checkStringHelper(id, name, collegeName, idCard) || !IdcardUtil.isValidCard(idCard)) {
+                    throw new HealthCodeException("第" + i + "行数据无效，拒绝导入");
+                }
+                teachers.add(new Teacher(id, name, null, idCard, college));
+            }
+            for (Teacher teacher : teachers){
                 //插入教师信息
-                insertTeacher(id, name, idCard, collegeId);
+                insertTeacher(teacher.getId(), teacher.getName(), teacher.getIdCard(), teacher.getCollege().getId());
             }
         }catch (IOException e){
             e.printStackTrace();
@@ -220,6 +228,20 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Override
     public void changePassword(String id, String oldPassword, String newPassword) {
-        //TODO
+        //校验数据
+        if(!CheckValueUtil.checkStringHelper(id, oldPassword, newPassword)){
+            throw new HealthCodeException("信息不可为空");
+        }
+        //验证旧密码
+        Teacher teacher = teacherDao.getByUsername(id);
+        if(!Objects.isNull(teacher)){
+            if(!teacher.getPassword().equals(oldPassword)){
+                throw new HealthCodeException("原密码错误");
+            }
+        }else {
+            throw new HealthCodeException("当前教师不存在");
+        }
+        //修改为新密码
+        teacherDao.alterPassword(id, newPassword);
     }
 }

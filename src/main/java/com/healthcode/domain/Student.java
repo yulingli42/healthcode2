@@ -10,6 +10,16 @@ public class Student {
     private String idCard;
     private Clazz clazz;
 
+    public Student(){}
+
+    public Student(String id, String name, String password, String idCard, Clazz clazz){
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.idCard = idCard;
+        this.clazz = clazz;
+    }
+
     public String getId() {
         return id;
     }
