@@ -18,6 +18,8 @@ const UploadFile: React.FC<UploadFileProps> = ({onSuccess, url}) => {
                 if (info.file.status === "done") {
                     message.info("导入成功")
                     onSuccess()
+                }else if (info.file.status==="error"){
+                    message.warn(info.file.response.message)
                 }
             }}>
             <p className="ant-upload-drag-icon">
