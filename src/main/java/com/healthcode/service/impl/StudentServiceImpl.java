@@ -16,6 +16,7 @@ import com.healthcode.vo.StudentDailyCardVo;
 import org.jetbrains.annotations.Nullable;
 
 import javax.servlet.http.Part;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -187,15 +188,21 @@ public class StudentServiceImpl implements IStudentService {
                 String name = list.get(1);
                 String className = list.get(2);
                 String idCard = list.get(3);
-                //获取教室
-                Clazz clazz = clazzDao.getClassByName(className);
-
                 //校验数据
                 if (id == null && name == null && className == null && idCard == null) {
                     continue;
                 }
-                if (CheckValueUtil.checkStringHelper(id, name, className, idCard) || !IdcardUtil.isValidCard(idCard)) {
-                    throw new HealthCodeException("第" + i + "行数据无效，拒绝导入");
+
+                //获取教室
+                Clazz clazz = clazzDao.getClassByName(className);
+                if (Objects.isNull(clazz)){
+                    throw new HealthCodeException("第" + (i + 1) + "行班级不存在，拒绝导入");
+                }
+
+                if (!CheckValueUtil.checkStringHelper(id, name, className, idCard)) {
+                    throw new HealthCodeException("第" + (i + 1) + "行数据不完整，拒绝导入");
+                } else if (!IdcardUtil.isValidCard(idCard)){
+                    throw new HealthCodeException("第" + (i + 1) + "行身份证无效，拒绝导入");
                 }
                 students.add(new Student(id, name, null, idCard, clazz));
             }
@@ -204,7 +211,7 @@ public class StudentServiceImpl implements IStudentService {
                 //插入学生信息
                 insertStudent(student.getId(), student.getName(), student.getClazz().getId(), student.getIdCard());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
             throw new HealthCodeException("导入学生Excel失败");
         }
@@ -237,8 +244,8 @@ public class StudentServiceImpl implements IStudentService {
         //获取当前数据
         Student student = studentDao.getByUsername(id);
         if (!Objects.isNull(student)) {
-            name = "".equals(name) ? student.getName() : name;
-            password = "".equals(password) ? student.getPassword() : password;
+            name = Objects.isNull(name) || "".equals(name) ? student.getName() : name;
+            password = Objects.isNull(password) || "".equals(password) ? student.getPassword() : password;
             classId = Objects.isNull(classId) ? student.getClazz().getId() : classId;
             if (!"".equals(idCard) && !IdcardUtil.isValidCard(idCard)) {
                 throw new HealthCodeException("身份证无效");

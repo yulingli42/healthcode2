@@ -172,18 +172,25 @@ public class TeacherServiceImpl implements ITeacherService {
                 String name = list.get(1);
                 String collegeName = list.get(2);
                 String idCard = list.get(3);
-                //获取教室号
-                College college = collegeDao.getCollegeByName(collegeName);
-
                 //校验数据
                 if(id == null && name == null && collegeName == null && idCard == null){
                     continue;
                 }
-                if (CheckValueUtil.checkStringHelper(id, name, collegeName, idCard) || !IdcardUtil.isValidCard(idCard)) {
-                    throw new HealthCodeException("第" + i + "行数据无效，拒绝导入");
+
+                //获取学院
+                College college = collegeDao.getCollegeByName(collegeName);
+                if (Objects.isNull(college)){
+                    throw new HealthCodeException("第" + (i + 1) + "行学院不存在，拒绝导入");
+                }
+
+                if (!CheckValueUtil.checkStringHelper(id, name, collegeName, idCard)) {
+                    throw new HealthCodeException("第" + (i + 1) + "行数据不完整，拒绝导入");
+                } else if (!IdcardUtil.isValidCard(idCard)){
+                    throw new HealthCodeException("第" + (i + 1) + "行身份证无效，拒绝导入");
                 }
                 teachers.add(new Teacher(id, name, null, idCard, college));
             }
+            System.out.println("开始插入");
             for (Teacher teacher : teachers){
                 //插入教师信息
                 insertTeacher(teacher.getId(), teacher.getName(), teacher.getIdCard(), teacher.getCollege().getId());
@@ -211,8 +218,8 @@ public class TeacherServiceImpl implements ITeacherService {
         //获取当前数据
         Teacher teacher = teacherDao.getByUsername(id);
         if(!Objects.isNull(teacher)){
-            name = "".equals(name) ? teacher.getName() : name;
-            password = "".equals(password) ? teacher.getPassword() : password;
+            name = Objects.isNull(name) || "".equals(name) ? teacher.getName() : name;
+            password = Objects.isNull(password) || "".equals(password) ? teacher.getPassword() : password;
             if(Objects.isNull(collegeId) || Objects.isNull(collegeDao.getById(collegeId))){
                 collegeId = teacher.getCollege().getId();
             }
