@@ -10,8 +10,9 @@ import com.healthcode.vo.StudentDailyCardStatistic;
 import com.healthcode.vo.StudentDailyCardVo;
 import com.healthcode.vo.TeacherDailyCardStatistic;
 import com.healthcode.vo.TeacherDailyCardVo;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import javafx.util.Pair;
 import org.apache.commons.io.FileUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
@@ -25,27 +26,42 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.Font;
 
 public class PdfUtil {
-    private static final String FILE_URL = "src/";
+    private static class Pair<K, V> {
+        private K key;
+        private V value;
 
-    private static PieDataset<String> pieDataSet(){
-        DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
-        dataset.setValue("Green", 10);
-        dataset.setValue("Yellow", 15);
-        dataset.setValue("Red", 20);
-        return dataset;
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
     }
 
-    public static byte[] GetPdf(String fileName, StudentDailyCardStatistic studentDailyCardStatistic){
+    private static final String FILE_URL = "src/";
+
+
+    public static byte[] GetPdf(String fileName, StudentDailyCardStatistic studentDailyCardStatistic) {
         Document document = new Document();
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName + ".pdf"));
+            BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+            Font topfont = new Font(bfChinese, 14, Font.BOLD);
+            Font textfont = new Font(bfChinese, 10);
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
-            Paragraph paragraph_title = new Paragraph("StudentDailyCardStatistics");
+            Paragraph paragraph_title = new Paragraph("学生打卡统计", topfont);
             paragraph_title.setAlignment(Paragraph.ALIGN_CENTER);
 
-            Paragraph pieParagraph = new Paragraph("Chart");
+            Paragraph pieParagraph = new Paragraph("图表", textfont);
             pieParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(paragraph_title);
             document.add(pieParagraph);
@@ -60,7 +76,7 @@ public class PdfUtil {
             PieDataset<String> dataset = pieHelper(redValue, greenValue, yellowValue);
 
             JFreeChart chart = ChartFactory.createPieChart(
-                    "Statistics of students", // chart title
+                    "学生打卡统计", // chart title
                     dataset,// data
                     true,// include legend
                     true,
@@ -70,62 +86,63 @@ public class PdfUtil {
             chart.setBackgroundPaint(Color.white);
             // 指定图片的透明度(0.0-1.0)
             // 设置图标题的字体
-            java.awt.Font font = new java.awt.Font("黑体", Font.BOLD,20);
-            TextTitle title = new TextTitle("Statistics");
+            java.awt.Font font = new java.awt.Font("黑体", java.awt.Font.BOLD, 20);
+            TextTitle title = new TextTitle("统计");
             title.setFont(font);
             chart.setTitle(title);
             FileOutputStream fos_jpg;
-            try {
-                fos_jpg=new FileOutputStream("out.jpg");
-                ChartUtils.writeChartAsJPEG(fos_jpg,0.7f,chart,800,1000,null);
-                fos_jpg.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Image pieImage = Image.getInstance(FILE_URL+"out.jpg");
+            new File(FILE_URL).mkdirs();
+            fos_jpg = new FileOutputStream(FILE_URL + "out.jpg");
+            ChartUtils.writeChartAsJPEG(fos_jpg, 0.7f, chart, 800, 1000, null);
+            fos_jpg.close();
+            Image pieImage = Image.getInstance(FILE_URL + "out.jpg");
             pieImage.setAlignment(Image.ALIGN_CENTER);
             pieImage.scaleAbsolute(328, 370);
             document.add(pieImage);
             document.newPage();
-            pieParagraph = new Paragraph("Detail");
+            pieParagraph = new Paragraph("详情");
             pieParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(pieParagraph);
 
             //插入表格
             List<StudentDailyCardVo> studentDailyCardVos = studentDailyCardStatistic.getDailyCardList();
-            PdfPTable table = new PdfPTable(5 * studentDailyCardVos.size() + 5);
-            table.addCell("id");
-            table.addCell("name");
-            table.addCell("class");
-            table.addCell("today");
-            table.addCell("healthCodeType");
-            for(StudentDailyCardVo cur :studentDailyCardVos){
-                table.addCell(cur.getStudentId());
-                table.addCell(cur.getName());
-                table.addCell(cur.getClassName());
-                table.addCell(cur.getHadSubmitDailyCard() ? "True" : "False");
-                table.addCell(String.valueOf(cur.getType()));
+            PdfPTable table = new PdfPTable(5);
+            table.addCell(new PdfPCell(new Paragraph("学号", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("姓名", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("所在班级", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("今日打卡情况", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("健康码类型", textfont)));
+            for (StudentDailyCardVo cur : studentDailyCardVos) {
+                table.addCell(new PdfPCell(new Paragraph(cur.getStudentId(), textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getName(), textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getClassName(), textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getHadSubmitDailyCard() ? "已打卡" : "未打卡", textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getType().getType(), textfont)));
             }
+            document.add(table);
 
             System.out.println("end");
             document.close();
 
-            return FileUtils.readFileToByteArray(new File(FILE_URL + "out.jpg"));
+            return FileUtils.readFileToByteArray(new File(fileName));
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static byte[] GetPdf(String fileName, TeacherDailyCardStatistic teacherDailyCardStatistic){
+    public static byte[] GetPdf(String fileName, TeacherDailyCardStatistic teacherDailyCardStatistic) {
         Document document = new Document();
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(fileName + ".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(fileName));
+            BaseFont bfChinese = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.NOT_EMBEDDED);
+            Font topfont = new Font(bfChinese, 14, Font.BOLD);
+            Font textfont = new Font(bfChinese, 10);
             document.open();
-            Paragraph paragraph_title = new Paragraph("TeacherDailyCardStatistics");
+            Paragraph paragraph_title = new Paragraph("教师每日一报统计", topfont);
             paragraph_title.setAlignment(Paragraph.ALIGN_CENTER);
 
-            Paragraph pieParagraph = new Paragraph("Chart");
+            Paragraph pieParagraph = new Paragraph("图表", textfont);
             pieParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(paragraph_title);
             document.add(pieParagraph);
@@ -140,7 +157,7 @@ public class PdfUtil {
             PieDataset<String> dataset = pieHelper(redValue, greenValue, yellowValue);
 
             JFreeChart chart = ChartFactory.createPieChart(
-                    "Statistics of teachers", // chart title
+                    "教师统计", // chart title
                     dataset,// data
                     true,// include legend
                     true,
@@ -150,47 +167,45 @@ public class PdfUtil {
             chart.setBackgroundPaint(Color.white);
             // 指定图片的透明度(0.0-1.0)
             // 设置图标题的字体
-            java.awt.Font font = new java.awt.Font("黑体", Font.BOLD,20);
-            TextTitle title = new TextTitle("Statistics");
+            java.awt.Font font = new java.awt.Font("黑体", Font.BOLD, 20);
+            TextTitle title = new TextTitle("统计");
             title.setFont(font);
             chart.setTitle(title);
             FileOutputStream fos_jpg;
-            try {
-                fos_jpg=new FileOutputStream("out.jpg");
-                ChartUtils.writeChartAsJPEG(fos_jpg,0.7f,chart,800,1000,null);
-                fos_jpg.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            Image pieImage = Image.getInstance(FILE_URL+"out.jpg");
+            new File(FILE_URL).mkdirs();
+            fos_jpg = new FileOutputStream(FILE_URL + "out.jpg");
+            ChartUtils.writeChartAsJPEG(fos_jpg, 0.7f, chart, 800, 1000, null);
+            fos_jpg.close();
+            Image pieImage = Image.getInstance(FILE_URL + "out.jpg");
             pieImage.setAlignment(Image.ALIGN_CENTER);
             pieImage.scaleAbsolute(328, 370);
             document.add(pieImage);
             document.newPage();
-            pieParagraph = new Paragraph("Detail");
+            pieParagraph = new Paragraph("详情", textfont);
             pieParagraph.setAlignment(Paragraph.ALIGN_LEFT);
             document.add(pieParagraph);
 
             //插入表格
             List<TeacherDailyCardVo> teacherDailyCardVos = teacherDailyCardStatistic.getDailyCardList();
-            PdfPTable table = new PdfPTable(5 * teacherDailyCardVos.size() + 5);
-            table.addCell("id");
-            table.addCell("name");
-            table.addCell("class");
-            table.addCell("today");
-            table.addCell("healthCodeType");
-            for(TeacherDailyCardVo cur :teacherDailyCardVos){
-                table.addCell(cur.getTeacherId());
-                table.addCell(cur.getName());
-                table.addCell(cur.getCollegeName());
-                table.addCell(cur.getHadSubmitDailyCard() ? "True" : "False");
-                table.addCell(String.valueOf(cur.getType()));
+            PdfPTable table = new PdfPTable(5);
+            table.addCell(new PdfPCell(new Paragraph("工号", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("姓名", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("班级", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("今日打卡情况", textfont)));
+            table.addCell(new PdfPCell(new Paragraph("健康码", textfont)));
+            for (TeacherDailyCardVo cur : teacherDailyCardVos) {
+                table.addCell(new PdfPCell(new Paragraph(cur.getTeacherId(), textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getName(), textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getCollegeName(), textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getHadSubmitDailyCard() ? "已打卡" : "未打卡", textfont)));
+                table.addCell(new PdfPCell(new Paragraph(cur.getType().getType(), textfont)));
             }
+            document.add(table);
 
             System.out.println("end");
             document.close();
 
-            return FileUtils.readFileToByteArray(new File(FILE_URL + "out.jpg"));
+            return FileUtils.readFileToByteArray(new File(fileName));
         } catch (DocumentException | IOException e) {
             e.printStackTrace();
         }
@@ -198,9 +213,9 @@ public class PdfUtil {
     }
 
     @SafeVarargs
-    private static PieDataset<String> pieHelper(Pair<String, Integer>... values){
+    private static PieDataset<String> pieHelper(Pair<String, Integer>... values) {
         DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
-        for(Pair<String, Integer> value : values){
+        for (Pair<String, Integer> value : values) {
             dataset.setValue(value.getKey(), value.getValue());
         }
         return dataset;

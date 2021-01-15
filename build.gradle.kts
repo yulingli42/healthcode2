@@ -18,8 +18,8 @@ dependencies {
     implementation("com.zaxxer", "HikariCP", "3.4.5")
     runtimeOnly("mysql", "mysql-connector-java", "8.0.22")
 
-    implementation("com.fasterxml.jackson.core","jackson-databind","2.12.0")
-    implementation("com.fasterxml.jackson.datatype","jackson-datatype-jsr310","2.12.0")
+    implementation("com.fasterxml.jackson.core", "jackson-databind", "2.12.0")
+    implementation("com.fasterxml.jackson.datatype", "jackson-datatype-jsr310", "2.12.0")
 
     implementation("com.google.zxing", "core", "3.4.1")
     implementation("com.google.zxing", "javase", "3.4.1")
@@ -30,7 +30,9 @@ dependencies {
     implementation("com.alibaba", "easyexcel", "1.1.2-beat1")
 
     implementation("org.jfree", "jfreechart", "1.5.2")
-    implementation("com.itextpdf", "itextpdf", "5.5.13.2")
+    implementation("com.itextpdf", "itextpdf", "5.2.0")
+    implementation("com.itextpdf", "itext-asian", "5.2.0")
+
 
     implementation("cn.hutool", "hutool-all", "5.5.2")
     implementation("com.google.guava", "guava", "30.1-jre")

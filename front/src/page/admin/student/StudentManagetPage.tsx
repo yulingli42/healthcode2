@@ -77,7 +77,7 @@ const StudentManagerPage = () => {
     }
 
     const downloadPdf = () => {
-        instance.get("/admin/studentPdf", {responseType: "blob"})
+        instance.get("/admin/studentPdf", {responseType: "blob", params: {collegeId, majorId, classId}})
             .then(response => {
                 const blob = new Blob([response.data])
                 let link = document.createElement("a");
