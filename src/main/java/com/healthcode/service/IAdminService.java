@@ -38,4 +38,10 @@ public interface IAdminService {
      * @return 所有管理员内容
      */
     List<Admin> findAll();
+
+    /**
+     * 删除指定管理员
+     * @param id 管理员 id
+     */
+    void deleteById(Integer id);
 }

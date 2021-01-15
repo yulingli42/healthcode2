@@ -128,4 +128,17 @@ public class CollegeDao {
             throw new HealthCodeException("获取学院失败");
         }
     }
+
+    public int deleteById(Integer id) {
+        try (Connection connection = DatasourceConfig.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(
+                    "DELETE FROM college WHERE id = ?")) {
+                statement.setInt(1, id);
+                return statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new HealthCodeException("删除学院失败");
+        }
+    }
 }

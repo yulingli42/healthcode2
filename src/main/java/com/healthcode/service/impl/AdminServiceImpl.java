@@ -58,4 +58,9 @@ public class AdminServiceImpl implements IAdminService {
     public List<Admin> findAll() {
         return adminDao.listAll();
     }
+
+    @Override
+    public void deleteById(Integer id) {
+        adminDao.deleteById(id);
+    }
 }

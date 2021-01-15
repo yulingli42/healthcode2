@@ -16,11 +16,21 @@ const ClassManagerPage = () => {
     const [visible, setVisible] = useState(false)
     const {collegeId, majorId} = useParams<{ collegeId: string, majorId: string }>()
 
-    useEffect(() => {
+    const loadClass = (majorId: number) => {
         setLoading(true)
         instance.get<Clazz[]>("/admin/getAllClazzByMajor", {params: {majorId: majorId}})
             .then(response => setData(response.data))
             .finally(() => setLoading(false))
+    }
+
+    const deleteClass = (id: number) => {
+        instance
+            .post("/admin/deleteClass", {id})
+            .then(() => loadClass(Number(majorId)))
+    }
+
+    useEffect(() => {
+        loadClass(Number(majorId));
     }, [majorId])
 
     const columns = [
@@ -28,6 +38,10 @@ const ClassManagerPage = () => {
         {
             title: '', dataIndex: 'id', key: 'id',
             render: (id: number) => <Link to={`/admin/student/${collegeId}/${majorId}/${id}`}>查看该班级所有学生信息</Link>
+        }, {
+            title: '', dataIndex: 'id', key: 'id',
+            render: (id: number) => loginUser.role === AdminRole.SYSTEM_ADMIN &&
+                <Button type={"link"} onClick={() => deleteClass(id)}>删除</Button>
         }
     ]
 
@@ -40,7 +54,11 @@ const ClassManagerPage = () => {
             extra={loginUser.role === AdminRole.SYSTEM_ADMIN &&
             <Button type={"primary"} onClick={() => setVisible(true)}>添加新班级</Button>}>
         </PageHeader>
-        <AddClassModal visible={visible} setVisible={setVisible} majorId={Number(majorId)}/>
+        <AddClassModal
+            visible={visible}
+            setVisible={setVisible}
+            majorId={Number(majorId)}
+            onSuccess={() => loadClass(Number(majorId))}/>
         <Table loading={loading} rowKey={"name"} columns={columns} dataSource={data}/>
     </div>
 }

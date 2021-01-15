@@ -31,4 +31,11 @@ public interface IMajorService {
      * @return 专业信息
      */
     Major getMajorById(Integer id);
+
+    /**
+     * 根据id删除
+     *
+     * @param id 专业id
+     */
+    void deleteById(Integer id);
 }

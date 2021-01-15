@@ -4,14 +4,16 @@ import instance from "../../../axiosInstance";
 
 interface AddCollegeModalProps {
     visible: boolean,
-    setVisible: (visible: boolean) => void
+    setVisible: (visible: boolean) => void,
+    onSuccess: () => void
 }
 
-const AddCollegeModal: React.FC<AddCollegeModalProps> = ({visible, setVisible}) => {
+const AddCollegeModal: React.FC<AddCollegeModalProps> = ({visible, setVisible, onSuccess}) => {
     const [name, setName] = useState('')
     const onSubmit = async () => {
         await instance.post("/admin/addCollege", {name})
         setVisible(false)
+        onSuccess()
     }
 
     return (

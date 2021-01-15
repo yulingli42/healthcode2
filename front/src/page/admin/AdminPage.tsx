@@ -7,7 +7,7 @@ import StudentManagerPage from "./student/StudentManagetPage";
 import TeacherManagerPage from "./teacher/TeacherManagerPage";
 import CollegeManagerPage from "./college/CollegeManagerPage";
 import ClassManagerPage from "./class/ClassManagerPage";
-import MajorManagerPage from "./major/MajorManagerPageProps";
+import MajorManagerPage from "./major/MajorManagerPage";
 import AdminSider from "./AdminSider";
 import AdminManagerPage from "./admin/AdminManagerPage";
 import {Helmet} from "react-helmet";

@@ -31,4 +31,10 @@ public interface IClazzService {
      * @return 班级信息
      */
     Clazz getClazzById(Integer id);
+
+    /**
+     * 删除根据班级号
+     * @param id 班级号
+     */
+    void deleteById(Integer id);
 }
