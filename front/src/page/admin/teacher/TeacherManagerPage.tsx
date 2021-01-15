@@ -43,6 +43,21 @@ const TeacherManagerPage = () => {
         await loadTeacher()
     }
 
+    const downloadPdf = () => {
+        instance.get("/admin/teacherPdf", {responseType: "blob"})
+            .then(response => {
+                const blob = new Blob([response.data])
+                let link = document.createElement("a");
+                let evt = document.createEvent("HTMLEvents");
+                evt.initEvent("click", false, false);
+                link.href = URL.createObjectURL(blob);
+                link.download = "教师导出.pdf";
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+            })
+    }
     return (
         <div>
             <Helmet title={"教师管理"}/>
@@ -51,10 +66,13 @@ const TeacherManagerPage = () => {
                 ghost={false}
                 title="教师管理"
                 subTitle={college?.name}
-                extra={
-                    loginUser.role === AdminRole.SYSTEM_ADMIN &&
-                    <Button onClick={() => setInsertVisible(true)} type={"primary"}>添加新教师</Button>
-                }>
+                extra={[
+                    <Button key={"2"} onClick={downloadPdf}>导出为PDF</Button>,
+                    <Button
+                        hidden={loginUser.role !== AdminRole.SYSTEM_ADMIN}
+                        onClick={() => setInsertVisible(true)}
+                        type={"primary"}>添加新教师</Button>
+                ]}>
                 <Descriptions>
                     {college && <Descriptions.Item label={"学院名"}> {college.name}</Descriptions.Item>}
                     <Descriptions.Item label="教师总数">{data?.totalTeacherCount}</Descriptions.Item>

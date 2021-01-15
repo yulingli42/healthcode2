@@ -8,7 +8,6 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../store";
 import AddCollegeModal from "./AddCollegeModal";
 import {Helmet} from "react-helmet";
-import AddMajorModal from "../major/AddMajorModal";
 
 const CollegeManagerPage = () => {
     const loginUser = useSelector((state: RootState) => state.login).user as Admin

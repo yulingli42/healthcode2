@@ -24,7 +24,7 @@ const UpdateTeacherModal: React.FC<ModalProps> = ({visible, setVisible, onSucces
 
     return (
         <Modal
-            title="添加新教师"
+            title="修改教师"
             onCancel={() => setVisible(false)}
             visible={visible}
             onOk={onSubmit}>

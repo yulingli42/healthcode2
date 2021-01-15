@@ -76,6 +76,22 @@ const StudentManagerPage = () => {
         return ''
     }
 
+    const downloadPdf = () => {
+        instance.get("/admin/studentPdf", {responseType: "blob"})
+            .then(response => {
+                const blob = new Blob([response.data])
+                let link = document.createElement("a");
+                let evt = document.createEvent("HTMLEvents");
+                evt.initEvent("click", false, false);
+                link.href = URL.createObjectURL(blob);
+                link.download = "学生导出.pdf";
+                link.style.display = "none";
+                document.body.appendChild(link);
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+            })
+    }
+
     return (
         <div>
             <Helmet title={"学生管理"}/>
@@ -85,8 +101,9 @@ const StudentManagerPage = () => {
                 title={"学生管理"}
                 subTitle={getTitle()}
                 extra={[
+                    <Button key={"2"} onClick={downloadPdf}>导出为PDF</Button>,
                     <Button
-                        key={3}
+                        key={"1"}
                         onClick={() => setInsertVisible(true)}
                         type={"primary"}
                         hidden={loginUser.role !== AdminRole.SYSTEM_ADMIN}>添加新学生</Button>
