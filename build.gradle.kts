@@ -29,6 +29,9 @@ dependencies {
     implementation("org.apache.poi", "poi-scratchpad", "3.9")
     implementation("com.alibaba", "easyexcel", "1.1.2-beat1")
 
+    implementation("org.jfree", "jfreechart", "1.5.2")
+    implementation("com.itextpdf", "itextpdf", "5.5.13.2")
+
     implementation("cn.hutool", "hutool-all", "5.5.2")
     implementation("com.google.guava", "guava", "30.1-jre")
     implementation("org.apache.commons", "commons-collections4", "4.4")
