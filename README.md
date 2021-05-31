@@ -5,7 +5,7 @@
 
 http://localhost:8080，显示页面如下图2-1所示。
 
-!(https://github.com/yulingli42/healthcode2/blob/master/photo/wps1.jpg?raw=true) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps1.jpg?raw=true) 
 
 图2-1 网站首页页面
 
