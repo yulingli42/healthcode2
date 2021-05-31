@@ -17,7 +17,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 在登录页面点击管理员选项，输入用户名和密码，点击登录，显示页面如下图3-1所示。
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps2.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps2.jpg?raw=true) 
 
 图3-1 管理员登录
 
@@ -25,7 +25,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 若输入用户名密码无误，且权限为“系统管理员”，健康码系统将会自动识别，跳转至系统管理员主页。显示页面如下图3-2所示。
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps3.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps3.jpg?raw=true) 
 
 图3-2 系统管理员主页
 
@@ -35,7 +35,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 点击“学生管理”，如下图3-3所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps4.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps4.jpg?raw=true) 
 
 图3-3 学生信息
 
@@ -43,7 +43,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps5.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps5.jpg?raw=true) 
 
 图3-4 教师信息
 
@@ -53,7 +53,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps6.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps6.jpg?raw=true) 
 
 图3-5 学院信息
 
@@ -63,7 +63,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 点击 “查看所有专业”，如下图3-6所示
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps7.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps7.jpg?raw=true) 
 
 图3-6 查看所有专业
 
@@ -73,7 +73,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 点击“查看所有班级”，如下图3-7所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps8.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps8.jpg?raw=true) 
 
 图3-7查看所有班级
 
@@ -81,7 +81,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 点击“查看该班级所有学生信息”，如下图3-8所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps9.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps9.jpg?raw=true) 
 
 图3-8 查看该班级所有学生信息
 
@@ -89,7 +89,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 左侧点击“管理员管理”，如下图3-9所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps10.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps10.jpg?raw=true) 
 
 图3-8 管理员管理
 
@@ -103,7 +103,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps11.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps11.jpg?raw=true) 
 
 图4-1 添加新学院
 
@@ -111,7 +111,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 删除学院时，会提示需要先删除该学员所有专业，如下图4-2所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps12.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps12.jpg?raw=true) 
 
 图4-2 删除学院
 
@@ -125,7 +125,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps13.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps13.jpg?raw=true) 
 
 图4-3 添加新专业
 
@@ -133,7 +133,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 删除专业时，会提示需要先删除该专业所有班级，如下图4-4所示：：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps14.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps14.jpg?raw=true) 
 
 图4-4 删除专业
 
@@ -141,7 +141,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 在页面上点击“查看所有班级”后，再点击“添加新班级”可以直接在页面上，填写班级名进行添加。如下图4-5所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps15.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps15.jpg?raw=true) 
 
 图4-5 添加新班级
 
@@ -149,7 +149,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 删除班级时，会提示需要先删除该班级所有学生，如下图4-6所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps16.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps16.jpg?raw=true) 
 
 图4-6 删除班级
 
@@ -161,7 +161,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 手动导入，如下图4-7所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps17.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps17.jpg?raw=true) 
 
 图4-7 手动添加新学生
 
@@ -169,7 +169,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 从Excel中导入学生名单，如下图4-8所示
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps18.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps18.jpg?raw=true) 
 
 图4-8 从Excel中导入学生名单
 
@@ -177,7 +177,7 @@ http://localhost:8080，显示页面如下图2-1所示。
 
 Excel学生名单结构，如下图4-9所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps19.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps19.jpg?raw=true) 
 
 图4-8 Excel学生名单结构
 
@@ -187,13 +187,13 @@ Excel学生名单结构，如下图4-9所示：
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps20.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps20.jpg?raw=true) 
 
 图4-9 修改学生信息
 
 删除学生，如下图4-10所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps21.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps21.jpg?raw=true) 
 
 图4-10 删除学生
 
@@ -207,7 +207,7 @@ Excel学生名单结构，如下图4-9所示：
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps22.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps22.jpg?raw=true) 
 
 4-11 手动添加新教师
 
@@ -215,7 +215,7 @@ Excel学生名单结构，如下图4-9所示：
 
 从excel中导入教师名单，如下图4-12所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps23.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps23.jpg?raw=true) 
 
 4-12从excel中导入教师名单
 
@@ -223,7 +223,7 @@ Excel学生名单结构，如下图4-9所示：
 
 教师名单的excel，如下图4-13所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps24.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps24.jpg?raw=true) 
 
 4-13 教师名单的excel
 
@@ -231,7 +231,7 @@ Excel学生名单结构，如下图4-9所示：
 
 添加后的教师信息如下图4-14所示
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps25.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps25.jpg?raw=true) 
 
 4-14 添加后的教师信息
 
@@ -241,7 +241,7 @@ Excel学生名单结构，如下图4-9所示：
 
 编辑教师信息，如下图4-15所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps26.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps26.jpg?raw=true) 
 
 图4-15 编辑教师信息
 
@@ -249,7 +249,7 @@ Excel学生名单结构，如下图4-9所示：
 
 删除教师，如下图4-16所示
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps27.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps27.jpg?raw=true) 
 
 图4-16 删除教师
 
@@ -259,7 +259,7 @@ Excel学生名单结构，如下图4-9所示：
 
 添加校级管理员，输入用户名，密码，如下图4-17所示:
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps28.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps28.jpg?raw=true) 
 
 4-17 添加校级管理员
 
@@ -267,7 +267,7 @@ Excel学生名单结构，如下图4-9所示：
 
 添加院级管理员，输入用户名，密码，选择学院，如下图4-18所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps29.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps29.jpg?raw=true) 
 
 4-18 添加院级管理员
 
@@ -281,11 +281,11 @@ Excel学生名单结构，如下图4-9所示：
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps30.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps30.jpg?raw=true) 
 
 4-18 PDF中的饼状图
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps31.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps31.jpg?raw=true) 
 
 4-19  PDF中信息表格
 
@@ -295,7 +295,7 @@ Excel学生名单结构，如下图4-9所示：
 
 校级管理员登录，如下图5-1所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps32.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps32.jpg?raw=true) 
 
 图5-1 校级管理员登录
 
@@ -303,7 +303,7 @@ Excel学生名单结构，如下图4-9所示：
 
 校级管理员，可以查看全部学院的学生，教师打卡情况，如下图5-2所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps33.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps33.jpg?raw=true) 
 
 图5-2 看全部学院的学生，教师打卡情况
 
@@ -313,7 +313,7 @@ Excel学生名单结构，如下图4-9所示：
 
 院级管理员登录，如下图6-1所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps34.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps34.jpg?raw=true) 
 
 图6-1 院级管理员登录
 
@@ -321,7 +321,7 @@ Excel学生名单结构，如下图4-9所示：
 
 院级管理员只能查看本学院的学生和教师打卡情况，如下图6-2所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps35.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps35.jpg?raw=true) 
 
 图6-2 查看本学院的学生和教师打卡情况
 
@@ -329,7 +329,7 @@ Excel学生名单结构，如下图4-9所示：
 
 学生登录，如下图7-1所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps36.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps36.jpg?raw=true) 
 
 图7-1 学生登录
 
@@ -337,7 +337,7 @@ Excel学生名单结构，如下图4-9所示：
 
 学生如果今日未打卡，会进入信息填报页面，如下图7-2所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps37.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps37.jpg?raw=true) 
 
 图7-2 信息填报页面
 
@@ -345,7 +345,7 @@ Excel学生名单结构，如下图4-9所示：
 
 学生界面还有修改密码的功能，如下图7-3所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps38.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps38.jpg?raw=true) 
 
 图7-3 学生修改密码
 
@@ -355,7 +355,7 @@ Excel学生名单结构，如下图4-9所示：
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps39.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps39.jpg?raw=true) 
 
 图7-4 健康码显示
 
@@ -363,7 +363,7 @@ Excel学生名单结构，如下图4-9所示：
 
 用其他设备扫描该二维码，可以获得该学生的基本信息，如下图7-5所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps40.png) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps40.jpg?raw=true) 
 
 图7-4 扫二维码所得
 
@@ -375,7 +375,7 @@ Excel学生名单结构，如下图4-9所示：
 
  
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps41.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps41.jpg?raw=true) 
 
 图8-1教师登录
 
@@ -383,7 +383,7 @@ Excel学生名单结构，如下图4-9所示：
 
 教师如果今日未打卡，会进入信息填报页面，如下图8-2所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps42.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps42.jpg?raw=true) 
 
 图8-2 教师信息填报页面
 
@@ -391,7 +391,7 @@ Excel学生名单结构，如下图4-9所示：
 
 教师界面也可以进行密码修改，如下图8-3所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps43.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps43.jpg?raw=true) 
 
 图8-3 教师密码修改
 
@@ -408,8 +408,7 @@ n当前健康状况有发烧（≥37.3℃）、乏力、干咳、鼻塞、流涕
 如下图8-4所示：
 
  
-
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps44.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps44.jpg?raw=true) 
 
 图8-4 红色健康码
 
@@ -417,7 +416,7 @@ n当前健康状况有发烧（≥37.3℃）、乏力、干咳、鼻塞、流涕
 
 如下图8-5所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps45.png) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps45.jpg?raw=true) 
 
 图8-6 扫二维码显示
 
@@ -435,7 +434,7 @@ n当前健康状况有且仅有发烧（≥37.3℃）、乏力、干咳、鼻塞
 
 如下图8-7所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps46.jpg) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps46.jpg?raw=true) 
 
 图8-7 黄色健康码
 
@@ -443,7 +442,7 @@ n当前健康状况有且仅有发烧（≥37.3℃）、乏力、干咳、鼻塞
 
 如下图8-8所示：
 
-![img](file:///C:\Users\asus\AppData\Local\Temp\ksohtml4472\wps47.png) 
+![](https://github.com/yulingli42/healthcode2/blob/master/photo/wps47.jpg?raw=true) 
 
 图8-8 扫二维码显示
 
